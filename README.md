@@ -6,7 +6,7 @@ Join my GitHub discord server: [![Discord](https://img.shields.io/discord/110433
 This project is under development, do not use this on production servers.
 
 ## Virions Used
-- [EasyUI](https://github.com/andresbytes/EasyUI) by **dresnite**
+- [EasyUI](https://github.com/dresnite/easyui) by **dresnite**
 
 ## Contributing
 
