@@ -1,9 +1,4 @@
 <?php
-/*
-* Copyright (C) Sergittos - All Rights Reserved
-* Unauthorized copying of this file, via any medium is strictly prohibited
-* Proprietary and confidential
-*/
 
 declare(strict_types=1);
 
@@ -36,7 +31,6 @@ use sergittos\bedwars\utils\ConfigGetter;
 use function in_array;
 use function strtoupper;
 use function time;
-use function var_dump;
 
 class Session {
 
