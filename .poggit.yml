@@ -1,0 +1,12 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Sergittos/BedWars
+build-by-default: true
+branches:
+- master
+projects:
+  BedWars:
+    path: ""
+    libs:
+      - src: dresnite/easyui/libEasyUI
+        version: 1.0.3
+        branch: pm5
+...
