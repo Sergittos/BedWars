@@ -1,0 +1,36 @@
+<?php
+/*
+* Copyright (C) Sergittos - All Rights Reserved
+* Unauthorized copying of this file, via any medium is strictly prohibited
+* Proprietary and confidential
+*/
+
+declare(strict_types=1);
+
+
+namespace sergittos\bedwars\game\event\presets;
+
+
+use sergittos\bedwars\game\event\Event;
+
+class BedDestructionEvent extends Event {
+
+    public function __construct() {
+        parent::__construct("Bed destruction", 6);
+    }
+
+    public function end(): void {
+        foreach($this->game->getTeams() as $team) {
+            if(!$team->isBedDestroyed()) {
+                $team->destroyBed();
+                $team->breakBedBlock($this->game);
+            }
+        }
+        $this->game->updateScoreboards();
+    }
+
+    public function getNextEvent(): Event {
+        return new EndGameInATieEvent();
+    }
+
+}

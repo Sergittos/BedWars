@@ -1,0 +1,12 @@
+# The version
+version: 1.0
+
+# The IP that will be showed on the scoreboard and the bossbar
+ip: "play.server.net"
+
+# Mysql credentials
+mysql-credentials:
+  hostname: "127.0.0.1:3306"
+  username: "root"
+  password: ""
+  database: "bedwars"
