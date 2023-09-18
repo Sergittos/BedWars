@@ -159,8 +159,10 @@ class Team {
     }
 
     public function tickGenerators(Game $game): void {
-        foreach($this->generators as $generator) {
-            $generator->tick($game);
+        if($this->isAlive()) {
+            foreach($this->generators as $generator) {
+                $generator->tick($game);
+            }
         }
     }
 
