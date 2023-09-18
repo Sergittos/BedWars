@@ -7,7 +7,13 @@ namespace sergittos\bedwars\game\shop;
 
 
 use pocketmine\item\Item;
+use pocketmine\utils\TextFormat;
 use sergittos\bedwars\session\Session;
+use sergittos\bedwars\utils\ColorUtils;
+use sergittos\bedwars\utils\GameUtils;
+use function strtok;
+use function strtolower;
+use function ucfirst;
 
 abstract class Product {
 
@@ -35,6 +41,26 @@ abstract class Product {
 
     public function getOre(): Item {
         return clone $this->ore;
+    }
+
+    public function getDisplayName(Session $session): string {
+        $color = TextFormat::RED;
+        if($session->getPlayer()->getInventory()->contains($this->ore)) {
+            $color = TextFormat::GREEN;
+        }
+        return $color . $this->name;
+    }
+
+    public function getDescription(Session $session): string {
+        $name = strtok(strtolower($this->ore->getVanillaName()), " ");
+        $color = GameUtils::getGeneratorColor($name);
+
+        if($name !== "iron" and $name !== "gold" and $this->price !== 1) {
+            $name .= "s";
+        }
+        $name = ucfirst($name);
+
+        return ColorUtils::translate("{GRAY}Cost: " . $color . $this->price . " " . ucfirst($name));
     }
 
     abstract public function onPurchase(Session $session): bool;

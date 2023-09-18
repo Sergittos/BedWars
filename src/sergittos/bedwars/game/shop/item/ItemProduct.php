@@ -34,6 +34,14 @@ class ItemProduct extends Product {
         return clone $this->item;
     }
 
+    public function getDisplayName(Session $session): string {
+        $name = parent::getDisplayName($session);
+        if($this->amount > 1) {
+            $name .= " x" . $this->amount;
+        }
+        return $name;
+    }
+
     public function onPurchase(Session $session): bool {
         $inventory = $session->getPlayer()->getInventory();
         if(!$inventory->canAddItem($this->item)) {

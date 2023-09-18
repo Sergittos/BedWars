@@ -9,6 +9,11 @@ namespace sergittos\bedwars\utils;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\ItemTypeIds;
+use sergittos\bedwars\game\team\upgrade\trap\AlarmTrap;
+use sergittos\bedwars\game\team\upgrade\trap\CounterOffensiveTrap;
+use sergittos\bedwars\game\team\upgrade\trap\DefaultTrap;
+use sergittos\bedwars\game\team\upgrade\trap\MinerFatigueTrap;
+use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use function strtolower;
 
 class GameUtils {
@@ -29,6 +34,25 @@ class GameUtils {
             "gold" => "{GOLD}",
             "iron" => "{WHITE}",
             default => ""
+        };
+    }
+
+    static public function intToRoman(int $number): string {
+        return match($number) {
+            1 => "I",
+            2 => "II",
+            3 => "III",
+            4 => "IV",
+            default => ""
+        };
+    }
+
+    static public function getTrapByName(string $name): Trap {
+        return match($name) {
+            "It's a trap" => new DefaultTrap(),
+            "Counter-Offensive Trap" => new CounterOffensiveTrap(),
+            "Alarm Trap" => new AlarmTrap(),
+            "Miner Fatigue Trap" => new MinerFatigueTrap()
         };
     }
 

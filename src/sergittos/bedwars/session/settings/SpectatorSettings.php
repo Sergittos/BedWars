@@ -10,6 +10,7 @@ use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\utils\Limits;
 use sergittos\bedwars\session\Session;
+use sergittos\bedwars\utils\GameUtils;
 
 class SpectatorSettings {
 
@@ -47,12 +48,7 @@ class SpectatorSettings {
         $this->flying_speed = $flying_speed;
 
         if($this->flying_speed !== 0) {
-            $this->session->message("{GREEN}You now have Speed " . match($flying_speed) {
-                1 => "I",
-                2 => "II",
-                3 => "III",
-                4 => "IV"
-            } . "!");
+            $this->session->message("{GREEN}You now have Speed " . GameUtils::intToRoman($flying_speed) . "!");
         } else {
             $this->session->message("{RED}You no longer have any speed effects!");
         }

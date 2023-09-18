@@ -6,32 +6,32 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\shop\upgrades\product;
 
 
+use pocketmine\utils\TextFormat;
 use sergittos\bedwars\game\shop\upgrades\UpgradesProduct;
 use sergittos\bedwars\game\team\Team;
-use sergittos\bedwars\game\team\upgrade\trap\AlarmTrap;
-use sergittos\bedwars\game\team\upgrade\trap\CounterOffensiveTrap;
-use sergittos\bedwars\game\team\upgrade\trap\DefaultTrap;
-use sergittos\bedwars\game\team\upgrade\trap\MinerFatigueTrap;
-use sergittos\bedwars\game\team\upgrade\trap\Trap;
+use sergittos\bedwars\session\Session;
+use sergittos\bedwars\utils\GameUtils;
 
 class TrapProduct extends UpgradesProduct {
 
     protected function canPurchase(Team $team): bool {
         $upgrades = $team->getUpgrades();
-        if(!$upgrades->hasTrap($this->name)) {
-            $upgrades->addTrap($this->getTrap());
+        if(!$upgrades->hasTrap($this->name) and $upgrades->getTrapsCount() < 3) {
+            $upgrades->addTrap(GameUtils::getTrapByName($this->name));
             return true;
         }
         return false;
     }
 
-    private function getTrap(): Trap {
-        return match($this->name) {
-            "It's a trap" => new DefaultTrap(),
-            "Counter-Offensive Trap" => new CounterOffensiveTrap(),
-            "Alarm Trap" => new AlarmTrap(),
-            "Miner Fatigue Trap" => new MinerFatigueTrap()
-        };
+    public function getDescription(Session $session): string {
+        $upgrades = $session->getTeam()->getUpgrades();
+        if($upgrades->hasTrap($this->name)) {
+            return TextFormat::RED . "You already have this trap!";
+        }
+        if($upgrades->getTrapsCount() >= 3) {
+            return TextFormat::RED . "You cannot have more than 3 traps!";
+        }
+        return parent::getDescription($session);
     }
 
 }
