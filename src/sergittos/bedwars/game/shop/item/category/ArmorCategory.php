@@ -33,7 +33,7 @@ class ArmorCategory extends Category {
     }
 
     private function createArmorProduct(string $armor, int $price, Item $ore, GameSettings $settings): ItemProduct {
-        return new ItemProduct("Permanent " . ucfirst($armor) . " Armor", $price, 1, VanillaItems::AIR(), $ore, function(Session $session) use ($armor) {
+        return new ItemProduct("Permanent " . ucfirst($armor) . " Armor", $price, 0, VanillaItems::AIR(), $ore, function(Session $session) use ($armor) {
             $session->getGameSettings()->setArmor($armor);
         }, $this->getPriority($settings->getArmor()) < $this->getPriority($armor));
     }
