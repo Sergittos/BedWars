@@ -344,6 +344,9 @@ class Session {
         $this->player->teleport($this->game->getMap()->getSpectatorSpawnPosition());
         $this->player->setGamemode(GameMode::SPECTATOR());
 
+        $this->game_settings->decreasePickaxeTier();
+        $this->game_settings->decreaseAxeTier();
+
         if($this->team->isBedDestroyed()) {
             $this->game->removePlayer($this, false, true);
             return;

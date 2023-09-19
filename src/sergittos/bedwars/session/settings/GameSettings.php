@@ -11,6 +11,7 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\Item;
 use pocketmine\item\StringToItemParser;
+use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
 use sergittos\bedwars\item\BedwarsItems;
 use sergittos\bedwars\session\Session;
@@ -24,6 +25,9 @@ class GameSettings {
 
     private ?string $armor = null;
 
+    private int $pickaxe_tier = 0;
+    private int $axe_tier = 0;
+
     public function __construct(Session $session) {
         $this->session = $session;
     }
@@ -36,13 +40,50 @@ class GameSettings {
         return $this->armor !== null;
     }
 
+    public function isPickaxeFullUpgraded(): bool {
+        return $this->pickaxe_tier >= 4;
+    }
+
+    public function isAxeFullUpgraded(): bool {
+        return $this->axe_tier >= 4;
+    }
+
     public function getArmor(): ?string {
         return $this->armor;
+    }
+
+    public function getPickaxeTier(): int {
+        return $this->pickaxe_tier;
+    }
+
+    public function getAxeTier(): int {
+        return $this->axe_tier;
     }
 
     public function setPermanentShears(): void {
         $this->permanent_shears = true;
     }
+
+    public function incrasePickaxeTier(): void {
+        $this->pickaxe_tier++;
+    }
+
+    public function incraseAxeTier(): void {
+        $this->axe_tier++;
+    }
+
+    public function decreasePickaxeTier(): void {
+        if($this->pickaxe_tier > 1) {
+            $this->pickaxe_tier--;
+        }
+    }
+
+    public function decreaseAxeTier(): void {
+        if($this->axe_tier > 1) {
+            $this->axe_tier--;
+        }
+    }
+
 
     public function setArmor(?string $armor): void {
         $this->armor = $armor;
@@ -61,6 +102,12 @@ class GameSettings {
 
         if($this->permanent_shears) {
             $inventory->addItem(VanillaItems::SHEARS());
+        }
+        if($this->pickaxe_tier > 0) {
+            $inventory->addItem($this->getTool("pickaxe", $this->pickaxe_tier));
+        }
+        if($this->axe_tier > 0) {
+            $inventory->addItem($this->getTool("axe", $this->axe_tier));
         }
 
         $inventory = $player->getArmorInventory();
@@ -85,6 +132,17 @@ class GameSettings {
         }
     }
 
+    public function getTool(string $name, int $tier): Tool {
+        /** @var Tool $item */
+        $item = StringToItemParser::getInstance()->parse(strtolower($this->getMaterial($tier) . "_" . $name));
+        $item->setUnbreakable();
+        $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::EFFICIENCY(), $tier !== 4 ? $tier : 3));
+        if($tier === 3) {
+            $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SHARPNESS(), 3));
+        }
+        return $item;
+    }
+
     private function getLeatherArmor(Armor $armor): Armor {
         return $this->addComponents($armor->setCustomColor($this->session->getTeam()->getDyeColor()->getRgbValue()))->setUnbreakable();
     }
@@ -101,6 +159,15 @@ class GameSettings {
         $item->getNamedTag()->setByte("bedwars", 1);
 
         return $item;
+    }
+
+    public function getMaterial(int $tier): string {
+        return match($tier) {
+            0, 1 => "Wooden",
+            2 => "Iron",
+            3 => "Golden",
+            4, 5 => "Diamond"
+        };
     }
 
 }
