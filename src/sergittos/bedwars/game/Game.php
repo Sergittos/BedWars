@@ -28,6 +28,7 @@ use function array_merge;
 use function array_search;
 use function count;
 use function in_array;
+use function is_string;
 
 class Game {
 
@@ -236,10 +237,14 @@ class Game {
         }
     }
 
-    public function broadcastSound(Sound $sound): void {
+    public function broadcastSound(Sound|string $sound): void {
         foreach($this->getPlayersAndSpectators() as $session) {
-            $player = $session->getPlayer();
-            $player->broadcastSound($sound, [$player]);
+            if(is_string($sound)) {
+                $session->playSound($sound);
+            } else {
+                $player = $session->getPlayer();
+                $player->broadcastSound($sound, [$player]);
+            }
         }
     }
 

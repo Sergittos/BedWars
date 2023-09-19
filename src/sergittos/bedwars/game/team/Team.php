@@ -137,16 +137,17 @@ class Team {
         return in_array($session, $this->members, true);
     }
 
-    public function destroyBed(?Game $game = null): void {
+    public function destroyBed(Game $game, bool $break_block = true): void {
         $this->bed_destroyed = true;
 
-        if($game !== null) {
+        if($break_block) {
             $this->breakBedBlock($game);
         }
 
+        $game->broadcastSound("mob.enderdragon.growl"); // hardcoded
+
         foreach($this->members as $member) {
             $member->title("{RED}BED DESTROYED!", "{WHITE}You will no longer respawn!", 7, 30, 15);
-            $member->playSound("mob.enderdragon.growl");
         }
     }
 

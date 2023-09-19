@@ -147,7 +147,7 @@ class GameListener implements Listener {
         }
 
         if($session->getTeam()->getName() !== $team->getName()) {
-            $team->destroyBed();
+            $team->destroyBed($game, false);
             $game->broadcastMessage("{BOLD}{WHITE}BED DESTRUCTION > {RESET}" . $team->getColoredName() . " Bed {GRAY}was destroyed by " . $session->getColoredUsername() . "{GRAY}!");
             $event->setDrops([]);
         } else {
