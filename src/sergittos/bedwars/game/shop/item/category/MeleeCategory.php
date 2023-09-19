@@ -50,7 +50,6 @@ class MeleeCategory extends Category {
 
         return new ItemProduct(ucfirst($name) . " Sword", $price, 1, $sword, $ore, function(Session $session) {
             $session->getPlayer()->getInventory()->remove(VanillaItems::WOODEN_SWORD());
-            return true;
         });
     }
 

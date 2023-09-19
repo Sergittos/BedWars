@@ -45,13 +45,8 @@ class ToolsCategory extends Category {
         return new ItemProduct(
             $settings->getMaterial($tier) . " $name " . ($tier <= 4 ? "Tier " . GameUtils::intToRoman($tier) : "MAX TIER"),
             $this->getPrice($tier), 1, $settings->getTool($name, $tier), $this->getOre($tier), function(Session $session) use ($name, $tier, $settings, $is_full_upgraded, $on_purchase) {
-                if(!$is_full_upgraded) {
-                    $on_purchase();
-                    $session->getPlayer()->getInventory()->remove($settings->getTool($name, $tier - 1));
-                    return true;
-                }
-                $session->message("{RED}Your " . $name . " is full upgraded!");
-                return false;
+                $session->getPlayer()->getInventory()->remove($settings->getTool($name, $tier - 1));
+                $on_purchase();
         }, !$is_full_upgraded);
     }
 

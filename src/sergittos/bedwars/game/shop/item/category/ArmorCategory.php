@@ -11,6 +11,7 @@ use pocketmine\item\VanillaItems;
 use sergittos\bedwars\game\shop\Category;
 use sergittos\bedwars\game\shop\item\ItemProduct;
 use sergittos\bedwars\session\Session;
+use sergittos\bedwars\session\settings\GameSettings;
 use function ucfirst;
 
 class ArmorCategory extends Category {
@@ -23,23 +24,18 @@ class ArmorCategory extends Category {
      * @return ItemProduct[]
      */
     public function getProducts(Session $session): array {
+        $settings = $session->getGameSettings();
         return [
-            $this->createArmorProduct("chainmail", 30, VanillaItems::IRON_INGOT()),
-            $this->createArmorProduct("iron", 12, VanillaItems::GOLD_INGOT()),
-            $this->createArmorProduct("diamond", 6, VanillaItems::EMERALD())
+            $this->createArmorProduct("chainmail", 30, VanillaItems::IRON_INGOT(), $settings),
+            $this->createArmorProduct("iron", 12, VanillaItems::GOLD_INGOT(), $settings),
+            $this->createArmorProduct("diamond", 6, VanillaItems::EMERALD(), $settings)
         ];
     }
 
-    private function createArmorProduct(string $armor, int $price, Item $ore): ItemProduct {
+    private function createArmorProduct(string $armor, int $price, Item $ore, GameSettings $settings): ItemProduct {
         return new ItemProduct("Permanent " . ucfirst($armor) . " Armor", $price, 1, VanillaItems::AIR(), $ore, function(Session $session) use ($armor) {
-            $settings = $session->getGameSettings();
-            if($this->getPriority($settings->getArmor()) < $this->getPriority($armor)) {
-                $settings->setArmor($armor);
-                return true;
-            }
-            $session->message("{RED}You already have this armor!");
-            return false;
-        });
+            $session->getGameSettings()->setArmor($armor);
+        }, $this->getPriority($settings->getArmor()) < $this->getPriority($armor));
     }
 
     private function getPriority(?string $armor): int {

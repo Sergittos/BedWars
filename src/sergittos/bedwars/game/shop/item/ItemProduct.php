@@ -30,10 +30,6 @@ class ItemProduct extends Product {
         parent::__construct($name, $name, $price, $ore);
     }
 
-    public function getAmount(): int {
-        return $this->amount;
-    }
-
     public function getItem(): Item {
         return clone $this->item;
     }
@@ -69,15 +65,15 @@ class ItemProduct extends Product {
             return false;
         }
 
-        if($this->executePurchaseListener($session)) {
-            $inventory->addItem($this->item);
-            return true;
-        }
-        return false;
+        $this->executePurchaseListener($session);
+        $inventory->addItem($this->item);
+        return true;
     }
 
-    private function executePurchaseListener(Session $session): bool {
-        return $this->on_purchase !== null ? ($this->on_purchase)($session) : true;
+    private function executePurchaseListener(Session $session): void {
+        if($this->on_purchase !== null) {
+            ($this->on_purchase)($session);
+        }
     }
 
 }
