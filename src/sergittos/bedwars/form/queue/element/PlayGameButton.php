@@ -24,6 +24,8 @@ class PlayGameButton extends Button {
             $session = SessionFactory::getSession($player);
             if($session->isSpectator()) {
                 $session->getGame()->removeSpectator($session);
+            } elseif($session->isPlaying()) {
+                return;
             }
             $game->addPlayer($session);
         });
