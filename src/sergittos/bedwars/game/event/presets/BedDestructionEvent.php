@@ -17,8 +17,7 @@ class BedDestructionEvent extends Event {
     public function end(): void {
         foreach($this->game->getTeams() as $team) {
             if(!$team->isBedDestroyed()) {
-                $team->destroyBed();
-                $team->breakBedBlock($this->game);
+                $team->destroyBed($this->game);
             }
         }
         $this->game->updateScoreboards();

@@ -125,9 +125,9 @@ class GameListener implements Listener {
             return;
         }
 
-        $game = $session->getGame();
         $block = $event->getBlock();
         $position = $block->getPosition();
+        $game = $session->getGame();
 
         if($game->checkBlock($position)) {
             return;
@@ -137,8 +137,11 @@ class GameListener implements Listener {
             return;
         }
 
-        $team = $this->getTeamByPosition($game, $block->getPosition());
-        if($team === null/* or !$team->getBedPosition()->equals($position)*/) {
+        $team = $this->getTeamByPosition($game, $position);
+        $bed_position = $team->getBedPosition();
+        $half_position = $block->getOtherHalf()->getPosition();
+
+        if($team->isBedDestroyed() or $half_position === null or (!$bed_position->equals($half_position) and !$bed_position->equals($position))) {
             return;
         }
 

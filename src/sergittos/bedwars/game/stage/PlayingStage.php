@@ -19,6 +19,7 @@ use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
 use function count;
 use function round;
+use function shuffle;
 
 class PlayingStage extends Stage {
 
@@ -34,16 +35,26 @@ class PlayingStage extends Stage {
     }
 
     protected function onStart(): void {
+        $teams = $this->game->getTeams();
+        shuffle($teams);
+
+        foreach($teams as $team) {
+            foreach($this->game->getPlayers() as $session) {
+                if(!$team->isFull() and !$session->hasTeam()) {
+                    $team->addMember($session);
+                    continue;
+                }
+                break;
+            }
+            if(!$team->isAlive()) {
+                $team->destroyBed($this->game);
+            }
+        }
+
         $this->startNextEvent(new UpgradeGeneratorsTierEvent(Generator::DIAMOND, TierIds::II));
     }
 
     public function onJoin(Session $session): void {
-        foreach($this->game->getTeams() as $team) {
-            if(!$team->isFull()) {
-                $team->addMember($session);
-                break;
-            }
-        }
         $session->setScoreboard(new GameScoreboard());
     }
 

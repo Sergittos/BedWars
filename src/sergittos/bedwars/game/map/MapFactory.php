@@ -56,6 +56,7 @@ class MapFactory {
             foreach($map_data["teams"] as $team_name => $data) {
                 $generator_data = $data["generator"];
                 $areas_data = $data["areas"];
+                $bed_data = $data["bed"];
 
                 $team_generators = [];
                 $team_generators[] = Generator::fromData(Generator::IRON, $team_name, 1, VanillaItems::IRON_INGOT(), false, $generator_data);
@@ -66,7 +67,7 @@ class MapFactory {
 
                 $teams[] = new Team(
                     ucfirst($team_name), "{" . strtoupper($team_name) . "}", $players_per_team,
-                    self::createVector($data["spawn_point"]), self::createVector($data["bed"])->subtract(0, 0.5, 0),
+                    self::createVector($data["spawn_point"]), new Vector3($bed_data["x"], $bed_data["y"], $bed_data["z"]),
                     Area::fromData($areas_data["zone"]), Area::fromData($areas_data["zone"]), $team_generators // todo: change to claim
                 );
             }

@@ -11,6 +11,7 @@ use pocketmine\block\utils\DyeColor;
 use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\player\GameMode;
+use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\generator\Generator;
@@ -19,6 +20,7 @@ use sergittos\bedwars\utils\ColorUtils;
 use function array_search;
 use function count;
 use function in_array;
+use function var_dump;
 
 class Team {
 
@@ -135,8 +137,12 @@ class Team {
         return in_array($session, $this->members, true);
     }
 
-    public function destroyBed(): void {
+    public function destroyBed(?Game $game = null): void {
         $this->bed_destroyed = true;
+
+        if($game !== null) {
+            $this->breakBedBlock($game);
+        }
 
         foreach($this->members as $member) {
             $member->title("{RED}BED DESTROYED!", "{WHITE}You will no longer respawn!", 7, 30, 15);
@@ -144,18 +150,23 @@ class Team {
         }
     }
 
-    public function breakBedBlock(Game $game): void {
+    private function breakBedBlock(Game $game): void {
         $world = $game->getWorld();
         $position = Position::fromObject($this->bed_position, $world);
 
-        $blocks = $world->getBlock($position)->getAffectedBlocks();
-        foreach($blocks as $block) {
-            if($block instanceof Air) {
-                continue;
-            }
+        $world->requestChunkPopulation($position->getX() >> Chunk::COORD_BIT_SIZE, $position->getZ() >> Chunk::COORD_BIT_SIZE, null)->onCompletion(
+            function() use ($world, $position) {
+                $blocks = $world->getBlock($position)->getAffectedBlocks();
+                foreach($blocks as $block) {
+                    if($block instanceof Air) {
+                        continue;
+                    }
 
-            $block->onBreak(VanillaItems::AIR());
-        }
+                    $block->onBreak(VanillaItems::AIR());
+                }
+            },
+            function() {}
+        );
     }
 
     public function tickGenerators(Game $game): void {
@@ -187,8 +198,7 @@ class Team {
         unset($this->members[array_search($session, $this->members, true)]);
 
         if($this->isEmpty()) {
-            $this->bed_destroyed = true;
-            $this->breakBedBlock($session->getGame());
+            $this->destroyBed($session->getGame());
         }
 
         $session->setTeam(null);
