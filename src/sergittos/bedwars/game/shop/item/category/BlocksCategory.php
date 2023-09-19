@@ -26,7 +26,7 @@ class BlocksCategory extends Category {
         return [
             new ItemProduct("Wool", 4, 16, VanillaBlocks::WOOL()->setColor($color), VanillaItems::IRON_INGOT()),
             new ItemProduct("Hardened Clay", 12, 16, VanillaBlocks::STAINED_CLAY()->setColor($color), VanillaItems::IRON_INGOT()),
-            new ItemProduct("Blast-Proof Glass", 12, 4, VanillaBlocks::GLASS(), VanillaItems::IRON_INGOT()), // todo
+            new ItemProduct("Blast-Proof Glass", 12, 4, VanillaBlocks::GLASS(), VanillaItems::IRON_INGOT()),
             new ItemProduct("End Stone", 24, 12, VanillaBlocks::END_STONE(), VanillaItems::IRON_INGOT()),
             new ItemProduct("Ladder", 4, 8, VanillaBlocks::LADDER(), VanillaItems::IRON_INGOT()),
             new ItemProduct("Oak Wood Planks", 4, 16, VanillaBlocks::OAK_WOOD(), VanillaItems::GOLD_INGOT()),
