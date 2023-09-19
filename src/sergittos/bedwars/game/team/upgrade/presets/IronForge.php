@@ -33,8 +33,8 @@ class IronForge extends Upgrade {
         }
 
         foreach($generators as $generator) {
-            $speed = $generator->getInitialSpeed();
-            $generator->setSpeed($this->level / 2 * $speed + $speed);
+            $speed = 1 / $generator->getInitialSpeed();
+            $generator->setCountdown($this->level / 2 * $speed + $speed);
         }
     }
 

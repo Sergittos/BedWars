@@ -24,8 +24,8 @@ class Generator {
     private string $name;
     private string $tier = TierIds::I;
 
-    private float $initial_speed;
-    private float $speed = 0;
+    private int $initial_speed;
+    private int $speed;
     private int $countdown = 0;
     private int $time = 0;
 
@@ -37,7 +37,7 @@ class Generator {
     public function __construct(string $id, string $name, int $speed, Vector3 $position, Item $item, bool $spawn_text = true) {
         $this->id = $id;
         $this->name = ColorUtils::translate($name);
-        $this->initial_speed = $speed = 1 / $speed;
+        $this->initial_speed = $speed;
         $this->setSpeed($speed);
         $this->position = $position;
         $this->item = $item;
@@ -69,12 +69,8 @@ class Generator {
         return $this->tier;
     }
 
-    public function getInitialSpeed(): float {
+    public function getInitialSpeed(): int {
         return $this->initial_speed;
-    }
-
-    public function getSpeed(): float {
-        return $this->speed;
     }
 
     public function getTime(): int {
@@ -96,13 +92,17 @@ class Generator {
         $this->tier = $tier;
 
         if($this->text !== null) {
-            $this->setSpeed($this->speed + 1 / 15);
+            $this->setSpeed($this->speed - 15);
         }
     }
 
-    public function setSpeed(float $speed): void { // drops per second
+    public function setSpeed(int $speed): void {
         $this->speed = $speed;
-        $this->countdown = (int) (20 / $speed);
+        $this->setCountdown(1 / $speed);
+    }
+
+    public function setCountdown(float $countdown): void { // drops per second
+        $this->countdown = (int) (20 / $countdown);
         $this->resetTime();
     }
 
@@ -110,7 +110,7 @@ class Generator {
         $this->time = $this->countdown;
     }
 
-    public function tick(Game $game, int $current_tick = 0): void {
+    public function tick(Game $game): void {
         $world = $game->getWorld();
 
         $this->time--;
@@ -120,11 +120,12 @@ class Generator {
             $entity = $world->dropItem($this->position->add(0, 0.1, 0), clone $this->item, Vector3::zero());
             if($this->text === null) {
                 $entity->setOwner("generator");
+                return;
             }
-        }
 
-        if($this->text !== null and $current_tick > 0 and $current_tick % 20 === 0) {
             $this->text->update($world);
+        } elseif($this->time % 20 === 0) {
+            $this->text?->update($world);
         }
     }
 

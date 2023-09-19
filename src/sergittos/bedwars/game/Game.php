@@ -209,9 +209,9 @@ class Game {
         );
     }
 
-    public function tickGenerators(int $current_tick): void {
+    public function tickGenerators(): void {
         foreach($this->map->getGenerators() as $generator) {
-            $generator->tick($this, $current_tick);
+            $generator->tick($this);
         }
         foreach($this->teams as $team) {
             $team->tickGenerators($this);
