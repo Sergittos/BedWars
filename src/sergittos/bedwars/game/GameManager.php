@@ -55,7 +55,7 @@ class GameManager {
     public function getGamesByMap(Map $map): array {
         $games = [];
         foreach($this->games as $game) {
-            if($game->getMap()->getName() === $map->getName()) {
+            if($game->getMap()->getId() === $map->getId()) {
                 $games[] = $game;
             }
         }
