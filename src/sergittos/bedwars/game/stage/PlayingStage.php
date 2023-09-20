@@ -69,6 +69,8 @@ class PlayingStage extends Stage {
             $this->game->broadcastMessage("{BOLD}{WHITE}TEAM ELIMINATED > {RESET}" . $team->getColoredName() . " Team {RED}has been eliminated!");
         }
 
+        $this->game->despawnGeneratorsFrom($session);
+
         if(count($this->game->getAliveTeams()) === 1) {
             $this->game->setStage(new EndingStage());
         }

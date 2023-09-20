@@ -23,10 +23,10 @@ class UpgradeGeneratorsTierEvent extends Event {
     }
 
     public function end(): void {
-        foreach($this->game->getMap()->getGenerators() as $generator) {
+        foreach($this->game->getGenerators() as $generator) {
             if($generator->getId() === $this->id) {
                 $generator->setTier($this->tier);
-                $generator->getText()?->update($this->game->getWorld());
+                $generator->getText()?->update($generator, $this->game->getWorld());
             }
         }
         $this->game->broadcastMessage(GameUtils::getGeneratorColor(ucfirst($this->id)) . ucfirst($this->id) . " Generators {YELLOW}have been upgraded to Tier {RED}" . $this->tier);

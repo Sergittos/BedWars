@@ -32,6 +32,10 @@ class EndingStage extends Stage {
         $session->resetSettings();
     }
 
+    public function onQuit(Session $session): void {
+        $this->game->despawnGeneratorsFrom($session);
+    }
+
     public function tick(): void {
         $this->time--;
         if($this->time <= 0) {

@@ -11,12 +11,14 @@ use pocketmine\block\utils\DyeColor;
 use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\player\GameMode;
+use pocketmine\utils\Utils;
 use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\generator\Generator;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
+use sergittos\bedwars\utils\GameUtils;
 use function array_search;
 use function count;
 use function in_array;
@@ -209,6 +211,11 @@ class Team {
         $this->bed_destroyed = false;
         $this->upgrades = new Upgrades();
         $this->members = [];
+    }
+
+    public function __clone(): void {
+        $this->upgrades = clone $this->upgrades;
+        $this->generators = Utils::cloneObjectArray($this->generators);
     }
 
 }

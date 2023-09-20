@@ -8,6 +8,7 @@ namespace sergittos\bedwars\game;
 
 use pocketmine\entity\Location;
 use pocketmine\Server;
+use pocketmine\utils\Utils;
 use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
 use pocketmine\world\sound\Sound;
@@ -18,12 +19,14 @@ use sergittos\bedwars\entity\PlayBedwarsEntity;
 use sergittos\bedwars\game\entity\shop\ItemShopVillager;
 use sergittos\bedwars\game\entity\shop\UpgradesShopVillager;
 use sergittos\bedwars\game\entity\shop\Villager;
+use sergittos\bedwars\game\generator\Generator;
 use sergittos\bedwars\game\map\Map;
 use sergittos\bedwars\game\stage\Stage;
 use sergittos\bedwars\game\stage\WaitingStage;
 use sergittos\bedwars\game\task\RemoveGameTask;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\session\Session;
+use sergittos\bedwars\utils\GameUtils;
 use function array_merge;
 use function array_search;
 use function count;
@@ -37,6 +40,9 @@ class Game {
     private Map $map;
     private Stage $stage;
     private ?World $world = null;
+
+    /** @var Generator[] */
+    private array $generators;
 
     /** @var Team[] */
     private array $teams;
@@ -53,7 +59,8 @@ class Game {
     public function __construct(Map $map, int $id) {
         $this->id = $id;
         $this->map = $map;
-        $this->teams = $map->getTeams();
+        $this->teams = Utils::cloneObjectArray($map->getTeams());
+        $this->generators = Utils::cloneObjectArray($map->getGenerators());
 
         $this->setStage(new WaitingStage());
     }
@@ -72,6 +79,13 @@ class Game {
 
     public function getWorld(): ?World {
         return $this->world;
+    }
+
+    /**
+     * @return Generator[]
+     */
+    public function getGenerators(): array {
+        return $this->generators;
     }
 
     /**
@@ -188,8 +202,16 @@ class Game {
     public function removeSpectator(Session $session): void {
         unset($this->spectators[array_search($session, $this->spectators, true)]);
 
+        $this->despawnGeneratorsFrom($session);
+
         $session->setGame(null);
         $session->teleportToHub();
+    }
+
+    public function despawnGeneratorsFrom(Session $session): void {
+        foreach($this->getGenerators() as $generator) {
+            $generator->getText()?->despawnFrom($session);
+        }
     }
 
     private function updatePlayEntities(): void {
@@ -211,7 +233,7 @@ class Game {
     }
 
     public function tickGenerators(): void {
-        foreach($this->map->getGenerators() as $generator) {
+        foreach($this->generators as $generator) {
             $generator->tick($this);
         }
         foreach($this->teams as $team) {

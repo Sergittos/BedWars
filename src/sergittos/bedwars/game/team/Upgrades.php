@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\team;
 
 
+use pocketmine\utils\Utils;
 use sergittos\bedwars\game\team\upgrade\presets\ArmorProtection;
 use sergittos\bedwars\game\team\upgrade\presets\HealPool;
 use sergittos\bedwars\game\team\upgrade\presets\IronForge;
@@ -96,6 +97,10 @@ class Upgrades {
             $trap->trigger($session, $team);
         }
         $this->traps = [];
+    }
+
+    public function __clone(): void {
+        $this->traps = Utils::cloneObjectArray($this->traps);
     }
 
 }

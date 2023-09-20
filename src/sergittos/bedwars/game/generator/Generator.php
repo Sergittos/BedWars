@@ -123,9 +123,15 @@ class Generator {
                 return;
             }
 
-            $this->text->update($world);
+            $this->text->update($this, $world);
         } elseif($this->time % 20 === 0) {
-            $this->text?->update($world);
+            $this->text?->update($this, $world);
+        }
+    }
+
+    public function __clone(): void {
+        if($this->text !== null) {
+            $this->text = clone $this->text;
         }
     }
 
