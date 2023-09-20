@@ -17,16 +17,16 @@ class WaitingScoreboard extends Scoreboard {
 
     protected function getLines(Session $session): array {
         $game = $session->getGame();
-        $arena = $game->getMap();
+        $map = $game->getMap();
         $stage = $game->getStage();
         return [
             10 => " ",
-            9 => "{WHITE}Map: {GREEN}" . $arena->getName(),
-            8 => "{WHITE}Players: {GREEN}" . $game->getPlayersCount() . "/" . $arena->getMaxCapacity(),
+            9 => "{WHITE}Map: {GREEN}" . $map->getName(),
+            8 => "{WHITE}Players: {GREEN}" . $game->getPlayersCount() . "/" . $map->getMaxCapacity(),
             7 => "  ",
             6 => !$stage instanceof StartingStage ? "{WHITE}Waiting..." : "{WHITE}Starting in {GREEN}" . $stage->getTime() . "s",
             5 => "   ",
-            4 => "{WHITE}Mode: {GREEN}" . GameUtils::getMode($arena->getPlayersPerTeam()),
+            4 => "{WHITE}Mode: {GREEN}" . GameUtils::getMode($map->getPlayersPerTeam()),
             3 => "{WHITE}Version: {GRAY}v" . ConfigGetter::getVersion()
         ];
     }
