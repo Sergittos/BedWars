@@ -40,11 +40,11 @@ class Map {
      * @param Generator[] $generators
      * @param Team[] $teams
      */
-    public function __construct(string $name, Vector3 $spectator_spawn_position, int $player_team_capacity, int $max_capacity, World $waiting_world, array $generators, array $teams, array $shop_locations, array $upgrades_locations) {
+    public function __construct(string $name, Vector3 $spectator_spawn_position, int $players_per_team, int $max_capacity, World $waiting_world, array $generators, array $teams, array $shop_locations, array $upgrades_locations) {
         $this->id = uniqid("map-");
         $this->name = $name;
         $this->spectator_spawn_position = $spectator_spawn_position;
-        $this->players_per_team = $player_team_capacity;
+        $this->players_per_team = $players_per_team;
         $this->max_capacity = $max_capacity;
         $this->waiting_world = $waiting_world;
         $this->generators = $generators;
