@@ -32,10 +32,12 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\item\ItemTypeIds;
+use pocketmine\item\MilkBucket;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\EntityEventBroadcaster;
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
@@ -190,9 +192,18 @@ class GameListener implements Listener {
 
         $this->checkEntities($player);
 
+        if($session->getGameSettings()->isUnderMagicMilkEffect()) {
+            return;
+        }
+
         $team = $this->getTeamByPosition($session->getGame(), $player->getPosition());
-        if($team !== null and $session->getTeam()->getName() !== $team->getName()) {
-            $team->getUpgrades()->triggerTraps($session, $team);
+        if($team === null or $team->isBedDestroyed() or $session->getTeam()->getName() === $team->getName()) {
+            return;
+        }
+
+        $upgrades = $team->getUpgrades();
+        if($upgrades->canTriggerTrap()) {
+            $upgrades->triggerPrimaryTrap($session, $team);
         }
     }
 
@@ -269,6 +280,13 @@ class GameListener implements Listener {
         $session = SessionFactory::getSession($event->getPlayer());
         if($session->isPlaying()) {
             $event->cancel();
+        }
+    }
+
+    public function onConsume(PlayerItemConsumeEvent $event): void {
+        $session = SessionFactory::getSession($event->getPlayer());
+        if($session->isPlaying() and $event->getItem() instanceof MilkBucket) {
+            $session->getGameSettings()->setMagicMilk();
         }
     }
 

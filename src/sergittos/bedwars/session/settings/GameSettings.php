@@ -16,6 +16,7 @@ use pocketmine\item\VanillaItems;
 use sergittos\bedwars\item\BedwarsItems;
 use sergittos\bedwars\session\Session;
 use function strtolower;
+use function time;
 
 class GameSettings {
 
@@ -24,6 +25,8 @@ class GameSettings {
     private bool $permanent_shears = false;
 
     private ?string $armor = null;
+
+    private int $magic_milk_time = 0;
 
     private int $pickaxe_tier = 0;
     private int $axe_tier = 0;
@@ -38,6 +41,10 @@ class GameSettings {
 
     public function hasArmor(): bool {
         return $this->armor !== null;
+    }
+
+    public function isUnderMagicMilkEffect(): bool {
+        return time() - $this->magic_milk_time < 30;
     }
 
     public function isPickaxeFullUpgraded(): bool {
@@ -64,6 +71,10 @@ class GameSettings {
         $this->permanent_shears = true;
     }
 
+    public function setMagicMilk(): void {
+        $this->magic_milk_time = time();
+    }
+
     public function incrasePickaxeTier(): void {
         $this->pickaxe_tier++;
     }
@@ -83,7 +94,6 @@ class GameSettings {
             $this->axe_tier--;
         }
     }
-
 
     public function setArmor(?string $armor): void {
         $this->armor = $armor;

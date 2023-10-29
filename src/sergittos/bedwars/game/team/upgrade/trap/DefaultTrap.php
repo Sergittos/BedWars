@@ -14,7 +14,7 @@ use sergittos\bedwars\session\Session;
 class DefaultTrap extends Trap {
 
     public function __construct() {
-        parent::__construct("It's a trap");
+        parent::__construct("It's a trap!");
     }
 
     public function trigger(Session $session, Team $team): void {

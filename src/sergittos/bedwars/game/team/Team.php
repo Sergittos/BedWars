@@ -16,13 +16,14 @@ use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\team\upgrade\trap\AlarmTrap;
+use sergittos\bedwars\game\team\upgrade\trap\DefaultTrap;
+use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
-use sergittos\bedwars\utils\GameUtils;
 use function array_search;
 use function count;
 use function in_array;
-use function var_dump;
 
 class Team {
 
@@ -146,10 +147,15 @@ class Team {
             $this->breakBedBlock($game);
         }
 
-        $game->broadcastSound("mob.enderdragon.growl"); // hardcoded
+        foreach($game->getPlayersAndSpectators() as $session) {
+            if($session->getTeam()->getName() !== $this->name) {
+                $session->playSound("mob.enderdragon.growl");
+            }
+        }
 
         foreach($this->members as $member) {
             $member->title("{RED}BED DESTROYED!", "{WHITE}You will no longer respawn!", 7, 30, 15);
+            $member->playSound("mob.wither.death");
         }
     }
 
@@ -205,6 +211,25 @@ class Team {
         }
 
         $session->setTeam(null);
+    }
+
+    public function notifyTrap(Trap $trap, Team $team): void {
+        $name = $trap->getName() . (!$trap instanceof DefaultTrap ? " Trap" : "");
+        if($trap instanceof AlarmTrap) {
+            $title = "{BOLD}{RED}ALARM!!!";
+            $subtitle = "{WHITE}" . $name . " set off by " . $team->getColoredName() . "{WHITE} team!";
+            $message = "{BOLD}{RED}" . $name . " set off by " . $team->getColoredName() . "{RED} team!";
+        } else {
+            $title = "{RED}TRAP TRIGGERED!";
+            $subtitle = "{WHITE}Your $name has been set off!";
+            $message = "{BOLD}{RED}" . $name . " was set off!";
+        }
+
+        foreach($this->members as $member) {
+            $member->title($title, $subtitle);
+            $member->message($message);
+            // TODO: Play sound
+        }
     }
 
     public function reset(): void {

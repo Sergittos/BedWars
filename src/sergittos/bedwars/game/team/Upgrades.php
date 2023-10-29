@@ -16,7 +16,9 @@ use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
 use sergittos\bedwars\session\Session;
 use function array_key_exists;
+use function array_shift;
 use function count;
+use function time;
 
 class Upgrades {
 
@@ -25,6 +27,8 @@ class Upgrades {
     private IronForge $iron_forge;
     private SharpenedSwords $sharpened_swords;
     private HealPool $heal_pool;
+
+    private int $trap_trigger_time = 0;
 
     /** @var Trap[] */
     private array $traps = [];
@@ -73,6 +77,14 @@ class Upgrades {
         return null;
     }
 
+    public function canTriggerTrap(): bool {
+        if(time() - $this->trap_trigger_time >= 30 and !empty($this->traps)) {
+            $this->trap_trigger_time = time();
+            return true;
+        }
+        return false;
+    }
+
     /**
      * @return Trap[]
      */
@@ -92,11 +104,11 @@ class Upgrades {
         $this->traps[$trap->getName()] = $trap;
     }
 
-    public function triggerTraps(Session $session, Team $team): void {
-        foreach($this->traps as $trap) {
-            $trap->trigger($session, $team);
-        }
-        $this->traps = [];
+    public function triggerPrimaryTrap(Session $session, Team $team): void {
+        $trap = array_shift($this->traps);
+        $trap->trigger($session, $team);
+
+        $team->notifyTrap($trap, $session->getTeam());
     }
 
     public function __clone(): void {
