@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\item\game;
 
 
+use pocketmine\block\utils\DyeColor;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\item\Item;
 use sergittos\bedwars\item\BedwarsItem;
@@ -22,7 +23,7 @@ class LeaveGameItem extends BedwarsItem {
     }
 
     protected function realItem(): Item {
-        return VanillaBlocks::BED()->asItem();
+        return VanillaBlocks::BED()->setColor(DyeColor::RED())->asItem();
     }
 
 }
