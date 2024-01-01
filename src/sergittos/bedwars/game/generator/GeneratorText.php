@@ -24,7 +24,7 @@ class GeneratorText {
     }
 
     public function update(Generator $generator, World $world): void {
-        $this->particles[0]->setText(TextFormat::YELLOW . "Tier " . TextFormat::RED . $generator->getTier());
+        $this->particles[0]->setText(TextFormat::YELLOW . "Tier " . TextFormat::RED . $generator->getTier()->name);
         $this->particles[1]->setText($generator->getName());
         $this->particles[2]->setText(TextFormat::YELLOW . "Spawns in " . TextFormat::RED . ($time = ((int) ($generator->getTime() / 20))) . TextFormat::YELLOW . ($time === 1 ? " second" : " seconds"));
 

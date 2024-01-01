@@ -15,19 +15,21 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\world\World;
+use sergittos\bedwars\command\BedWarsCommand;
 use sergittos\bedwars\entity\PlayBedwarsEntity;
 use sergittos\bedwars\game\entity\misc\Fireball;
-use sergittos\bedwars\game\map\MapFactory;
 use sergittos\bedwars\game\entity\shop\ItemShopVillager;
 use sergittos\bedwars\game\entity\shop\UpgradesShopVillager;
 use sergittos\bedwars\game\GameHeartbeat;
 use sergittos\bedwars\game\GameManager;
+use sergittos\bedwars\game\map\MapFactory;
 use sergittos\bedwars\game\task\RemoveGameTask;
 use sergittos\bedwars\listener\GameListener;
 use sergittos\bedwars\listener\ItemListener;
+use sergittos\bedwars\listener\RemoveThisOnProduction;
 use sergittos\bedwars\listener\SessionListener;
 use sergittos\bedwars\listener\WaitingListener;
-use sergittos\bedwars\provider\JsonProvider;
+use sergittos\bedwars\provider\mysql\json\JsonProvider;
 use sergittos\bedwars\provider\Provider;
 use sergittos\bedwars\session\SessionFactory;
 use function basename;
@@ -58,6 +60,9 @@ class BedWars extends PluginBase {
         $this->registerListener(new ItemListener());
         $this->registerListener(new SessionListener());
         $this->registerListener(new WaitingListener());
+        $this->registerListener(new RemoveThisOnProduction());
+
+        $this->getServer()->getCommandMap()->register("bedwars", new BedWarsCommand());
 
         $this->getScheduler()->scheduleRepeatingTask(new GameHeartbeat(), 1);
     }

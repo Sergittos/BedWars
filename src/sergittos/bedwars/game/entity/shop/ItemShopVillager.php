@@ -20,7 +20,7 @@ class ItemShopVillager extends Villager {
     }
 
     protected function getForm(Session $session): Form {
-        return new ShopForm("Quick buy", ShopFactory::getShop(Shop::ITEM), true);
+        return new ShopForm($session, "Quick buy", ShopFactory::getShop(Shop::ITEM), true);
     }
 
 }

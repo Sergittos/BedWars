@@ -6,18 +6,19 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\map;
 
 
-use pocketmine\item\StringToItemParser;
-use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\Server;
 use pocketmine\utils\ServerException;
 use sergittos\bedwars\BedWars;
-use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\generator\GeneratorType;
+use sergittos\bedwars\game\generator\presets\GoldGenerator;
+use sergittos\bedwars\game\generator\presets\IronGenerator;
 use sergittos\bedwars\game\team\Area;
 use sergittos\bedwars\game\team\Team;
 use function array_filter;
 use function file_get_contents;
 use function json_decode;
+use function strtolower;
 use function strtoupper;
 use function ucfirst;
 
@@ -43,9 +44,9 @@ class MapFactory {
             $spectator_spawn_position = new Vector3($position_data["x"], $position_data["y"], $position_data["z"]);
 
             $generators = [];
-            foreach($map_data["generators"] as $id => $generator_data) {
+            foreach($map_data["generators"] as $type => $generator_data) {
                 foreach($generator_data["positions"] as $positions_data) {
-                    $generators[] = Generator::fromData($id, $id, $generator_data["speed"], StringToItemParser::getInstance()->parse($id), true, $positions_data);
+                    $generators[] = GeneratorType::toGenerator(self::createVector($positions_data), GeneratorType::fromString($type));
                 }
             }
 
@@ -59,8 +60,8 @@ class MapFactory {
                 $bed_data = $data["bed"];
 
                 $team_generators = [];
-                $team_generators[] = Generator::fromData(Generator::IRON, $team_name, 1, VanillaItems::IRON_INGOT(), false, $generator_data);
-                $team_generators[] = Generator::fromData(Generator::GOLD, $team_name, 5, VanillaItems::GOLD_INGOT(), false, $generator_data);
+                $team_generators[] = new IronGenerator(self::createVector($generator_data));
+                $team_generators[] = new GoldGenerator(self::createVector($generator_data));
 
                 $shop_locations[] = self::createVector($data["shop"]);
                 $upgrades_locations[] = self::createVector($data["upgrades"]);
@@ -96,7 +97,29 @@ class MapFactory {
         });
     }
 
-    static public function getMap(string $id): ?Map {
+    /**
+     * @return Map[]
+     */
+    static public function getMapsByName(string $name): array {
+        $maps = [];
+        foreach(self::$maps as $map) {
+            if(strtolower($map->getName()) === strtolower($name)) {
+                $maps[] = $map;
+            }
+        }
+        return $maps;
+    }
+
+    static public function getMapByName(string $name): ?Map {
+        foreach(self::$maps as $map) {
+            if(strtolower($map->getName()) === strtolower($name)) {
+                return $map;
+            }
+        }
+        return null;
+    }
+
+    static public function getMapById(string $id): ?Map {
         return self::$maps[$id] ?? null;
     }
 

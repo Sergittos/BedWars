@@ -7,44 +7,53 @@ namespace sergittos\bedwars\game\event\presets;
 
 
 use sergittos\bedwars\game\event\Event;
-use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\generator\GeneratorType;
+use sergittos\bedwars\game\generator\presets\TextGenerator;
+use sergittos\bedwars\game\generator\Tier;
 use sergittos\bedwars\utils\GameUtils;
-use function ucfirst;
 
 class UpgradeGeneratorsTierEvent extends Event {
 
-    private string $id;
-    private string $tier;
+    private GeneratorType $type;
+    private Tier $tier;
 
-    public function __construct(string $id, string $tier) {
-        $this->id = $id;
+    public function __construct(GeneratorType $type, Tier $tier) {
+        $this->type = $type;
         $this->tier = $tier;
-        parent::__construct(ucfirst($id) . " " . $tier, 6);
+        parent::__construct($type->toString() . " " . $tier->name, 6);
     }
 
     public function end(): void {
         foreach($this->game->getGenerators() as $generator) {
-            if($generator->getId() === $this->id) {
-                $generator->setTier($this->tier);
-                $generator->getText()?->update($generator, $this->game->getWorld());
+            if($generator->getType() !== $this->type) {
+                continue;
+            }
+
+            $generator->setTier($this->tier);
+
+            if($generator instanceof TextGenerator) {
+                $generator->updateText($this->game->getWorld());
             }
         }
-        $this->game->broadcastMessage(GameUtils::getGeneratorColor(ucfirst($this->id)) . ucfirst($this->id) . " Generators {YELLOW}have been upgraded to Tier {RED}" . $this->tier);
+        $this->game->broadcastMessage(GameUtils::getGeneratorColor($name = $this->type->toString()) . $name . " Generators {YELLOW}have been upgraded to Tier {RED}" . $this->tier->name);
     }
 
     public function getNextEvent(): ?Event {
-        $name = match($this->id) {
-            Generator::DIAMOND => Generator::EMERALD,
-            Generator::EMERALD => Generator::DIAMOND
+        $type = match($this->type) {
+            GeneratorType::DIAMOND => GeneratorType::EMERALD,
+            GeneratorType::EMERALD => GeneratorType::DIAMOND
         };
-        if($name === Generator::DIAMOND) {
-            $this->tier .= "I";
-        }
 
-        if($this->tier === "IIII") {
+        if($type === GeneratorType::DIAMOND) {
+            $this->tier = match($this->tier) {
+                Tier::I => Tier::II,
+                Tier::II => Tier::III
+            };
+        } elseif($this->tier === Tier::III) {
             return new BedDestructionEvent();
         }
-        return new UpgradeGeneratorsTierEvent($name, $this->tier);
+
+        return new UpgradeGeneratorsTierEvent($type, $this->tier);
     }
 
 }

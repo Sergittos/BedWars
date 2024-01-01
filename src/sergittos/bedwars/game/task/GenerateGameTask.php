@@ -39,7 +39,7 @@ class GenerateGameTask extends AsyncTask {
     }
 
     public function onCompletion(): void {
-        BedWars::getInstance()->getGameManager()->addGame(new Game(MapFactory::getMap($this->map_id), $this->id));
+        BedWars::getInstance()->getGameManager()->addGame(new Game(MapFactory::getMapById($this->map_id), $this->id));
     }
 
 }

@@ -13,25 +13,7 @@ use sergittos\bedwars\game\team\Team;
 use function uniqid;
 
 class Map {
-
-    private string $id;
-    private string $name;
-
-    private Vector3 $spectator_spawn_position;
-
-    private int $players_per_team;
-    private int $max_capacity; // slots?
-
-    private World $waiting_world;
-
-    /** @var Vector3[] */
-    private array $shop_positions;
-
-    /** @var Vector3[] */
-    private array $upgrades_positions;
-
-    /** @var Generator[] */
-    private array $generators;
+    use MapProperties;
 
     /** @var Team[] */
     private array $teams;
@@ -53,56 +35,11 @@ class Map {
         $this->upgrades_positions = $upgrades_locations;
     }
 
-    public function getId(): string {
-        return $this->id;
-    }
-
-    public function getName(): string {
-        return $this->name;
-    }
-
-    public function getSpectatorSpawnPosition(): Vector3 {
-        return $this->spectator_spawn_position;
-    }
-
-    public function getPlayersPerTeam(): int {
-        return $this->players_per_team;
-    }
-
-    public function getMaxCapacity(): int {
-        return $this->max_capacity;
-    }
-
-    public function getWaitingWorld(): World {
-        return $this->waiting_world;
-    }
-
-    /**
-     * @return Generator[]
-     */
-    public function getGenerators(): array {
-        return $this->generators;
-    }
-
     /**
      * @return Team[]
      */
     public function getTeams(): array {
         return $this->teams;
-    }
-
-    /**
-     * @return Vector3[]
-     */
-    public function getShopPositions(): array {
-        return $this->shop_positions;
-    }
-
-    /**
-     * @return Vector3[]
-     */
-    public function getUpgradesPositions(): array {
-        return $this->upgrades_positions;
     }
 
 }

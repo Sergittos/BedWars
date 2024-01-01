@@ -26,18 +26,11 @@ use function count;
 use function in_array;
 
 class Team {
+    use TeamProperties;
 
-    private string $name;
-    private string $color;
     private int $capacity;
 
     private Upgrades $upgrades;
-
-    private Vector3 $spawn_point;
-    private Vector3 $bed_position;
-
-    private Area $zone;
-    private Area $claim;
 
     private bool $bed_destroyed = false;
 
@@ -62,10 +55,6 @@ class Team {
         $this->upgrades = new Upgrades();
     }
 
-    public function getName(): string {
-        return $this->name;
-    }
-
     public function getColoredName(): string {
         return $this->color . $this->name;
     }
@@ -74,28 +63,8 @@ class Team {
         return $this->name[0];
     }
 
-    public function getColor(): string {
-        return $this->color;
-    }
-
     public function getDyeColor(): DyeColor {
         return ColorUtils::getDye($this->color);
-    }
-
-    public function getSpawnPoint(): Vector3 {
-        return $this->spawn_point;
-    }
-
-    public function getBedPosition(): Vector3 {
-        return $this->bed_position;
-    }
-
-    public function getZone(): Area {
-        return $this->zone;
-    }
-
-    public function getClaim(): Area {
-        return $this->claim;
     }
 
     public function getUpgrades(): Upgrades {

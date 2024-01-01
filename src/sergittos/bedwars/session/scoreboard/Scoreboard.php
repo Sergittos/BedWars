@@ -34,7 +34,7 @@ abstract class Scoreboard {
                 $this->addLine($score, " " . $line, $session);
             }
             $this->addLine(2, "      ", $session);
-            $this->addLine(1, "{YELLOW}" . ConfigGetter::getIP(), $session);
+            $this->addLine(1, " {YELLOW}" . ConfigGetter::getIP(), $session);
         }
     }
 

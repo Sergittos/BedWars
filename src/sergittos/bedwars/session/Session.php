@@ -26,6 +26,7 @@ use sergittos\bedwars\session\scoreboard\LobbyScoreboard;
 use sergittos\bedwars\session\scoreboard\Scoreboard;
 use sergittos\bedwars\session\settings\GameSettings;
 use sergittos\bedwars\session\settings\SpectatorSettings;
+use sergittos\bedwars\session\setup\MapSetup;
 use sergittos\bedwars\utils\ColorUtils;
 use sergittos\bedwars\utils\ConfigGetter;
 use function in_array;
@@ -44,6 +45,8 @@ class Session {
 
     private ?Game $game = null;
     private ?Team $team = null;
+
+    private ?MapSetup $mapSetup = null;
 
     private ?Session $last_session_hit = null;
     private ?Session $tracking_session = null;
@@ -91,6 +94,10 @@ class Session {
 
     public function getTeam(): ?Team {
         return $this->team;
+    }
+
+    public function getMapSetup(): ?MapSetup {
+        return $this->mapSetup;
     }
 
     public function getLastSessionHit(): ?Session {
@@ -141,6 +148,10 @@ class Session {
         $this->team = $team;
     }
 
+    public function setMapSetup(?MapSetup $mapSetup): void {
+        $this->mapSetup = $mapSetup;
+    }
+
     public function setLastSessionHit(?Session $last_session_hit): void {
         $this->last_session_hit = $last_session_hit;
         $this->last_session_hit_time = time();
@@ -159,6 +170,10 @@ class Session {
 
     public function updateScoreboard(): void {
         $this->scoreboard->show($this);
+    }
+
+    public function getCreatingMapSession() {
+
     }
 
     public function attemptToRespawn(): void {
@@ -227,6 +242,10 @@ class Session {
         return $this->team !== null;
     }
 
+    public function isCreatingMap(): bool {
+        return $this->mapSetup !== null;
+    }
+
     public function isRespawning(): bool {
         return $this->respawn_time !== null;
     }
@@ -250,15 +269,15 @@ class Session {
         $this->player->getNetworkSession()->sendDataPacket($packet);
     }
 
-    public function playSound(string $sound): void {
+    public function playSound(string $sound, float $volume = 1.0, float $pitch = 1.0): void {
         $location = $this->player->getLocation();
         $this->sendDataPacket(PlaySoundPacket::create(
             $sound,
             $location->getX(),
             $location->getY(),
             $location->getZ(),
-            1,
-            1
+            $volume,
+            $pitch
         ));
     }
 
@@ -268,6 +287,19 @@ class Session {
         $this->player->getEnderInventory()->clearAll();
         $this->player->getArmorInventory()->clearAll();
         $this->player->getInventory()->clearAll();
+    }
+
+    public function giveCreatingMapItems(): void {
+        $this->clearInventories();
+
+        /* todo
+        $inventory = $this->player->getInventory();
+        $inventory->setItem();
+        $inventory->setItem();
+        $inventory->setItem();
+        $inventory->setItem();
+        $inventory->setItem();
+        */
     }
 
     public function giveWaitingItems(): void {

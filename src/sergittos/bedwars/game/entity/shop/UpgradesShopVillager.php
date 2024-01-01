@@ -19,7 +19,7 @@ class UpgradesShopVillager extends Villager {
     }
 
     protected function getForm(Session $session): Form {
-        return new ShopForm("Upgrades & Traps", ShopFactory::getShop(Shop::UPGRADES), false);
+        return new ShopForm($session, "Upgrades & Traps", ShopFactory::getShop(Shop::UPGRADES), false);
     }
 
 }

@@ -6,8 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\team\upgrade\presets;
 
 
-use pocketmine\item\VanillaItems;
-use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\generator\presets\TeamEmeraldGenerator;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
 use function array_rand;
@@ -26,9 +25,7 @@ class IronForge extends Upgrade {
         $generators = $team->getGenerators();
 
         if($this->level === 3) { // generate emeralds
-            $team->addGenerator(new Generator(
-                Generator::EMERALD, "Emerald", 30, $generators[array_rand($generators)]->getPosition(), VanillaItems::EMERALD(), false
-            ));
+            $team->addGenerator(new TeamEmeraldGenerator($generators[array_rand($generators)]->getPosition()));
             return;
         }
 

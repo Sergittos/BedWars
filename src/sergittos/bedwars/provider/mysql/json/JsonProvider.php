@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 
-namespace sergittos\bedwars\provider;
+namespace sergittos\bedwars\provider\mysql\json;
 
 
 use pocketmine\utils\Config;
 use sergittos\bedwars\BedWars;
+use sergittos\bedwars\provider\Provider;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\settings\SpectatorSettings;
 use function is_dir;

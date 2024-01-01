@@ -12,8 +12,8 @@ use pocketmine\utils\Limits;
 use pocketmine\utils\TextFormat;
 use sergittos\bedwars\game\event\Event;
 use sergittos\bedwars\game\event\presets\UpgradeGeneratorsTierEvent;
-use sergittos\bedwars\game\generator\Generator;
-use sergittos\bedwars\game\generator\TierIds;
+use sergittos\bedwars\game\generator\GeneratorType;
+use sergittos\bedwars\game\generator\Tier;
 use sergittos\bedwars\session\scoreboard\GameScoreboard;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
@@ -51,7 +51,7 @@ class PlayingStage extends Stage {
             }
         }
 
-        $this->startNextEvent(new UpgradeGeneratorsTierEvent(Generator::DIAMOND, TierIds::II));
+        $this->startNextEvent(new UpgradeGeneratorsTierEvent(GeneratorType::DIAMOND, Tier::II));
     }
 
     public function onJoin(Session $session): void {

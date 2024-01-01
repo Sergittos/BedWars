@@ -20,13 +20,13 @@ use sergittos\bedwars\game\entity\shop\ItemShopVillager;
 use sergittos\bedwars\game\entity\shop\UpgradesShopVillager;
 use sergittos\bedwars\game\entity\shop\Villager;
 use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\generator\presets\TextGenerator;
 use sergittos\bedwars\game\map\Map;
 use sergittos\bedwars\game\stage\Stage;
 use sergittos\bedwars\game\stage\WaitingStage;
 use sergittos\bedwars\game\task\RemoveGameTask;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\session\Session;
-use sergittos\bedwars\utils\GameUtils;
 use function array_merge;
 use function array_search;
 use function count;
@@ -210,7 +210,9 @@ class Game {
 
     public function despawnGeneratorsFrom(Session $session): void {
         foreach($this->getGenerators() as $generator) {
-            $generator->getText()?->despawnFrom($session);
+            if($generator instanceof TextGenerator) {
+                $generator->getText()->despawnFrom($session);
+            }
         }
     }
 

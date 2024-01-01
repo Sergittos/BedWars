@@ -164,13 +164,11 @@ class GameListener implements Listener {
             return;
         }
 
-        /*
         if($session->getTeam()->getClaim()->isInside($event->getBlockAgainst()->getPosition())) {
             $session->message("{RED}You can't place blocks here!");
             $event->cancel();
             return;
         }
-        */
 
         foreach($event->getTransaction()->getBlocks() as [$x, $y, $z, $block]) {
             if($block instanceof TNT) {

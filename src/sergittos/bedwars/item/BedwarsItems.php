@@ -6,10 +6,15 @@ declare(strict_types=1);
 namespace sergittos\bedwars\item;
 
 
-use pocketmine\item\Item;
 use pocketmine\utils\CloningRegistryTrait;
+use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\item\game\LeaveGameItem;
-use sergittos\bedwars\item\game\TrackerShop;
+use sergittos\bedwars\item\game\TrackerShopItem;
+use sergittos\bedwars\item\setup\AddGeneratorItem;
+use sergittos\bedwars\item\setup\CancelItem;
+use sergittos\bedwars\item\setup\ClaimingWandItem;
+use sergittos\bedwars\item\setup\SetBedPositionItem;
+use sergittos\bedwars\item\setup\SetTeamGeneratorItem;
 use sergittos\bedwars\item\spectator\PlayAgainItem;
 use sergittos\bedwars\item\spectator\ReturnToLobbyItem;
 use sergittos\bedwars\item\spectator\SpectatorSettingsItem;
@@ -21,7 +26,13 @@ use sergittos\bedwars\item\spectator\TeleporterItem;
  * @method static ReturnToLobbyItem RETURN_TO_LOBBY()
  * @method static SpectatorSettingsItem SPECTATOR_SETTINGS()
  * @method static TeleporterItem TELEPORTER()
- * @method static TrackerShop TRACKER_SHOP()
+ * @method static TrackerShopItem TRACKER_SHOP()
+ * @method static AddGeneratorItem DIAMOND_GENERATOR()
+ * @method static AddGeneratorItem EMERALD_GENERATOR()
+ * @method static SetTeamGeneratorItem TEAM_GENERATOR()
+ * @method static SetBedPositionItem BED_POSITION()
+ * @method static ClaimingWandItem CLAIMING_WAND()
+ * @method static CancelItem CANCEL()
  */
 class BedwarsItems {
     use CloningRegistryTrait;
@@ -32,7 +43,14 @@ class BedwarsItems {
         self::register("return_to_lobby", new ReturnToLobbyItem());
         self::register("spectator_settings", new SpectatorSettingsItem());
         self::register("teleporter", new TeleporterItem());
-        self::register("tracker_shop", new TrackerShop());
+        self::register("tracker_shop", new TrackerShopItem());
+
+        self::register("diamond_generator", new AddGeneratorItem(GeneratorType::DIAMOND));
+        self::register("emerald_generator", new AddGeneratorItem(GeneratorType::EMERALD));
+        self::register("team_generator", new SetTeamGeneratorItem());
+        self::register("bed_position", new SetBedPositionItem());
+        self::register("claiming_wand", new ClaimingWandItem());
+        self::register("cancel", new CancelItem());
     }
 
     /**
@@ -43,7 +61,7 @@ class BedwarsItems {
     }
 
     /**
-     * @return Item
+     * @return BedwarsItem
      */
     static public function get(string $name): object {
         return self::_registryFromString($name);
