@@ -26,7 +26,6 @@ use sergittos\bedwars\game\map\MapFactory;
 use sergittos\bedwars\game\task\RemoveGameTask;
 use sergittos\bedwars\listener\GameListener;
 use sergittos\bedwars\listener\ItemListener;
-use sergittos\bedwars\listener\RemoveThisOnProduction;
 use sergittos\bedwars\listener\SessionListener;
 use sergittos\bedwars\listener\WaitingListener;
 use sergittos\bedwars\provider\mysql\json\JsonProvider;
@@ -60,7 +59,6 @@ class BedWars extends PluginBase {
         $this->registerListener(new ItemListener());
         $this->registerListener(new SessionListener());
         $this->registerListener(new WaitingListener());
-        $this->registerListener(new RemoveThisOnProduction());
 
         $this->getServer()->getCommandMap()->register("bedwars", new BedWarsCommand());
 
