@@ -10,6 +10,7 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\world\World;
 use sergittos\bedwars\game\Game;
+use sergittos\bedwars\utils\ColorUtils;
 use sergittos\bedwars\utils\GameUtils;
 
 abstract class Generator {
@@ -24,12 +25,12 @@ abstract class Generator {
     public function __construct(Vector3 $position) {
         $this->position = $position;
         $this->tier = Tier::I;
-        $this->speed = $this->getInitialSpeed();
+        $this->setSpeed($this->getInitialSpeed());
     }
 
     public function getName(): string {
         $name = $this->getType()->toString();
-        return GameUtils::getGeneratorColor($name) . $name;
+        return ColorUtils::translate(GameUtils::getGeneratorColor($name) . $name);
     }
 
     public function getPosition(): Vector3 {
