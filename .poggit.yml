@@ -5,6 +5,7 @@ branches:
 projects:
   BedWars:
     path: ""
+    icon: icon.png
     libs:
       - src: dresnite/easyui/libEasyUI
         version: 1.0.3
