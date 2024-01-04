@@ -44,4 +44,8 @@ class TrackerProduct extends Product {
         return true;
     }
 
+    public function canBePurchased(Session $session): bool {
+        return true;
+    }
+
 }
