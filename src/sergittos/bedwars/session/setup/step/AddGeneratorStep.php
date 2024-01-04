@@ -27,10 +27,10 @@ class AddGeneratorStep extends Step {
         };
 
         $this->session->clearInventories();
-        $this->session->message("{GREEN}Break the block below the generator with the item you have received in your inventory to set the generator.");
+        $this->session->message("{YELLOW}Break the block below the generator with the item you have received in your inventory to set the generator.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(1, $block->asItem());
+        $inventory->setItem(0, $block->asItem());
         $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
     }
 

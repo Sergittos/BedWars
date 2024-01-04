@@ -34,7 +34,7 @@ class ItemProduct extends Product {
         return clone $this->item;
     }
 
-    public function canBePurchased(): bool {
+    public function canBePurchased(Session $session): bool {
         return $this->can_be_purchased;
     }
 

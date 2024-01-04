@@ -7,6 +7,7 @@ namespace sergittos\bedwars\session\setup\step;
 
 
 use pocketmine\block\Block;
+use pocketmine\event\Cancellable;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use sergittos\bedwars\item\BedwarsItem;
@@ -25,9 +26,7 @@ abstract class Step {
 
     public function onBlockBreak(Block $block, BedwarsItem $item): void {}
 
-    public function onBlockPlace(Block $block, BedwarsItem $item): void {}
-
-    public function onBlockInteract(Vector3 $touch_vector, int $action, BedwarsItem $item): void {}
+    public function onBlockInteract(Vector3 $touch_vector, int $action, Cancellable $event, BedwarsItem $item): void {}
 
     public function onInteract(BedwarsItem $item): void {}
 

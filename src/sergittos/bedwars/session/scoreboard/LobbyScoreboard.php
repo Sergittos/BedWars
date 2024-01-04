@@ -12,12 +12,6 @@ class LobbyScoreboard extends Scoreboard {
 
     protected function getLines(Session $session): array {
         return [
-            13 => " ",
-            12 => "{WHITE}Your level: {GOLD}0",
-            11 => "  ",
-            10 => "{WHITE}Progress: {AQUA}0k{GRAY}/{GREEN}0k",
-            9 => "   ",
-            8 => "{WHITE}Loot chests: {GOLD}0",
             7 => "    ",
             6 => "{WHITE}Coins: {GREEN}" . $session->getCoins(),
             5 => "     ",

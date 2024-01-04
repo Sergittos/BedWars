@@ -7,9 +7,12 @@ namespace sergittos\bedwars\game\stage;
 
 
 use pocketmine\world\sound\ClickSound;
+use sergittos\bedwars\session\scoreboard\WaitingScoreboard;
 use sergittos\bedwars\session\Session;
+use sergittos\bedwars\utils\ConfigGetter;
 use sergittos\bedwars\utils\GameUtils;
 use function str_replace;
+use function strtoupper;
 
 class StartingStage extends Stage {
 
@@ -17,6 +20,20 @@ class StartingStage extends Stage {
 
     public function getTime(): int {
         return $this->time;
+    }
+
+    public function onJoin(Session $session): void {
+        $session->showBossBar("{YELLOW}Playing {WHITE}BED WARS {YELLOW}on {GREEN}" . strtoupper(ConfigGetter::getIP()));
+        $session->getPlayer()->getEffects()->clear();
+        $session->giveWaitingItems();
+        $session->setGame($this->game);
+        $session->setScoreboard(new WaitingScoreboard());
+        $session->teleportToWaitingWorld();
+
+        $this->game->broadcastMessage(
+            "{GRAY}" . $session->getUsername() . " {YELLOW}has joined ({AQUA}" .
+            $this->game->getPlayersCount() . "{YELLOW}/{AQUA}" . $this->game->getMap()->getMaxCapacity() . "{YELLOW})!"
+        );
     }
 
     public function onQuit(Session $session): void {

@@ -63,6 +63,8 @@ abstract class Product {
         return ColorUtils::translate("{GRAY}Cost: " . $color . $this->price . " " . ucfirst($name));
     }
 
+    abstract public function canBePurchased(Session $session): bool;
+
     abstract public function onPurchase(Session $session): bool;
 
 }

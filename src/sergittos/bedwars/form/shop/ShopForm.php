@@ -16,12 +16,9 @@ class ShopForm extends SimpleForm {
     private Session $session;
     private Shop $shop;
 
-    private bool $resend_form;
-
-    public function __construct(Session $session, string $name, Shop $shop, bool $resend_form) {
+    public function __construct(Session $session, string $name, Shop $shop) {
         $this->session = $session;
         $this->shop = $shop;
-        $this->resend_form = $resend_form;
         parent::__construct($name);
     }
 
@@ -29,7 +26,7 @@ class ShopForm extends SimpleForm {
         foreach($this->shop->getCategories() as $category) {
             $this->addRedirectFormButton(
                 ColorUtils::translate("{GOLD}{BOLD}" . $category->getName() . "{RESET}\n{YELLOW}Click to view!"),
-                new CategoryForm($this->session, $category, $this->resend_form)
+                new CategoryForm($this->session, $category)
             );
         }
     }

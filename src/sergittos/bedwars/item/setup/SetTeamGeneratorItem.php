@@ -13,13 +13,13 @@ use sergittos\bedwars\session\Session;
 class SetTeamGeneratorItem extends SetupItem {
 
     public function __construct() {
-        parent::__construct("Set team generator");
+        parent::__construct("Team generator");
     }
 
     public function onInteract(Session $session): void {}
 
     protected function realItem(): Item {
-        return VanillaBlocks::IRON_ORE()->asItem();
+        return VanillaBlocks::IRON()->asItem();
     }
 
 }

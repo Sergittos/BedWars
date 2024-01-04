@@ -9,6 +9,7 @@ namespace sergittos\bedwars\form\setup;
 use EasyUI\element\Dropdown;
 use EasyUI\element\Input;
 use EasyUI\element\Option;
+use EasyUI\element\Slider;
 use EasyUI\utils\FormResponse;
 use pocketmine\player\GameMode;
 use pocketmine\player\Player;
@@ -19,6 +20,7 @@ use sergittos\bedwars\game\map\MapFactory;
 use sergittos\bedwars\session\SessionFactory;
 use sergittos\bedwars\session\setup\builder\MapBuilder;
 use sergittos\bedwars\session\setup\MapSetup;
+use Symfony\Component\Filesystem\Path;
 
 class CreateMapForm extends CustomForm {
 
@@ -28,7 +30,7 @@ class CreateMapForm extends CustomForm {
 
     protected function onCreation(): void {
         $this->addElement("name", new Input("Set a name:"));
-        $this->addElement("max_capacity", new Input("Set the slots:"));
+        $this->addElement("teams", new Slider("Set the teams", 2, 8, 8, 1));
         $this->addWorldsDropdown("waiting_world", "Set the waiting world:");
         $this->addWorldsDropdown("playing_world", "Set the playing world:");
         $this->addSelectModeDropdown();
@@ -38,10 +40,13 @@ class CreateMapForm extends CustomForm {
         $name = $response->getInputSubmittedText("name");
         $waiting_world = $response->getDropdownSubmittedOptionId("waiting_world");
         $playing_world = $response->getDropdownSubmittedOptionId("playing_world");
-        $max_capacity = $response->getInputSubmittedText("max_capacity");
+        $teams = $response->getSliderSubmittedStep("teams");
         $players_per_team = (int) $response->getDropdownSubmittedOptionId("players_per_team");
 
-        if(MapFactory::getMapByName($name) !== null) {
+        if($name === "") {
+            $player->sendMessage(TextFormat::RED . "You must set a name!");
+            return;
+        } elseif(MapFactory::getMapByName($name) !== null) {
             $player->sendMessage(TextFormat::RED . "A map with that name already exists!");
             return;
         } elseif($this->checkIfDefaultWorld($waiting_world) or $this->checkIfDefaultWorld($playing_world)) {
@@ -50,14 +55,14 @@ class CreateMapForm extends CustomForm {
         } elseif($waiting_world === $playing_world) {
             $player->sendMessage(TextFormat::RED . "Your waiting world cannot be the same as the playing world!");
             return;
-        } elseif($this->checkSlots($player, $players_per_team, $max_capacity)) {
-            return;
         }
 
         $world_manager = Server::getInstance()->getWorldManager();
         if(!$world_manager->loadWorld($playing_world)) {
-            // this shouldn't happen, world should be already loaded
             $player->sendMessage(TextFormat::RED . "Couldn't teleport to playing world ($playing_world) because the world has been unloaded.");
+            return;
+        } elseif(!$world_manager->loadWorld($waiting_world)) {
+            $player->sendMessage(TextFormat::RED . "Couldn't load waiting world ($waiting_world)");
             return;
         }
 
@@ -66,20 +71,24 @@ class CreateMapForm extends CustomForm {
 
         $session = SessionFactory::getSession($player);
         $session->setMapSetup(new MapSetup($session, new MapBuilder(
-            $name, $world_manager->getWorldByName($waiting_world), $playing_world, $players_per_team, (int) $max_capacity
+            $name, $world_manager->getWorldByName($waiting_world), $playing_world, $players_per_team, (int) ($teams * $players_per_team)
         )));
     }
 
     private function addWorldsDropdown(string $id, string $name): void {
         $dropdown = new Dropdown($name);
-        foreach(Server::getInstance()->getWorldManager()->getWorlds() as $world) {
-            $dropdown->addOption(new Option($name = $world->getFolderName(), $name));
+        foreach(glob($this->getWorldsPath(), GLOB_ONLYDIR) as $world) {
+            $dropdown->addOption(new Option($name = basename($world), $name));
         }
         $this->addElement($id, $dropdown);
     }
 
     private function checkIfDefaultWorld(string $world): bool {
         return Server::getInstance()->getWorldManager()->getDefaultWorld()->getFolderName() === $world;
+    }
+
+    private function getWorldsPath(): string {
+        return Path::join(Server::getInstance()->getDataPath(), "worlds", "*");
     }
 
 }

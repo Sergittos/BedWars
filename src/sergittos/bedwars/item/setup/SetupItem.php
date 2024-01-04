@@ -12,7 +12,7 @@ use sergittos\bedwars\item\BedwarsItem;
 abstract class SetupItem extends BedwarsItem {
 
     public function asItem(): Item {
-        $item = parent::realItem();
+        $item = parent::asItem();
         $item->getNamedTag()->setByte("setup", 1);
         return $item;
     }

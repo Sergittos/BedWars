@@ -30,7 +30,6 @@ class RemoveGeneratorsForm extends SimpleForm {
                 new RemoveGeneratorForm($generator)
             );
         }
-        $this->addGoBackButton(new SetupGeneratorsForm($this->session));
     }
 
     private function isNearestGenerator(Generator $target): bool {

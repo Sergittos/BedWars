@@ -16,11 +16,12 @@ class SetBedPositionItem extends SetupItem {
     private ?DyeColor $color = null;
 
     public function __construct() {
-        parent::__construct("Set bed position");
+        parent::__construct("Bed position");
     }
 
-    public function setColor(DyeColor $color): void {
+    public function setColor(DyeColor $color): self {
         $this->color = $color;
+        return $this;
     }
 
     public function onInteract(Session $session): void {}

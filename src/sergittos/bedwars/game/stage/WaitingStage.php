@@ -31,7 +31,10 @@ class WaitingStage extends Stage {
             $this->game->getPlayersCount() . "{YELLOW}/{AQUA}" . $this->game->getMap()->getMaxCapacity() . "{YELLOW})!"
         );
 
-        if($this->game->getPlayersCount() >= ($this->game->getMap()->getMaxCapacity() / 2)) {
+        $map = $this->game->getMap();
+        $count = $this->game->getPlayersCount();
+
+        if($count > $map->getPlayersPerTeam() and $count >= ($map->getMaxCapacity() / 2)) {
             $this->game->setStage(new StartingStage());
         }
     }

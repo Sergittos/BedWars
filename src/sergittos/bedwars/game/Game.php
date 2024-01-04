@@ -296,7 +296,9 @@ class Game {
     public function unloadWorld(): void {
         if($this->world !== null) {
             Server::getInstance()->getWorldManager()->unloadWorld($this->world);
+
             $this->world = null;
+            $this->blocks = [];
         }
     }
 

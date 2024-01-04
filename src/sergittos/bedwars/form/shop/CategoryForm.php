@@ -7,11 +7,10 @@ namespace sergittos\bedwars\form\shop;
 
 
 use EasyUI\element\Button;
-use EasyUI\variant\SimpleForm;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use sergittos\bedwars\form\SimpleForm;
 use sergittos\bedwars\game\shop\Category;
-use sergittos\bedwars\game\shop\item\ItemProduct;
 use sergittos\bedwars\game\shop\Product;
 use sergittos\bedwars\game\shop\upgrades\category\TrapsCategory;
 use sergittos\bedwars\session\Session;
@@ -23,12 +22,9 @@ class CategoryForm extends SimpleForm {
     private Session $session;
     private Category $category;
 
-    private bool $resend_form;
-
-    public function __construct(Session $session, Category $category, bool $resend_form) {
+    public function __construct(Session $session, Category $category) {
         $this->session = $session;
         $this->category = $category;
-        $this->resend_form = $resend_form;
         parent::__construct($category->getName(), $this->getTrapsHeaderText());
     }
 
@@ -49,17 +45,14 @@ class CategoryForm extends SimpleForm {
         if($this->canPurchaseProduct($product) and $product->onPurchase($this->session)) {
             $player = $this->session->getPlayer();
             $player->getInventory()->removeItem($product->getOre());
+            $player->sendForm(new CategoryForm($this->session, $this->category, true));
 
             $this->session->message("{GREEN}You purchased {GOLD}" . $product->getName());
-
-            if($this->resend_form) {
-                $player->sendForm(new CategoryForm($this->session, $this->category, true));
-            }
         }
     }
 
     private function canPurchaseProduct(Product $product): bool {
-        if($product instanceof ItemProduct and !$product->canBePurchased()) {
+        if(!$product->canBePurchased($this->session)) {
             $this->session->message("{RED}You already have this product!");
             return false;
         }

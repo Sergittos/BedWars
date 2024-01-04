@@ -24,15 +24,4 @@ class CustomForm extends EasyUICustomForm {
         $this->addElement("players_per_team", $dropdown);
     }
 
-    protected function checkSlots(Player $player, int $players_per_team, $max_capacity): bool {
-        if((!is_numeric($max_capacity) and $max_capacity <= 1) or $players_per_team !== 1 and $max_capacity % 2 !== 0) {
-            $player->sendMessage(TextFormat::RED . "You must set a valid number of slots!");
-            return false;
-        } elseif($max_capacity / $players_per_team > 8) {
-            $player->sendMessage(TextFormat::RED . "Your map cannot have more than 8 teams!");
-            return false;
-        }
-        return true;
-    }
-
 }

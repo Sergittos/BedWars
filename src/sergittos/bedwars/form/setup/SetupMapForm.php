@@ -8,9 +8,9 @@ namespace sergittos\bedwars\form\setup;
 
 use EasyUI\element\Button;
 use pocketmine\player\Player;
-use sergittos\bedwars\form\setup\team\SetupTeamsForm;
 use sergittos\bedwars\form\SimpleForm;
 use sergittos\bedwars\session\Session;
+use sergittos\bedwars\session\setup\step\SetShopAndUpgradesStep;
 
 class SetupMapForm extends SimpleForm {
 
@@ -23,6 +23,7 @@ class SetupMapForm extends SimpleForm {
 
     protected function onCreation(): void {
         $this->addSetSpectatorSpawnButton();
+        $this->addShopAndUpgradesButton();
         $this->addRedirectFormButton("Setup generators", new SetupGeneratorsForm($this->session));
         $this->addRedirectFormButton("Setup teams", new SetupTeamsForm($this->session));
     }
@@ -35,6 +36,14 @@ class SetupMapForm extends SimpleForm {
                 $this->session->getMapSetup()->getMapBuilder()->setSpectatorSpawnPosition($position);
                 $this->session->message("{GREEN}Spectator spawn point set on: " . $this->vectorToString($position));
             }
+        });
+        $this->addButton($button);
+    }
+
+    private function addShopAndUpgradesButton(): void {
+        $button = new Button("Set Shop & Upgrades");
+        $button->setSubmitListener(function(Player $player) {
+            $this->session->getMapSetup()->setStep(new SetShopAndUpgradesStep());
         });
         $this->addButton($button);
     }

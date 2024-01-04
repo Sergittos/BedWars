@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\team;
 
 
+use JsonSerializable;
 use pocketmine\block\Air;
-use pocketmine\block\utils\DyeColor;
 use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\player\GameMode;
@@ -24,8 +24,9 @@ use sergittos\bedwars\utils\ColorUtils;
 use function array_search;
 use function count;
 use function in_array;
+use function strtoupper;
 
-class Team {
+class Team implements JsonSerializable {
     use TeamProperties;
 
     private int $capacity;
@@ -43,9 +44,9 @@ class Team {
     /**
      * @param Generator[] $generators
      */
-    public function __construct(string $name, string $color, int $capacity, Vector3 $spawn_point, Vector3 $bed_position, Area $zone, Area $claim, array $generators) {
+    public function __construct(string $name, int $capacity, Vector3 $spawn_point, Vector3 $bed_position, Area $zone, Area $claim, array $generators) {
         $this->name = $name;
-        $this->color = ColorUtils::translate($color);
+        $this->color = ColorUtils::translate("{" . strtoupper($name) . "}");
         $this->capacity = $capacity;
         $this->spawn_point = $spawn_point;
         $this->bed_position = $bed_position;
@@ -61,10 +62,6 @@ class Team {
 
     public function getFirstLetter(): string {
         return $this->name[0];
-    }
-
-    public function getDyeColor(): DyeColor {
-        return ColorUtils::getDye($this->color);
     }
 
     public function getUpgrades(): Upgrades {
@@ -109,22 +106,24 @@ class Team {
         return in_array($session, $this->members, true);
     }
 
-    public function destroyBed(Game $game, bool $break_block = true): void {
+    public function destroyBed(Game $game, bool $break_block = true, bool $silent = false): void {
         $this->bed_destroyed = true;
 
         if($break_block) {
             $this->breakBedBlock($game);
         }
 
-        foreach($game->getPlayersAndSpectators() as $session) {
-            if($session->getTeam()->getName() !== $this->name) {
-                $session->playSound("mob.enderdragon.growl");
+        if(!$silent) {
+            foreach($game->getPlayersAndSpectators() as $session) {
+                if(!$session->hasTeam() or $session->getTeam()->getName() !== $this->name) {
+                    $session->playSound("mob.enderdragon.growl");
+                }
             }
-        }
 
-        foreach($this->members as $member) {
-            $member->title("{RED}BED DESTROYED!", "{WHITE}You will no longer respawn!", 7, 30, 15);
-            $member->playSound("mob.wither.death");
+            foreach($this->members as $member) {
+                $member->title("{RED}BED DESTROYED!", "{WHITE}You will no longer respawn!", 7, 30, 15);
+                $member->playSound("mob.wither.death");
+            }
         }
     }
 
@@ -183,7 +182,7 @@ class Team {
     }
 
     public function notifyTrap(Trap $trap, Team $team): void {
-        $name = $trap->getName() . (!$trap instanceof DefaultTrap ? " Trap" : "");
+        $name = $trap->getName();
         if($trap instanceof AlarmTrap) {
             $title = "{BOLD}{RED}ALARM!!!";
             $subtitle = "{WHITE}" . $name . " set off by " . $team->getColoredName() . "{WHITE} team!";
@@ -204,7 +203,36 @@ class Team {
     public function reset(): void {
         $this->bed_destroyed = false;
         $this->upgrades = new Upgrades();
+
+        foreach($this->members as $member) {
+            $member->setTeam(null);
+        }
         $this->members = [];
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            "name" => $this->name,
+            "spawn_point" => [
+                "x" => $this->spawn_point->getX(),
+                "y" => $this->spawn_point->getY(),
+                "z" => $this->spawn_point->getZ()
+            ],
+            "bed" => [
+                "x" => $this->bed_position->getX(),
+                "y" => $this->bed_position->getY(),
+                "z" => $this->bed_position->getZ()
+            ],
+            "generator" => [
+                "x" => $this->generators[0]->getPosition()->getX(),
+                "y" => $this->generators[0]->getPosition()->getY(),
+                "z" => $this->generators[0]->getPosition()->getZ()
+            ],
+            "areas" => [
+                "zone" => $this->zone->jsonSerialize(),
+                "claim" => $this->claim->jsonSerialize()
+            ]
+        ];
     }
 
     public function __clone(): void {

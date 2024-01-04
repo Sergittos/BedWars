@@ -20,6 +20,7 @@ use sergittos\bedwars\utils\ColorUtils;
 use function count;
 use function round;
 use function shuffle;
+use function var_dump;
 
 class PlayingStage extends Stage {
 
@@ -42,12 +43,14 @@ class PlayingStage extends Stage {
             foreach($this->game->getPlayers() as $session) {
                 if(!$team->isFull() and !$session->hasTeam()) {
                     $team->addMember($session);
-                    continue;
+
+                    if($team->isFull()) {
+                        continue 2;
+                    }
                 }
-                break;
             }
             if(!$team->isAlive()) {
-                $team->destroyBed($this->game);
+                $team->destroyBed($this->game, true, true);
             }
         }
 

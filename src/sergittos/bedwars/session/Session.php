@@ -128,7 +128,7 @@ class Session {
 
     public function resetSettings(): void {
         $this->game_settings = new GameSettings($this);
-        $this->respawn_time = 0;
+        $this->respawn_time = null;
     }
 
     public function setSpectatorSettings(SpectatorSettings $spectator_settings): void {
@@ -170,10 +170,6 @@ class Session {
 
     public function updateScoreboard(): void {
         $this->scoreboard->show($this);
-    }
-
-    public function getCreatingMapSession() {
-
     }
 
     public function attemptToRespawn(): void {
@@ -292,14 +288,10 @@ class Session {
     public function giveCreatingMapItems(): void {
         $this->clearInventories();
 
-        /* todo
         $inventory = $this->player->getInventory();
-        $inventory->setItem();
-        $inventory->setItem();
-        $inventory->setItem();
-        $inventory->setItem();
-        $inventory->setItem();
-        */
+        $inventory->setItem(0, BedwarsItems::CONFIGURATION()->asItem());
+        $inventory->setItem(4, BedwarsItems::CREATE_MAP()->asItem());
+        $inventory->setItem(8, BedwarsItems::EXIT_SETUP()->asItem());
     }
 
     public function giveWaitingItems(): void {

@@ -28,9 +28,7 @@ class GameManager {
     public function __construct() {
         ShopFactory::init();
         foreach(MapFactory::getMaps() as $map) { // Generate 3 games per map by default
-            $this->generateGame($map);
-            $this->generateGame($map);
-            $this->generateGame($map);
+            $this->generateGames($map);
         }
     }
 
@@ -73,9 +71,12 @@ class GameManager {
 
     public function findRandomGame(int $players_per_team): ?Game {
         $maps = MapFactory::getMapsByPlayers($players_per_team);
-        $map = $maps[array_rand($maps)];
+        if($maps !== []) {
+            $map = $maps[array_rand($maps)];
 
-        return $this->findGame($map);
+            return $this->findGame($map);
+        }
+        return null;
     }
 
     public function findGame(Map $map): ?Game {
@@ -88,7 +89,7 @@ class GameManager {
         }
 
         if(empty($games)) {
-            $this->generateGame($map);
+            $this->generateGames($map);
             return null;
         }
 
@@ -104,10 +105,12 @@ class GameManager {
         return $found;
     }
 
-    private function generateGame(Map $map): void {
-        Server::getInstance()->getAsyncPool()->submitTask(new GenerateGameTask(
-            $this->getNextGameId(), $map
-        ));
+    public function generateGames(Map $map): void {
+        for($i = 0; $i < 3; ++$i) {
+            Server::getInstance()->getAsyncPool()->submitTask(new GenerateGameTask(
+                $this->getNextGameId(), $map
+            ));
+        }
     }
 
     public function addGame(Game $game): void {

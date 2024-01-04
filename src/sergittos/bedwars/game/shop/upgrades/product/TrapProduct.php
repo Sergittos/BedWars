@@ -14,13 +14,13 @@ use sergittos\bedwars\utils\GameUtils;
 
 class TrapProduct extends UpgradesProduct {
 
-    protected function canPurchase(Team $team): bool {
-        $upgrades = $team->getUpgrades();
-        if(!$upgrades->hasTrap($this->name) and $upgrades->getTrapsCount() < 3) {
-            $upgrades->addTrap(GameUtils::getTrapByName($this->name));
-            return true;
-        }
-        return false;
+    public function canBePurchased(Session $session): bool {
+        $upgrades = $session->getTeam()->getUpgrades();
+        return !$upgrades->hasTrap($this->name) and $upgrades->getTrapsCount() < 3;
+    }
+
+    protected function purchase(Team $team): void {
+        $team->getUpgrades()->addTrap(GameUtils::getTrapByName($this->name));
     }
 
     public function getDescription(Session $session): string {

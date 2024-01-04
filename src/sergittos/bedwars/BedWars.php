@@ -27,8 +27,9 @@ use sergittos\bedwars\game\task\RemoveGameTask;
 use sergittos\bedwars\listener\GameListener;
 use sergittos\bedwars\listener\ItemListener;
 use sergittos\bedwars\listener\SessionListener;
+use sergittos\bedwars\listener\SetupListener;
 use sergittos\bedwars\listener\WaitingListener;
-use sergittos\bedwars\provider\mysql\json\JsonProvider;
+use sergittos\bedwars\provider\json\JsonProvider;
 use sergittos\bedwars\provider\Provider;
 use sergittos\bedwars\session\SessionFactory;
 use function basename;
@@ -41,7 +42,13 @@ class BedWars extends PluginBase {
 
     protected function onLoad(): void {
         self::setInstance($this);
-        $this->saveResource("maps.json", true);
+
+        $worlds_dir = $this->getDataFolder() . "worlds/";
+        if(!is_dir($worlds_dir)) {
+            mkdir($worlds_dir);
+        }
+
+        $this->saveResource("maps.json");
     }
 
     protected function onEnable(): void {
@@ -58,6 +65,7 @@ class BedWars extends PluginBase {
         $this->registerListener(new GameListener());
         $this->registerListener(new ItemListener());
         $this->registerListener(new SessionListener());
+        $this->registerListener(new SetupListener());
         $this->registerListener(new WaitingListener());
 
         $this->getServer()->getCommandMap()->register("bedwars", new BedWarsCommand());

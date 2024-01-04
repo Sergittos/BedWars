@@ -6,13 +6,16 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\map;
 
 
+use JsonSerializable;
 use pocketmine\math\Vector3;
 use pocketmine\world\World;
 use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\game\team\Team;
+use function array_map;
 use function uniqid;
 
-class Map {
+class Map implements JsonSerializable {
     use MapProperties;
 
     /** @var Team[] */
@@ -40,6 +43,49 @@ class Map {
      */
     public function getTeams(): array {
         return $this->teams;
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            "name" => $this->name,
+            "waiting_world" => $this->waiting_world->getFolderName(),
+            "spectator_spawn_position" => [
+                "x" => $this->spectator_spawn_position->getX(),
+                "y" => $this->spectator_spawn_position->getY(),
+                "z" => $this->spectator_spawn_position->getZ()
+            ],
+            "players_per_team" => $this->players_per_team,
+            "max_capacity" => $this->max_capacity,
+            "generators" => [
+                "diamond" => $this->jsonSerializePositions($this->getGeneratorPositions(GeneratorType::DIAMOND)),
+                "emerald" => $this->jsonSerializePositions($this->getGeneratorPositions(GeneratorType::EMERALD))
+            ],
+            "teams" => array_map(function(Team $team) {
+                return $team->jsonSerialize();
+            }, $this->teams),
+            "shop_positions" => $this->jsonSerializePositions($this->shop_positions),
+            "upgrades_positions" => $this->jsonSerializePositions($this->upgrades_positions)
+        ];
+    }
+
+    private function getGeneratorPositions(GeneratorType $type): array {
+        $positions = [];
+        foreach($this->generators as $generator) {
+            if($generator->getType() === $type) {
+                $positions[] = $generator->getPosition();
+            }
+        }
+        return $positions;
+    }
+
+    private function jsonSerializePositions(array $positions): array {
+        return array_map(function(Vector3 $position) {
+            return [
+                "x" => $position->getX(),
+                "y" => $position->getY(),
+                "z" => $position->getZ()
+            ];
+        }, $positions);
     }
 
 }

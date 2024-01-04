@@ -19,7 +19,6 @@ class MapOptionsForm extends SimpleForm {
     }
 
     protected function onCreation(): void {
-        $this->addRedirectFormButton("Edit mode", new EditModeForm($this->map));
         $this->addRedirectFormButton("Delete", new RemoveMapForm($this->map));
     }
 

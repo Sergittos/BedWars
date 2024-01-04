@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\session\setup\step\area;
 
 
+use pocketmine\event\Cancellable;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
 use sergittos\bedwars\game\team\Area;
@@ -13,6 +14,7 @@ use sergittos\bedwars\item\BedwarsItem;
 use sergittos\bedwars\item\BedwarsItems;
 use sergittos\bedwars\item\setup\ClaimingWandItem;
 use sergittos\bedwars\session\setup\builder\TeamBuilder;
+use sergittos\bedwars\session\setup\step\PreparingMapStep;
 use sergittos\bedwars\session\setup\step\Step;
 
 abstract class SetAreaStep extends Step {
@@ -35,11 +37,11 @@ abstract class SetAreaStep extends Step {
         $this->session->message("{GREEN}Gave you a claim wand.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(1, BedwarsItems::CLAIMING_WAND()->asItem());
+        $inventory->setItem(0, BedwarsItems::CLAIMING_WAND()->asItem());
         $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
     }
 
-    public function onBlockInteract(Vector3 $touch_vector, int $action, BedwarsItem $item): void {
+    public function onBlockInteract(Vector3 $touch_vector, int $action, Cancellable $event, BedwarsItem $item): void {
         if(!$item instanceof ClaimingWandItem) {
             return;
         }
@@ -67,6 +69,8 @@ abstract class SetAreaStep extends Step {
         }
 
         $this->setArea(new Area($this->first_position, $this->second_position));
+
+        $this->session->getMapSetup()->setStep(new PreparingMapStep());
         $this->session->message("{GREEN}You have successfully set the area.");
     }
 

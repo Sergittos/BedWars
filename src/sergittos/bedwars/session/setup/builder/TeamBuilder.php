@@ -46,17 +46,18 @@ class TeamBuilder {
     }
 
     public function canBeBuilt(): bool {
-        return isset($this->spawn_point) and
-            isset($this->bed_position) and
-            isset($this->zone) and
-            isset($this->claim) and
-            isset($this->generator_position);
+        return isset(
+            $this->spawn_point,
+            $this->bed_position,
+            $this->zone,
+            $this->claim,
+            $this->generator_position
+        );
     }
 
     public function build(MapBuilder $map_builder): Team {
         return new Team(
             $this->name,
-            $this->color,
             $map_builder->getPlayersPerTeam(),
             $this->spawn_point,
             $this->bed_position,

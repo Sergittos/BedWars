@@ -6,6 +6,20 @@ declare(strict_types=1);
 namespace sergittos\bedwars\provider\mysql\task;
 
 
-class CreateTablesTask {
+use mysqli;
+use sergittos\bedwars\provider\mysql\MysqlAsyncTask;
+
+class CreateTablesTask extends MysqlAsyncTask {
+
+    protected function onConnection(mysqli $mysqli): void {
+        $mysqli->query(
+            "CREATE TABLE IF NOT EXISTS users (
+                xuid VARCHAR(16) PRIMARY KEY,
+                coins INT,
+                kills INT,
+                wins INT
+            )"
+        );
+    }
 
 }

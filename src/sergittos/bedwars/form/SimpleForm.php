@@ -14,16 +14,12 @@ use pocketmine\player\Player;
 
 class SimpleForm extends EasyUISimpleForm {
 
-    protected function addRedirectFormButton(string $name, Form $form): void {
+    public function addRedirectFormButton(string $name, Form $form): void {
         $button = new Button($name);
         $button->setSubmitListener(function(Player $player) use ($form) {
             $player->sendForm($form);
         });
         $this->addButton($button);
-    }
-
-    protected function addGoBackButton(Form $form): void {
-        $this->addRedirectFormButton("Go back", $form);
     }
 
     protected function vectorToString(Vector3 $vector): string { // this function shouldn't be there

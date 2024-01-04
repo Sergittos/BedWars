@@ -6,7 +6,8 @@ declare(strict_types=1);
 namespace sergittos\bedwars\session\setup;
 
 
-use sergittos\bedwars\game\map\Map;
+use pocketmine\Server;
+use sergittos\bedwars\game\map\task\CreateMapTask;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\setup\builder\MapBuilder;
 use sergittos\bedwars\session\setup\step\PreparingMapStep;
@@ -19,8 +20,8 @@ class MapSetup {
     private Step $step;
 
     public function __construct(Session $session, MapBuilder $map_builder) {
-        $this->map_builder = $map_builder;
         $this->session = $session;
+        $this->map_builder = $map_builder;
 
         $this->setStep(new PreparingMapStep());
     }
@@ -38,8 +39,8 @@ class MapSetup {
         $this->step->start($this->session);
     }
 
-    public function createMap(): Map {
-        return $this->map_builder->build();
+    public function createMap(): void {
+        Server::getInstance()->getAsyncPool()->submitTask(new CreateMapTask($this->map_builder));
     }
 
 }

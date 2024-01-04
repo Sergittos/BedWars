@@ -3,19 +3,18 @@
 declare(strict_types=1);
 
 
-namespace sergittos\bedwars\form\setup\team;
+namespace sergittos\bedwars\form\setup;
 
 
 use EasyUI\element\Button;
 use pocketmine\player\Player;
-use pocketmine\utils\TextFormat;
 use sergittos\bedwars\form\SimpleForm;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\setup\builder\TeamBuilder;
-use sergittos\bedwars\session\setup\step\area\SetAreaStep;
 use sergittos\bedwars\session\setup\step\area\SetClaimStep;
 use sergittos\bedwars\session\setup\step\area\SetZoneStep;
 use sergittos\bedwars\session\setup\step\SetBedPositionStep;
+use sergittos\bedwars\session\setup\step\SetShopAndUpgradesStep;
 use sergittos\bedwars\session\setup\step\SetTeamGeneratorStep;
 use sergittos\bedwars\session\setup\step\Step;
 
@@ -33,7 +32,6 @@ class TeamOptionsForm extends SimpleForm {
     protected function onCreation(): void {
         $this->addSetSpawnPointButton();
         $this->addStepButton("Set generator", new SetTeamGeneratorStep($this->team));
-        // $this->addRedirectFormButton("Set Shop & Upgrades"); TODO
         $this->addStepButton("Set bed", new SetBedPositionStep($this->team));
         $this->addStepButton("Set zone", new SetZoneStep($this->team));
         $this->addStepButton("Set claim", new SetClaimStep($this->team));

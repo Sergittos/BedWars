@@ -23,13 +23,14 @@ abstract class UpgradesProduct extends Product {
         }
         $team = $session->getTeam();
 
-        if(!$this->canPurchase($team)) {
+        if(!$this->canBePurchased($session)) {
             $session->message("{RED}You already have this upgrade!");
             return false;
         }
+        $this->purchase($team);
         return true;
     }
 
-    abstract protected function canPurchase(Team $team): bool;
+    abstract protected function purchase(Team $team): void;
 
 }

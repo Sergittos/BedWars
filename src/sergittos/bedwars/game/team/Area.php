@@ -6,11 +6,13 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\team;
 
 
+use JsonSerializable;
 use pocketmine\math\Vector3;
 use function max;
 use function min;
 
-class Area {
+class Area implements JsonSerializable {
+
 
     private Vector3 $first_vector;
     private Vector3 $second_vector;
@@ -54,6 +56,17 @@ class Area {
     public function isInside(Vector3 $position): bool {
         return $position->x >= $this->getMinX() && $position->x <= $this->getMaxX() and
             $position->z >= $this->getMinZ() && $position->z <= $this->getMaxZ();
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            "first_x" => $this->first_vector->getFloorX(),
+            "first_y" => $this->first_vector->getFloorY(),
+            "first_z" => $this->first_vector->getFloorZ(),
+            "second_x" => $this->second_vector->getFloorX(),
+            "second_y" => $this->second_vector->getFloorY(),
+            "second_z" => $this->second_vector->getFloorZ()
+        ];
     }
 
 }

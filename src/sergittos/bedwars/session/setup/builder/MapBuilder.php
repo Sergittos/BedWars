@@ -32,16 +32,20 @@ class MapBuilder {
         $this->setDefaultTeams();
     }
 
+    public function getPlayingWorld(): string {
+        return $this->playing_world;
+    }
+
     public function setSpectatorSpawnPosition(Vector3 $spectator_spawn_position): void {
         $this->spectator_spawn_position = $spectator_spawn_position;
     }
 
-    public function setShopPositions(array $shop_positions): void {
-        $this->shop_positions = $shop_positions;
+    public function addShopPosition(Vector3 $position): void {
+        $this->shop_positions[] = $position;
     }
 
-    public function setUpgradesPositions(array $upgrades_positions): void {
-        $this->upgrades_positions = $upgrades_positions;
+    public function addUpgradesPosition(Vector3 $position): void {
+        $this->upgrades_positions[] = $position;
     }
 
     public function addGenerator(Generator $generator): void {
@@ -72,6 +76,27 @@ class MapBuilder {
      */
     public function getTeams(): array {
         return $this->teams;
+    }
+
+    public function canBeBuilt(): bool {
+        $can_build = true;
+
+        foreach($this->teams ?? [] as $team) {
+            if(!$team->canBeBuilt()) {
+                $can_build = false;
+                break;
+            }
+        }
+
+        $is_set = isset(
+            $this->spectator_spawn_position,
+            $this->generators,
+            $this->teams,
+            $this->shop_positions,
+            $this->upgrades_positions
+        );
+
+        return $is_set and $can_build;
     }
 
     public function build(): Map {

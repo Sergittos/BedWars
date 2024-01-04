@@ -16,6 +16,7 @@ use sergittos\bedwars\game\generator\presets\IronGenerator;
 use sergittos\bedwars\game\team\Area;
 use sergittos\bedwars\game\team\Team;
 use function array_filter;
+use function array_map;
 use function file_get_contents;
 use function json_decode;
 use function strtolower;
@@ -45,16 +46,16 @@ class MapFactory {
 
             $generators = [];
             foreach($map_data["generators"] as $type => $generator_data) {
-                foreach($generator_data["positions"] as $positions_data) {
-                    $generators[] = GeneratorType::toGenerator(self::createVector($positions_data), GeneratorType::fromString($type));
+                foreach($generator_data as $position) {
+                    $generators[] = GeneratorType::toGenerator(self::createVector($position), GeneratorType::fromString($type));
                 }
             }
 
-            $shop_locations = [];
-            $upgrades_locations = [];
+            $shop_locations = self::createPositions($map_data["shop_positions"]);
+            $upgrades_locations = self::createPositions($map_data["upgrades_positions"]);
 
             $teams = [];
-            foreach($map_data["teams"] as $team_name => $data) {
+            foreach($map_data["teams"] as $data) {
                 $generator_data = $data["generator"];
                 $areas_data = $data["areas"];
                 $bed_data = $data["bed"];
@@ -63,13 +64,10 @@ class MapFactory {
                 $team_generators[] = new IronGenerator(self::createVector($generator_data));
                 $team_generators[] = new GoldGenerator(self::createVector($generator_data));
 
-                $shop_locations[] = self::createVector($data["shop"]);
-                $upgrades_locations[] = self::createVector($data["upgrades"]);
-
                 $teams[] = new Team(
-                    ucfirst($team_name), "{" . strtoupper($team_name) . "}", $players_per_team,
-                    self::createVector($data["spawn_point"]), new Vector3($bed_data["x"], $bed_data["y"], $bed_data["z"]),
-                    Area::fromData($areas_data["zone"]), Area::fromData($areas_data["zone"]), $team_generators // todo: change to claim
+                    ucfirst($data["name"]), $players_per_team,
+                    self::createVector($data["spawn_point"]), new Vector3($bed_data["x"], $bed_data["y"] + 1, $bed_data["z"]),
+                    Area::fromData($areas_data["zone"]), Area::fromData($areas_data["claim"]), $team_generators
                 );
             }
 
@@ -123,12 +121,22 @@ class MapFactory {
         return self::$maps[$id] ?? null;
     }
 
-    static private function addMap(Map $map): void {
+    static public function addMap(Map $map): void {
         self::$maps[$map->getId()] = $map;
     }
 
+    static public function removeMap(string $id): void {
+        unset(self::$maps[$id]);
+    }
+
     static private function createVector(array $data): Vector3 {
-        return new Vector3($data["x"] + 0.5, $data["y"] + 0.5, $data["z"] + 0.5);
+        return new Vector3($data["x"] + 0.5, $data["y"] + 1.5, $data["z"] + 0.5);
+    }
+
+    static private function createPositions(array $positions): array {
+        return array_map(function(array $data) {
+            return self::createVector($data);
+        }, $positions);
     }
 
 }

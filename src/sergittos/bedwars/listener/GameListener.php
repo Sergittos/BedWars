@@ -141,6 +141,10 @@ class GameListener implements Listener {
         }
 
         $team = $this->getTeamByPosition($game, $position);
+        if($team === null) {
+            return;
+        }
+
         $bed_position = $team->getBedPosition();
         $half_position = $block->getOtherHalf()->getPosition();
 
@@ -164,7 +168,10 @@ class GameListener implements Listener {
             return;
         }
 
-        if($session->getTeam()->getClaim()->isInside($event->getBlockAgainst()->getPosition())) {
+        $game = $session->getGame();
+        $position = $event->getBlockAgainst()->getPosition();
+
+        if($this->getTeamByPosition($game, $position)?->getClaim()->isInside($position)) {
             $session->message("{RED}You can't place blocks here!");
             $event->cancel();
             return;

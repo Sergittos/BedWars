@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace sergittos\bedwars\provider\mysql\json;
+namespace sergittos\bedwars\provider\json;
 
 
 use pocketmine\utils\Config;

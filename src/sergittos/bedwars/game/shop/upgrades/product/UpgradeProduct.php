@@ -15,6 +15,14 @@ use sergittos\bedwars\utils\GameUtils;
 
 class UpgradeProduct extends UpgradesProduct {
 
+    public function canBePurchased(Session $session): bool {
+        return $this->getUpgrade($session->getTeam())->canLevelUp();
+    }
+
+    protected function purchase(Team $team): void {
+        $this->getUpgrade($team)->levelUp($team);
+    }
+
     protected function canPurchase(Team $team): bool {
         $upgrade = $this->getUpgrade($team);
         if($upgrade->canLevelUp()) {
