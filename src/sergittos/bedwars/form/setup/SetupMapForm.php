@@ -32,7 +32,7 @@ class SetupMapForm extends SimpleForm {
         $button = new Button("Set spectator spawn point");
         $button->setSubmitListener(function(Player $player) {
             if($this->session->isCreatingMap()) {
-                $position = $player->getPosition();
+                $position = $player->getPosition()->asVector3();
                 $this->session->getMapSetup()->getMapBuilder()->setSpectatorSpawnPosition($position);
                 $this->session->message("{GREEN}Spectator spawn point set on: " . $this->vectorToString($position));
             }
