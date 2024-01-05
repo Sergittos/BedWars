@@ -13,11 +13,15 @@ class CreateTablesTask extends MysqlAsyncTask {
 
     protected function onConnection(mysqli $mysqli): void {
         $mysqli->query(
-            "CREATE TABLE IF NOT EXISTS users (
+            "CREATE TABLE IF NOT EXISTS bedwars_users (
                 xuid VARCHAR(16) PRIMARY KEY,
                 coins INT,
                 kills INT,
-                wins INT
+                wins INT,
+                
+                flying_speed INT,
+                auto_teleport BOOL,
+                night_vision BOOL
             )"
         );
     }

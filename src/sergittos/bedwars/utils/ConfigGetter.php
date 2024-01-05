@@ -22,4 +22,16 @@ class ConfigGetter {
         return self::get("ip", "play.server.net");
     }
 
+    static public function isSpawnProtectionEnabled(): bool {
+        return self::get("spawn-protection", true);
+    }
+
+    static public function getProvider(): string {
+        return self::get("provider", "sqlite");
+    }
+
+    static public function getMysqlCredentials(): array {
+        return self::get("mysql-credentials", []);
+    }
+
 }

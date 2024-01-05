@@ -29,7 +29,7 @@ class SpectatorSettings {
     }
 
     static public function fromData(Session $session, array $data): SpectatorSettings {
-        return new SpectatorSettings($session, $data["flying_speed"], $data["auto_teleport"], $data["night_vision"]);
+        return new SpectatorSettings($session, (int) $data["flying_speed"], (bool) $data["auto_teleport"], (bool) $data["night_vision"]);
     }
 
     public function getFlyingSpeed(): int {

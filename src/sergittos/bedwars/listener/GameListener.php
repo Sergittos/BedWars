@@ -23,6 +23,7 @@ use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\event\entity\EntityItemPickupEvent;
 use pocketmine\event\entity\EntityPreExplodeEvent;
+use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\ItemMergeEvent;
 use pocketmine\event\entity\ItemSpawnEvent;
 use pocketmine\event\inventory\CraftItemEvent;
@@ -233,6 +234,22 @@ class GameListener implements Listener {
         $event->setRecipients(array_map(function(Session $session) {
             return $session->getPlayer();
         }, $session->getGame()->getPlayersAndSpectators()));
+    }
+
+    public function onEntityTeleport(EntityTeleportEvent $event): void {
+        $entity = $event->getEntity();
+        if(!$entity instanceof Player) {
+            return;
+        }
+
+        $session = SessionFactory::getSession($entity);
+        if(!$session->isPlaying()) {
+            return;
+        }
+
+        if($event->getFrom()->getWorld() !== $event->getTo()->getWorld()) {
+            $session->getGame()->removePlayer($session, false);
+        }
     }
 
     public function onEffectAdd(EntityEffectAddEvent $event): void {

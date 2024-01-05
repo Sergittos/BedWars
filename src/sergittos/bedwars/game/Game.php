@@ -186,7 +186,6 @@ class Game {
             $this->addSpectator($session);
         } else {
             $session->setGame(null);
-            $this->broadcastMessage("{GRAY}" . $session->getUsername() . " {YELLOW}has quit!");
         }
         $this->updateScoreboards();
         $this->updatePlayEntities();

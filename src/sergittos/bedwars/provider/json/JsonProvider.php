@@ -44,6 +44,12 @@ class JsonProvider extends Provider {
         $config->save();
     }
 
+    public function updateCoins(Session $session): void {}
+
+    public function updateKills(Session $session): void {}
+
+    public function updateWins(Session $session): void {}
+
     private function getSessionConfig(Session $session): Config {
         return new Config($this->getUsersDir() . $session->getPlayer()->getXuid() . ".json", Config::JSON, [
             "coins" => 0,
@@ -51,8 +57,8 @@ class JsonProvider extends Provider {
             "wins" => 0,
             "spectator_settings" => [
                 "flying_speed" => 0,
-                "auto_teleport" => false,
-                "night_vision" => false
+                "auto_teleport" => true,
+                "night_vision" => true
             ]
         ]);
     }

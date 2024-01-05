@@ -7,40 +7,27 @@ namespace sergittos\bedwars\provider\mysql;
 
 
 use mysqli;
+use pmmp\thread\ThreadSafe;
 
-class MysqlCredentials {
+class MysqlCredentials extends ThreadSafe {
 
     private string $hostname, $username, $password, $database;
+    private int $port;
 
-    public function __construct(string $hostname, string $username, string $password, string $database) {
+    public function __construct(string $hostname, string $username, string $password, string $database, int $port) {
         $this->hostname = $hostname;
         $this->username = $username;
         $this->password = $password;
         $this->database = $database;
+        $this->port = $port;
     }
 
     static public function fromData(array $data): MysqlCredentials {
-        return new MysqlCredentials($data["hostname"], $data["username"], $data["password"], $data["database"]);
-    }
-
-    public function getHostname(): string {
-        return $this->hostname;
-    }
-
-    public function getUsername(): string {
-        return $this->username;
-    }
-
-    public function getPassword(): string {
-        return $this->password;
-    }
-
-    public function getDatabase(): string {
-        return $this->database;
+        return new MysqlCredentials($data["hostname"], $data["username"], $data["password"], $data["database"], $data["port"]);
     }
 
     public function getMysqli(): mysqli {
-        return new mysqli($this->hostname, $this->username, $this->password, $this->database);
+        return new mysqli($this->hostname, $this->username, $this->password, $this->database, $this->port);
     }
 
 }

@@ -58,6 +58,8 @@ class Session {
     private int $kills;
     private int $wins;
 
+    private bool $loading_data;
+
     public function __construct(Player $player) {
         $this->player = $player;
         $this->game_settings = new GameSettings($this);
@@ -163,8 +165,8 @@ class Session {
     }
 
     public function updateCompassDirection(): void {
-        $this->player->setSpawn(
-            $this->tracking_session !== null ? $this->tracking_session->getPlayer()->getPosition() : Vector3::zero()
+        $this->player->getNetworkSession()->syncWorldSpawnPoint(
+            $this->tracking_session !== null ? $this->tracking_session->getPlayer()->getPosition() : $this->player->getWorld()->getSpawnLocation()
         );
     }
 
@@ -200,26 +202,38 @@ class Session {
 
     public function setCoins(int $coins): void {
         $this->coins = $coins;
+
+        if(!$this->loading_data) {
+            BedWars::getInstance()->getProvider()->updateCoins($this);
+        }
     }
 
     public function addCoins(int $coins): void {
-        $this->coins += $coins;
+        $this->setCoins($this->coins + $coins);
     }
 
     public function setKills(int $kills): void {
         $this->kills = $kills;
+
+        if(!$this->loading_data) {
+            BedWars::getInstance()->getProvider()->updateKills($this);
+        }
     }
 
     public function addKill(): void {
-        $this->kills++;
+        $this->setKills($this->kills + 1);
     }
 
     public function setWins(int $wins): void {
         $this->wins = $wins;
+
+        if(!$this->loading_data) {
+            BedWars::getInstance()->getProvider()->updateKills($this);
+        }
     }
 
     public function addWin(): void {
-        $this->wins++;
+        $this->setKills($this->kills + 1);
     }
 
     public function isPlaying(): bool {
@@ -318,8 +332,10 @@ class Session {
         foreach($world->getPlayers() as $player) {
             if(SessionFactory::getSession($player)->getGame()?->getId() !== $this->game?->getId()) {
                 $this->player->hidePlayer($player);
-            } elseif(!$this->player->canSee($player)) {
+                $player->hidePlayer($this->player);
+            } elseif(!$this->player->canSee($player) or !$player->canSee($this->player)) {
                 $this->player->showPlayer($player);
+                $player->showPlayer($this->player);
             }
         }
 
@@ -333,7 +349,14 @@ class Session {
         $this->player->setNameTag($this->player->getDisplayName());
         $this->player->teleport(Server::getInstance()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
 
+        foreach(Server::getInstance()->getOnlinePlayers() as $player) {
+            if(!$this->player->canSee($player)) {
+                $this->player->showPlayer($player);
+            }
+        }
+
         $this->clearInventories();
+        $this->setTrackingSession(null);
         $this->setScoreboard(new LobbyScoreboard());
         $this->showBossBar("{DARK_GREEN}You are playing on {AQUA}" . strtoupper(ConfigGetter::getIP()));
     }
@@ -388,7 +411,9 @@ class Session {
     }
 
     public function load(): void {
+        $this->loading_data = true;
         BedWars::getInstance()->getProvider()->loadSession($this);
+        $this->loading_data = false;
     }
 
     public function save(): void {

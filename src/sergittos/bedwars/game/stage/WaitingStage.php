@@ -39,6 +39,10 @@ class WaitingStage extends Stage {
         }
     }
 
+    public function onQuit(Session $session): void {
+        $this->game->broadcastMessage("{GRAY}" . $session->getUsername() . " {YELLOW}has quit!");
+    }
+
     public function tick(): void {}
 
 }

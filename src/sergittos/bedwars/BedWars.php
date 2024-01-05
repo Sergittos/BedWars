@@ -28,11 +28,16 @@ use sergittos\bedwars\listener\GameListener;
 use sergittos\bedwars\listener\ItemListener;
 use sergittos\bedwars\listener\SessionListener;
 use sergittos\bedwars\listener\SetupListener;
+use sergittos\bedwars\listener\SpawnProtectionListener;
 use sergittos\bedwars\listener\WaitingListener;
 use sergittos\bedwars\provider\json\JsonProvider;
+use sergittos\bedwars\provider\mysql\MysqlProvider;
 use sergittos\bedwars\provider\Provider;
+use sergittos\bedwars\provider\sqlite\SqliteProvider;
 use sergittos\bedwars\session\SessionFactory;
+use sergittos\bedwars\utils\ConfigGetter;
 use function basename;
+use function strtolower;
 
 class BedWars extends PluginBase {
     use SingletonTrait;
@@ -54,7 +59,7 @@ class BedWars extends PluginBase {
     protected function onEnable(): void {
         MapFactory::init();
 
-        $this->provider = new JsonProvider();
+        $this->provider = $this->obtainProvider();
         $this->game_manager = new GameManager();
 
         $this->registerEntity(PlayBedwarsEntity::class);
@@ -67,6 +72,10 @@ class BedWars extends PluginBase {
         $this->registerListener(new SessionListener());
         $this->registerListener(new SetupListener());
         $this->registerListener(new WaitingListener());
+
+        if(ConfigGetter::isSpawnProtectionEnabled()) {
+            $this->registerListener(new SpawnProtectionListener());
+        }
 
         $this->getServer()->getCommandMap()->register("bedwars", new BedWarsCommand());
 
@@ -98,6 +107,15 @@ class BedWars extends PluginBase {
         EntityFactory::getInstance()->register(Fireball::class, function(World $world, CompoundTag $nbt): Fireball {
             return new Fireball(EntityDataHelper::parseLocation($nbt, $world), null);
         }, ["bedwars:fireball"]);
+    }
+
+    private function obtainProvider(): Provider {
+        return match(strtolower(ConfigGetter::getProvider())) {
+            "mysql" => new MysqlProvider(),
+            "sqlite", "sqlite3" => new SqliteProvider(),
+            "json" => new JsonProvider(),
+            default => throw new \Error("Invalid provider, check your config and try again.")
+        };
     }
 
     public function getProvider(): Provider {

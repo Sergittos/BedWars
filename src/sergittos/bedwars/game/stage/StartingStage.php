@@ -37,6 +37,8 @@ class StartingStage extends Stage {
     }
 
     public function onQuit(Session $session): void {
+        $this->game->broadcastMessage("{GRAY}" . $session->getUsername() . " {YELLOW}has quit!");
+
         if(!$this->game->isFull()) {
             $this->game->setStage(new WaitingStage());
         }
