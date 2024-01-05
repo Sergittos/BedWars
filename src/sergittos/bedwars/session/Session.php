@@ -328,18 +328,7 @@ class Session {
     }
 
     public function teleportToWaitingWorld(): void {
-        $world = $this->game->getMap()->getWaitingWorld();
-        foreach($world->getPlayers() as $player) {
-            if(SessionFactory::getSession($player)->getGame()?->getId() !== $this->game?->getId()) {
-                $this->player->hidePlayer($player);
-                $player->hidePlayer($this->player);
-            } elseif(!$this->player->canSee($player) or !$player->canSee($this->player)) {
-                $this->player->showPlayer($player);
-                $player->showPlayer($this->player);
-            }
-        }
-
-        $this->player->teleport($world->getSafeSpawn());
+        $this->player->teleport($this->game->getMap()->getWaitingWorld()->getSafeSpawn());
     }
 
     public function teleportToHub(): void {
@@ -348,12 +337,6 @@ class Session {
         $this->player->setHealth($this->player->getMaxHealth());
         $this->player->setNameTag($this->player->getDisplayName());
         $this->player->teleport(Server::getInstance()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-
-        foreach(Server::getInstance()->getOnlinePlayers() as $player) {
-            if(!$this->player->canSee($player)) {
-                $this->player->showPlayer($player);
-            }
-        }
 
         $this->clearInventories();
         $this->setTrackingSession(null);
