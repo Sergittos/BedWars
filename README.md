@@ -5,6 +5,7 @@
 </div>
 
 <p align="center">
+	<a href="https://poggit.pmmp.io/p/BedWars"><img src="https://poggit.pmmp.io/shield.state/BedWars"></a>
 	<a href="https://discord.gg/RHw85ZfSsb"><img src="https://img.shields.io/discord/1104339932148924436?color=%2392e5fc&label=discord" alt="Discord" /></a>
 </p>
 
