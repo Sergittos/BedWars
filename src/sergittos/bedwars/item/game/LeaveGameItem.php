@@ -19,7 +19,9 @@ class LeaveGameItem extends BedwarsItem {
     }
 
     public function onInteract(Session $session): void {
-        $session->getGame()->removePlayer($session);
+        if($session->isPlaying()) {
+            $session->getGame()->removePlayer($session);
+        }
     }
 
     protected function realItem(): Item {
