@@ -50,6 +50,7 @@ use pocketmine\utils\TextFormat;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\entity\shop\Villager;
 use sergittos\bedwars\game\Game;
+use sergittos\bedwars\game\stage\PlayingStage;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\SessionFactory;
@@ -247,7 +248,8 @@ class GameListener implements Listener {
             return;
         }
 
-        if($event->getFrom()->getWorld() !== $event->getTo()->getWorld()) {
+        $stage = $session->getGame()->getStage();
+        if($stage instanceof PlayingStage and $stage->hasStarted() and $event->getFrom()->getWorld() !== $event->getTo()->getWorld()) {
             $session->getGame()->removePlayer($session, false);
         }
     }

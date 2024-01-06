@@ -20,7 +20,6 @@ use sergittos\bedwars\utils\ColorUtils;
 use function count;
 use function round;
 use function shuffle;
-use function var_dump;
 
 class PlayingStage extends Stage {
 
@@ -28,6 +27,10 @@ class PlayingStage extends Stage {
 
     public function getNextEvent(): Event {
         return $this->next_event;
+    }
+
+    public function hasStarted(): bool {
+        return isset($this->next_event);
     }
 
     private function startNextEvent(?Event $event = null): void {
