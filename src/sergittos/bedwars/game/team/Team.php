@@ -16,8 +16,8 @@ use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\generator\Generator;
+use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\game\team\upgrade\trap\AlarmTrap;
-use sergittos\bedwars\game\team\upgrade\trap\DefaultTrap;
 use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
@@ -158,6 +158,15 @@ class Team implements JsonSerializable {
         $this->generators[] = $generator;
     }
 
+    private function removeEmeraldGenerator(): void {
+        foreach($this->generators as $index => $generator) {
+            if($generator->getType() === GeneratorType::TEAM_EMERALD) {
+                unset($this->generators[$index]);
+                break;
+            }
+        }
+    }
+
     public function addMember(Session $session): void {
         $this->members[] = $session;
 
@@ -203,6 +212,8 @@ class Team implements JsonSerializable {
     public function reset(): void {
         $this->bed_destroyed = false;
         $this->upgrades = new Upgrades();
+
+        $this->removeEmeraldGenerator();
 
         foreach($this->generators as $generator) {
             $generator->reset();

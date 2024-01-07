@@ -39,21 +39,20 @@ class UpgradeGeneratorsTierEvent extends Event {
     }
 
     public function getNextEvent(): ?Event {
-        $type = match($this->type) {
+        $next_type = match($this->type) {
             GeneratorType::DIAMOND => GeneratorType::EMERALD,
             GeneratorType::EMERALD => GeneratorType::DIAMOND
         };
+        $next_tier = match($this->tier) {
+            Tier::I => Tier::II,
+            Tier::II => Tier::III,
+            Tier::III => null
+        };
 
-        if($type === GeneratorType::DIAMOND) {
-            $this->tier = match($this->tier) {
-                Tier::I => Tier::II,
-                Tier::II => Tier::III
-            };
-        } elseif($this->tier === Tier::III) {
+        if($next_tier === null) {
             return new BedDestructionEvent();
         }
-
-        return new UpgradeGeneratorsTierEvent($type, $this->tier);
+        return new UpgradeGeneratorsTierEvent($next_type, $next_tier);
     }
 
 }

@@ -23,19 +23,19 @@ use function shuffle;
 
 class PlayingStage extends Stage {
 
-    private Event $next_event;
+    private ?Event $next_event = null;
 
     public function getNextEvent(): Event {
         return $this->next_event;
     }
 
     public function hasStarted(): bool {
-        return isset($this->next_event);
+        return $this->next_event !== null;
     }
 
     private function startNextEvent(?Event $event = null): void {
         $this->next_event = $event ?? $this->next_event->getNextEvent();
-        $this->next_event->start($this->game);
+        $this->next_event?->start($this->game);
     }
 
     protected function onStart(): void {

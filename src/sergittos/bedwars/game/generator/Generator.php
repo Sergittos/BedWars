@@ -85,7 +85,7 @@ abstract class Generator {
     }
 
     public function reset(): void {
-        $this->setTier(Tier::I);
+        $this->tier = Tier::I;
         $this->setSpeed($this->getInitialSpeed());
     }
 
