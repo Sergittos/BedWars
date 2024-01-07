@@ -84,6 +84,11 @@ abstract class Generator {
         }
     }
 
+    public function reset(): void {
+        $this->setTier(Tier::I);
+        $this->setSpeed($this->getInitialSpeed());
+    }
+
     public function onDropItem(World $world): void {}
 
     abstract public function getType(): GeneratorType;

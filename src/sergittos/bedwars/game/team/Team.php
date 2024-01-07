@@ -204,6 +204,9 @@ class Team implements JsonSerializable {
         $this->bed_destroyed = false;
         $this->upgrades = new Upgrades();
 
+        foreach($this->generators as $generator) {
+            $generator->reset();
+        }
         foreach($this->members as $member) {
             $member->setTeam(null);
         }

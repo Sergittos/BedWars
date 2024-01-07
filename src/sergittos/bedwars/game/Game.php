@@ -308,6 +308,9 @@ class Game {
         foreach($this->spectators as $spectator) {
             $this->removeSpectator($spectator);
         }
+        foreach($this->generators as $generator) {
+            $generator->reset();
+        }
 
         $this->unloadWorld();
 
