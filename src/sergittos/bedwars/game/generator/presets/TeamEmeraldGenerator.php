@@ -14,7 +14,7 @@ use sergittos\bedwars\game\generator\GeneratorType;
 class TeamEmeraldGenerator extends Generator {
 
     public function getType(): GeneratorType {
-        return GeneratorType::EMERALD;
+        return GeneratorType::TEAM_EMERALD;
     }
 
     public function getInitialSpeed(): int {
