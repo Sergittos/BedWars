@@ -39,6 +39,10 @@ abstract class Villager extends Entity {
         return 0.02;
     }
 
+    public function canSaveWithChunk(): bool {
+        return true;
+    }
+
     protected function initEntity(CompoundTag $nbt): void {
         parent::initEntity($nbt);
 
@@ -50,6 +54,8 @@ abstract class Villager extends Entity {
         if($source instanceof EntityDamageByChildEntityEvent or !$source instanceof EntityDamageByEntityEvent) {
             return;
         }
+
+        $source->cancel();
 
         $damager = $source->getDamager();
         if($damager instanceof Player and SessionFactory::hasSession($damager)) {
