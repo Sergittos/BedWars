@@ -18,10 +18,15 @@ class StartingStage extends Stage {
         onQuit as onSessionQuit;
     }
 
-    private int $time = 10;
+    private float $start_time = 0;
+    private int $countdown = 10;
 
-    public function getTime(): int {
-        return $this->time;
+    public function getCountdown(): int {
+        return $this->countdown;
+    }
+
+    protected function onStart(): void {
+        $this->start_time = microtime(true);
     }
 
     public function onJoin(Session $session): void {
@@ -39,41 +44,41 @@ class StartingStage extends Stage {
     }
 
     public function tick(): void {
-        if($this->time <= 0) {
+        if($this->countdown <= 0) {
             $this->game->setStage(new PlayingStage());
-        } elseif($this->time <= 5) {
+        } elseif($this->countdown <= 5) {
             $this->broadcastCountdownTitle();
         }
-        if($this->time > 0) {
+        if($this->countdown > 0) {
             $this->game->broadcastMessage($this->getStartingMessage());
         }
-        if($this->time === 5) {
+        if($this->countdown === 5) {
             $this->game->setupWorld();
-        } elseif($this->time === 10) {
+        } elseif($this->countdown === 10) {
             $this->broadcastCountdownTitle();
         }
         $this->game->updateScoreboards();
 
-        $this->time--;
+        $this->countdown--;
     }
 
     private function getStartingMessage(): string {
         $message = "{YELLOW}The game is starting within {time} {YELLOW}seconds!";
-        if($this->time <= 10) {
-            $message = "{YELLOW}The game starts in {time} {YELLOW}" . ($this->time === 1 ? "second" : "seconds") . "!";
+        if($this->countdown <= 10) {
+            $message = "{YELLOW}The game starts in {time} {YELLOW}" . ($this->countdown === 1 ? "second" : "seconds") . "!";
         }
-        $message = str_replace("{time}", GameUtils::getColoredMessageNumber($this->time), $message);
+        $message = str_replace("{time}", GameUtils::getColoredMessageNumber($this->countdown), $message);
 
         return $message;
     }
 
     private function broadcastCountdownTitle(): void {
-        $this->game->broadcastTitle(GameUtils::getColoredTitleNumber($this->time));
+        $this->game->broadcastTitle(GameUtils::getColoredTitleNumber($this->countdown));
         $this->game->broadcastSound(new ClickSound());
     }
 
     private function justStarted(): bool {
-        return $this->time === 10;
+        return microtime(true) - $this->start_time < 0.01;
     }
 
 }

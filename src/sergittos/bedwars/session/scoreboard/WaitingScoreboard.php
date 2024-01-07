@@ -24,7 +24,7 @@ class WaitingScoreboard extends Scoreboard {
             9 => "{WHITE}Map: {GREEN}" . $map->getName(),
             8 => "{WHITE}Players: {GREEN}" . $game->getPlayersCount() . "/" . $map->getMaxCapacity(),
             7 => "  ",
-            6 => !$stage instanceof StartingStage ? "{WHITE}Waiting..." : "{WHITE}Starting in {GREEN}" . $stage->getTime() . "s",
+            6 => !$stage instanceof StartingStage ? "{WHITE}Waiting..." : "{WHITE}Starting in {GREEN}" . $stage->getCountdown() . "s",
             5 => "   ",
             4 => "{WHITE}Mode: {GREEN}" . GameUtils::getMode($map->getPlayersPerTeam()),
             3 => "{WHITE}Version: {GRAY}v" . ConfigGetter::getVersion()
