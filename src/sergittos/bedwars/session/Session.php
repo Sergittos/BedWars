@@ -228,7 +228,7 @@ class Session {
         $this->wins = $wins;
 
         if(!$this->loading_data) {
-            BedWars::getInstance()->getProvider()->updateKills($this);
+            BedWars::getInstance()->getProvider()->updateWins($this);
         }
     }
 
