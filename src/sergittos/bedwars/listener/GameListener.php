@@ -331,31 +331,30 @@ class GameListener implements Listener {
     }
 
     public function onPickup(EntityItemPickupEvent $event): void {
-        /** @var ItemEntity $item_entity */
-        $item_entity = $event->getOrigin();
-        if($item_entity->getOwner() !== "generator") {
+        $origin = $event->getOrigin();
+        if(!$origin instanceof ItemEntity or $origin->getOwner() !== "generator") {
             return;
         }
 
         $event->cancel();
 
-        $world = $item_entity->getWorld();
-        foreach($world->getNearbyEntities($item_entity->getBoundingBox()->expandedCopy(1, 0.5, 1), $item_entity) as $entity) {
+        $world = $origin->getWorld();
+        foreach($world->getNearbyEntities($origin->getBoundingBox()->expandedCopy(1, 0.5, 1), $origin) as $entity) {
             if(!$entity instanceof Player) {
                 continue;
             }
 
             NetworkBroadcastUtils::broadcastEntityEvent(
-                $item_entity->getViewers(),
-                fn(EntityEventBroadcaster $broadcaster, array $recipients) => $broadcaster->onPickUpItem($recipients, $entity, $item_entity)
+                $origin->getViewers(),
+                fn(EntityEventBroadcaster $broadcaster, array $recipients) => $broadcaster->onPickUpItem($recipients, $entity, $origin)
             );
 
             foreach($entity->getInventory()->addItem($event->getItem()) as $remains) {
-                $world->dropItem($item_entity->getLocation(), $remains, new Vector3(0, 0, 0));
+                $world->dropItem($origin->getLocation(), $remains, new Vector3(0, 0, 0));
             }
         }
 
-        $item_entity->flagForDespawn();
+        $origin->flagForDespawn();
     }
 
     public function onMerge(ItemMergeEvent $event): void {
