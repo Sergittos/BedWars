@@ -233,7 +233,7 @@ class Session {
     }
 
     public function addWin(): void {
-        $this->setKills($this->kills + 1);
+        $this->setWins($this->kills + 1);
     }
 
     public function isPlaying(): bool {
