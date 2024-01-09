@@ -29,6 +29,7 @@ class PlayBedwarsForm extends SimpleForm {
 
     private function addSelectMapButton(): void {
         $button = new Button("Select a map");
+        $button->setIcon(new ButtonIcon("https://cdn-icons-png.flaticon.com/512/5591/5591302.png"));
         $button->setSubmitListener(function(Player $player) {
             $player->sendForm(new SelectMapForm($this->players_per_team));
         });
