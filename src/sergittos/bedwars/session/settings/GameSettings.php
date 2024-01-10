@@ -166,7 +166,7 @@ class GameSettings {
         if($protection_level >= 1) {
             $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), $protection_level));
         }
-        $item->getNamedTag()->setByte("bedwars", 1);
+        $item->getNamedTag()->setByte("bedwars_item", 1);
 
         return $item;
     }
