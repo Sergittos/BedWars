@@ -7,13 +7,19 @@ namespace sergittos\bedwars\session;
 
 
 use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\InvisibilityEffect;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\ItemTypeIds;
-use pocketmine\math\Vector3;
+use pocketmine\item\VanillaItems;
+use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\ClientboundPacket;
+use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
+use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\types\BossBarColor;
+use pocketmine\network\mcpe\protocol\types\inventory\ContainerIds;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\player\GameMode;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -63,7 +69,9 @@ class Session {
     public function __construct(Player $player) {
         $this->player = $player;
         $this->game_settings = new GameSettings($this);
+
         $this->load();
+        $this->setEffectHooks();
     }
 
     public function getPlayer(): Player {
@@ -391,6 +399,44 @@ class Session {
             $message = "{YELLOW}You will respawn in {RED}" . self::RESPAWN_DURATION . " {YELLOW}seconds!", 0, 41
         );
         $this->message($message);
+    }
+
+    private function setEffectHooks(): void {
+        $effects = $this->player->getEffects();
+
+        $effects->getEffectAddHooks()->add(function(EffectInstance $effect_instance): void {
+            if($effect_instance->getType() instanceof InvisibilityEffect and $this->isPlaying()) {
+                $this->vanish();
+            }
+        });
+        $effects->getEffectRemoveHooks()->add(function(EffectInstance $effect_instance): void {
+            if($effect_instance->getType() instanceof InvisibilityEffect and $this->isPlaying()) {
+                $this->unvanish();
+            }
+        });
+    }
+
+    private function vanish(): void {
+        $id = $this->player->getId();
+        $item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
+        $slot = $this->player->getInventory()->getHeldItemIndex();
+
+        foreach($this->game->getPlayers() as $session) {
+            $session = $session->getPlayer()->getNetworkSession();
+            $session->sendDataPacket(MobEquipmentPacket::create($id, $item, $slot, $slot, ContainerIds::INVENTORY));
+            $session->sendDataPacket(MobArmorEquipmentPacket::create($id, $item, $item, $item, $item));
+        }
+    }
+
+    private function unvanish(): void {
+        foreach($this->game->getPlayers() as $session) {
+            $player = $session->getPlayer();
+            $viewers = array_map(fn(Player $target) => $target->getNetworkSession(), $player->getViewers());
+
+            $broadcaster = $player->getNetworkSession()->getEntityEventBroadcaster();
+            $broadcaster->onMobArmorChange($viewers, $this->player);
+            $broadcaster->onMobMainHandItemChange($viewers, $this->player);
+        }
     }
 
     public function load(): void {

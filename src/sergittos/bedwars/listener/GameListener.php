@@ -37,12 +37,18 @@ use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\item\ItemTypeIds;
 use pocketmine\item\MilkBucket;
+use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\EntityEventBroadcaster;
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
+use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
+use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\player\chat\LegacyRawChatFormatter;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
@@ -58,6 +64,7 @@ use sergittos\bedwars\utils\GameUtils;
 use sergittos\bedwars\utils\MathUtils;
 use function array_map;
 use function in_array;
+use function property_exists;
 use function strtoupper;
 
 class GameListener implements Listener {
@@ -250,7 +257,7 @@ class GameListener implements Listener {
 
         $stage = $session->getGame()->getStage();
         if($stage instanceof PlayingStage and $stage->hasStarted() and $event->getFrom()->getWorld() !== $event->getTo()->getWorld()) {
-            $session->getGame()->removePlayer($session, false);
+            $session->getGame()->removePlayer($session);
         }
     }
 
@@ -262,6 +269,7 @@ class GameListener implements Listener {
 
         $effect = $event->getEffect();
         $duration = GameUtils::getEffectDuration($effect);
+
         if($duration !== 0) {
             $effect->setDuration($duration);
             $effect->setAmplifier(GameUtils::getEffectAmplifier($effect));
@@ -298,6 +306,39 @@ class GameListener implements Listener {
         }
 
         $event->setBlockList($block_list);
+    }
+
+    public function onDataPacketSend(DataPacketSendEvent $event): void {
+        foreach($event->getTargets() as $target) {
+            $player = $target->getPlayer();
+            if($player === null or !SessionFactory::hasSession($player) or !SessionFactory::getSession($player)->isPlaying()) {
+                continue;
+            }
+
+            foreach($event->getPackets() as $packet) {
+                if(!property_exists($packet, "actorRuntimeId")) {
+                    continue;
+                }
+
+                $target = $player->getWorld()->getEntity($packet->actorRuntimeId);
+                if(!$target instanceof Player or !SessionFactory::getSession($target)->isPlaying() or !$target->getEffects()->has(VanillaEffects::INVISIBILITY())) {
+                    continue;
+                }
+
+                switch(true) {
+                    case $packet instanceof MobEquipmentPacket:
+                        $packet->item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
+                        break;
+                    case $packet instanceof MobArmorEquipmentPacket:
+                        $item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
+                        $packet->head = $item;
+                        $packet->chest = $item;
+                        $packet->legs = $item;
+                        $packet->feet = $item;
+                        break;
+                }
+            }
+        }
     }
 
     public function onCraft(CraftItemEvent $event): void {
