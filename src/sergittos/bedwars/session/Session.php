@@ -306,6 +306,13 @@ class Session {
         $this->player->getArmorInventory()->clearAll();
         $this->player->getInventory()->clearAll();
     }
+    
+    public function clearInventoriesAfterKill(): void {
+        $this->player->getCursorInventory()->clearAll();
+        $this->player->getOffHandInventory()->clearAll();
+        $this->player->getArmorInventory()->clearAll();
+        $this->player->getInventory()->clearAll();
+    }
 
     public function giveCreatingMapItems(): void {
         $this->clearInventories();
@@ -393,7 +400,7 @@ class Session {
         }
         $this->respawn_time = self::RESPAWN_DURATION;
 
-        $this->clearInventories();
+        $this->clearInventoriesAfterKill();
         $this->title(
             "{RED}YOU DIED!",
             $message = "{YELLOW}You will respawn in {RED}" . self::RESPAWN_DURATION . " {YELLOW}seconds!", 0, 41
