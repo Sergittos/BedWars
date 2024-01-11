@@ -20,12 +20,12 @@ class ColorUtils {
         $message = str_replace("{DARK_AQUA}", TextFormat::DARK_AQUA, $message);
         $message = str_replace("{DARK_RED}", TextFormat::DARK_RED, $message);
         $message = str_replace("{DARK_PURPLE}", TextFormat::DARK_PURPLE, $message);
-        $message = str_replace("{MAGENTA}", TextFormat::DARK_PURPLE, $message);
+        $message = str_replace("{PINK}", TextFormat::DARK_PURPLE, $message);
         $message = str_replace("{GOLD}", TextFormat::GOLD, $message);
-        $message = str_replace("{ORANGE}", TextFormat::GOLD, $message);
+        $message = str_replace("{WHITE}", TextFormat::WHITE, $message);
         $message = str_replace("{GRAY}", TextFormat::GRAY, $message);
         $message = str_replace("{DARK_GRAY}", TextFormat::DARK_GRAY, $message);
-        $message = str_replace("{CYAN}", TextFormat::BLUE, $message);
+        $message = str_replace("{AQUA}", TextFormat::AQUA, $message);
         $message = str_replace("{GREEN}", TextFormat::GREEN, $message);
         $message = str_replace("{AQUA}", TextFormat::AQUA, $message);
         $message = str_replace("{RED}", TextFormat::RED, $message);
@@ -48,16 +48,16 @@ class ColorUtils {
             TextFormat::BLACK => DyeColor::BLACK,
             TextFormat::DARK_BLUE => DyeColor::BLUE,
             TextFormat::DARK_GREEN => DyeColor::GREEN,
-            TextFormat::DARK_PURPLE => DyeColor::MAGENTA,
-            TextFormat::GOLD => DyeColor::ORANGE,
+            TextFormat::DARK_PURPLE => DyeColor::PINK,
+            TextFormat::GOLD => DyeColor::GOLD,
             TextFormat::GRAY => DyeColor::LIGHT_GRAY,
             TextFormat::DARK_GRAY => DyeColor::GRAY,
-            TextFormat::BLUE => DyeColor::CYAN,
+            TextFormat::BLUE => DyeColor::LIGHT_BLUE,
             TextFormat::GREEN => DyeColor::LIME,
             TextFormat::RED => DyeColor::RED,
             TextFormat::LIGHT_PURPLE => DyeColor::PINK,
             TextFormat::YELLOW => DyeColor::YELLOW,
-            TextFormat::WHITE => DyeColor::WHITE,
+           TextFormat::WHITE => DyeColor::WHITE,
         };
     }
 
