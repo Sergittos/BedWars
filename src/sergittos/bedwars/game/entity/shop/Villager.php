@@ -58,8 +58,15 @@ abstract class Villager extends Entity {
         $source->cancel();
 
         $damager = $source->getDamager();
-        if($damager instanceof Player and SessionFactory::hasSession($damager)) {
-            $damager->sendForm($this->getForm(SessionFactory::getSession($damager)));
+        if(!$damager instanceof Player or !SessionFactory::hasSession($damager)) {
+            return;
+        }
+
+        $session = SessionFactory::getSession($damager);
+        if($session->isPlaying()) {
+            $damager->sendForm($this->getForm($session));
+        } else {
+            $session->message("{RED}You must be in game to do this!");
         }
     }
 
