@@ -61,7 +61,7 @@ class MapBuilder {
     }
 
     private function setDefaultTeams(): void {
-        $teams = ["Red", "Blue", "Yellow", "Green", "Cyan", "Gray", "Orange", "Magenta"];
+        $teams = ["Red", "Blue", "Yellow", "Green", "Aqua", "Gray", "White", "Pink"];
         for($i = 0; $i < $this->getTeamsCount(); $i++) {
             $this->addTeam($teams[$i]);
         }
