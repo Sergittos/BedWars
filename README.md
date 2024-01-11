@@ -26,7 +26,7 @@ BedWars is a PvP minigame where players have to protect their bed from being des
 These instructions will get you a copy of the project up and running on your server.
 
 ### Downloading
-Currently, the plugin is being reviewed by Poggit. You can download the latest version [here](https://github.com/Sergittos/BedWars/releases/tag/1.0.6).
+Currently, the plugin is being reviewed by Poggit. You can download the latest version [here](https://github.com/Sergittos/BedWars/releases/tag/1.0.7).
 
 ### Installing
 1. Download the plugin and drop it inside your PocketMine's plugins folder, then restart your server.
