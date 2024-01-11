@@ -4,12 +4,17 @@
 namespace sergittos\bedwars\game\stage\trait;
 
 
+use sergittos\bedwars\game\Game;
 use sergittos\bedwars\session\scoreboard\WaitingScoreboard;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ConfigGetter;
 use function strtoupper;
 
 trait JoinableTrait {
+
+    public function start(Game $game): void {
+        $this->game = $game;
+    }
 
     public function onJoin(Session $session): void {
         $session->showBossBar("{YELLOW}Playing {WHITE}BED WARS {YELLOW}on {GREEN}" . strtoupper(ConfigGetter::getIP()));

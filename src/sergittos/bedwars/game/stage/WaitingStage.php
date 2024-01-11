@@ -6,17 +6,12 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\stage;
 
 
-use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\stage\trait\JoinableTrait;
 use sergittos\bedwars\session\Session;
 
 class WaitingStage extends Stage {
     use JoinableTrait {
         onJoin as onSessionJoin;
-    }
-
-    public function start(Game $game): void {
-        $this->game = $game;
     }
 
     public function onJoin(Session $session): void {
