@@ -386,6 +386,7 @@ class Session {
             $this->game->broadcastMessage($session_username . " {GRAY}fell to the void.");
         }
 
+        $this->player->getEffects()->clear();
         $this->player->teleport($this->game->getMap()->getSpectatorSpawnPosition());
         $this->player->setGamemode(GameMode::SPECTATOR());
 
