@@ -62,9 +62,13 @@ class MapBuilder {
 
     private function setDefaultTeams(): void {
         $teams = ["Red", "Blue", "Yellow", "Green", "Cyan", "Gray", "Orange", "Magenta"];
-        for($i = 0; $i < $this->max_capacity; $i++) {
+        for($i = 0; $i < $this->getTeamsCount(); $i++) {
             $this->addTeam($teams[$i]);
         }
+    }
+
+    private function getTeamsCount(): int {
+        return (int) ($this->max_capacity / $this->players_per_team);
     }
 
     /**
