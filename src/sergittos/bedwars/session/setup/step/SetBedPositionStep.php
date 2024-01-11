@@ -26,7 +26,7 @@ class SetBedPositionStep extends Step {
     }
 
     protected function onStart(): void {
-        $this->session->clearInventories();
+        $this->session->clearAllInventories();
         $this->session->message("{YELLOW}Place the bed you received in your inventory to set the position.");
 
         $inventory = $this->session->getPlayer()->getInventory();

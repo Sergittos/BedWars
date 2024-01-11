@@ -171,7 +171,7 @@ class Team implements JsonSerializable {
         $this->members[] = $session;
 
         $session->setTeam($this);
-        $session->clearInventories();
+        $session->clearAllInventories();
         $session->getGameSettings()->apply();
 
         $player = $session->getPlayer();

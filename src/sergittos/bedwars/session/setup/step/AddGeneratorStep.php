@@ -26,7 +26,7 @@ class AddGeneratorStep extends Step {
             GeneratorType::EMERALD => BedwarsItems::EMERALD_GENERATOR()
         };
 
-        $this->session->clearInventories();
+        $this->session->clearAllInventories();
         $this->session->message("{YELLOW}Break the block below the generator with the item you have received in your inventory to set the generator.");
 
         $inventory = $this->session->getPlayer()->getInventory();

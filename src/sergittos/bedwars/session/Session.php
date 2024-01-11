@@ -299,15 +299,12 @@ class Session {
         ));
     }
 
-    public function clearInventories(): void {
-        $this->player->getCursorInventory()->clearAll();
-        $this->player->getOffHandInventory()->clearAll();
+    public function clearAllInventories(): void {
+        $this->clearCommonInventories();
         $this->player->getEnderInventory()->clearAll();
-        $this->player->getArmorInventory()->clearAll();
-        $this->player->getInventory()->clearAll();
     }
 
-    public function clearInventoriesAfterKill(): void {
+    public function clearCommonInventories(): void {
         $this->player->getCursorInventory()->clearAll();
         $this->player->getOffHandInventory()->clearAll();
         $this->player->getArmorInventory()->clearAll();
@@ -315,7 +312,7 @@ class Session {
     }
 
     public function giveCreatingMapItems(): void {
-        $this->clearInventories();
+        $this->clearAllInventories();
 
         $inventory = $this->player->getInventory();
         $inventory->setItem(0, BedwarsItems::CONFIGURATION()->asItem());
@@ -324,12 +321,12 @@ class Session {
     }
 
     public function giveWaitingItems(): void {
-        $this->clearInventories();
+        $this->clearAllInventories();
         $this->player->getInventory()->setItem(8, BedwarsItems::LEAVE_GAME()->asItem());
     }
 
     public function giveSpectatorItems(): void {
-        $this->clearInventories();
+        $this->clearAllInventories();
 
         $inventory = $this->player->getInventory();
         $inventory->setItem(0, BedwarsItems::TELEPORTER()->asItem());
@@ -353,7 +350,7 @@ class Session {
         $this->player->setNameTag($this->player->getDisplayName());
         $this->player->teleport(Server::getInstance()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
 
-        $this->clearInventories();
+        $this->clearAllInventories();
         $this->setTrackingSession(null);
         $this->setScoreboard(new LobbyScoreboard());
         $this->showBossBar("{DARK_GREEN}You are playing on {AQUA}" . strtoupper(ConfigGetter::getIP()));
@@ -400,7 +397,7 @@ class Session {
         }
         $this->respawn_time = self::RESPAWN_DURATION;
 
-        $this->clearInventoriesAfterKill();
+        $this->clearCommonInventories();
         $this->title(
             "{RED}YOU DIED!",
             $message = "{YELLOW}You will respawn in {RED}" . self::RESPAWN_DURATION . " {YELLOW}seconds!", 0, 41

@@ -29,7 +29,7 @@ abstract class SetAreaStep extends Step {
     }
 
     protected function onStart(): void {
-        $this->session->clearInventories();
+        $this->session->clearAllInventories();
         $this->session->message("{GOLD}Set team area started.");
         $this->session->message("{YELLOW}Left click at a corner of the area you'd like to set.");
         $this->session->message("{YELLOW}Right click on the second corner of the area you'd like to set.");

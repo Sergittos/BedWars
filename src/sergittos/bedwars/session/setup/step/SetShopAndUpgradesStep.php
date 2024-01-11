@@ -18,7 +18,7 @@ use sergittos\bedwars\item\setup\AddVillagerItem;
 class SetShopAndUpgradesStep extends Step {
 
     protected function onStart(): void {
-        $this->session->clearInventories();
+        $this->session->clearAllInventories();
         $this->session->message("{YELLOW}Use the eggs you received in your inventory to set the shop and upgrades of the team");
 
         $inventory = $this->session->getPlayer()->getInventory();
