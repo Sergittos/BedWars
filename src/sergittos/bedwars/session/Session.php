@@ -372,11 +372,12 @@ class Session {
                 $this->game->broadcastMessage($session_username . " {GRAY}was knocked into the void by " . $killer_username . "{GRAY}.");
             }
 
-            foreach($this->player->getInventory()->getContents() as $item) {
-                if(in_array($item->getTypeId(), [ItemTypeIds::IRON_INGOT, ItemTypeIds::GOLD_INGOT, ItemTypeIds::DIAMOND, ItemTypeIds::EMERALD])) {
-                    if (!$killer_session->getPlayer()->getGamemode() === GameMode::SPECTATOR){
-                        $killer_session->getPlayer()->getInventory()->addItem($item);
+            if(!$killer_session->isSpectator()) {
+                foreach($this->player->getInventory()->getContents() as $item) {
+                    if(!in_array($item->getTypeId(), [ItemTypeIds::IRON_INGOT, ItemTypeIds::GOLD_INGOT, ItemTypeIds::DIAMOND, ItemTypeIds::EMERALD])) {
+                        continue;
                     }
+                    $killer_session->getPlayer()->getInventory()->addItem($item);
                 }
             }
         }
