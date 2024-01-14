@@ -316,7 +316,7 @@ class GameListener implements Listener {
             }
 
             foreach($event->getPackets() as $packet) {
-                if(!property_exists($packet, "actorRuntimeId")) {
+                if(!$packet instanceof MobEquipmentPacket and !$packet instanceof MobArmorEquipmentPacket) {
                     continue;
                 }
 
@@ -325,17 +325,15 @@ class GameListener implements Listener {
                     continue;
                 }
 
-                switch(true) {
-                    case $packet instanceof MobEquipmentPacket:
-                        $packet->item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
-                        break;
-                    case $packet instanceof MobArmorEquipmentPacket:
-                        $item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
-                        $packet->head = $item;
-                        $packet->chest = $item;
-                        $packet->legs = $item;
-                        $packet->feet = $item;
-                        break;
+                $item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
+
+                if($packet instanceof MobEquipmentPacket) {
+                    $packet->item = $item;
+                } else {
+                    $packet->head = $item;
+                    $packet->chest = $item;
+                    $packet->legs = $item;
+                    $packet->feet = $item;
                 }
             }
         }
