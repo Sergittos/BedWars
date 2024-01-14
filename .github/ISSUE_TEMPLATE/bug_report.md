@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: Bug
-labels: 'Category: Bug, Category: Suggestion, Status: Unconfirmed'
+labels: 'Category: Bug, Status: Unconfirmed'
 assignees: Sergittos
 
 ---
