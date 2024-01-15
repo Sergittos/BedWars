@@ -22,6 +22,7 @@ class GameUtils {
         return match($players_per_team) {
             1 => "Solo",
             2 => "Duos",
+            3 => "Trios",
             4 => "Squads",
             default => "Unknown"
         };
