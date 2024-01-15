@@ -17,6 +17,9 @@ use function gmdate;
 class GameScoreboard extends Scoreboard {
 
     protected function getLines(Session $session): array {
+        if($session->getGame()->getStage() === null){
+            return [];
+        }
         $stage = $session->getGame()->getStage();
         if(!$stage instanceof PlayingStage) {
             return [];
