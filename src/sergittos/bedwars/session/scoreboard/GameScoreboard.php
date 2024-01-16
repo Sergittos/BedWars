@@ -46,7 +46,7 @@ class GameScoreboard extends Scoreboard {
     }
 
     private function getBedStatus(Team $team): string {
-        return !$team->isAlive() ? "{RED}X" : "{GREEN}" . ($team->isBedDestroyed() ? $team->getMembersCount() : "Alive");
+        return !$team->isAlive() ? "{RED}✖" : "{GREEN}" . ($team->isBedDestroyed() ? $team->getMembersCount() : "Alive");
     }
 
 }
