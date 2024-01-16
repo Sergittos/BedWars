@@ -17,7 +17,7 @@ trait MapProperties {
 
     protected Vector3 $spectator_spawn_position;
 
-    protected int $players_per_team;
+    protected int $players_per_team; // TODO: Make an enum for this
     protected int $max_capacity; // slots?
 
     protected World $waiting_world;
