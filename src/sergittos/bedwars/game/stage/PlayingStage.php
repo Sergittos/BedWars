@@ -98,6 +98,10 @@ class PlayingStage extends Stage {
                 $session->attemptToRespawn();
             }
 
+            if(!$session->hasTeam()) {
+                continue;
+            }
+
             $team = $session->getTeam();
             if($team->getUpgrades()->getHealPool()->canLevelUp()) {
                 continue;

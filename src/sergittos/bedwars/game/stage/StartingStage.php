@@ -10,6 +10,7 @@ use pocketmine\world\sound\ClickSound;
 use sergittos\bedwars\game\stage\trait\JoinableTrait;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\GameUtils;
+use function count;
 use function str_replace;
 
 class StartingStage extends Stage {
@@ -26,7 +27,7 @@ class StartingStage extends Stage {
     public function onQuit(Session $session): void {
         $this->onSessionQuit($session);
 
-        if(!$this->game->isFull()) {
+        if(count($this->game->getPlayers()) < ($this->game->getMap()->getMaxCapacity() / 2)) {
             $this->game->setStage(new WaitingStage());
         }
     }

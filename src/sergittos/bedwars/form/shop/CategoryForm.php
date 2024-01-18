@@ -29,6 +29,11 @@ class CategoryForm extends SimpleForm {
     }
 
     protected function onCreation(): void {
+        if(!$this->session->isPlaying() or !$this->session->hasTeam()) {
+            // This should never happen, but just in case
+            return;
+        }
+
         foreach($this->category->getProducts($this->session) as $product) {
             $button = new Button($product->getDisplayName($this->session) . "\n" . $product->getDescription($this->session));
             $button->setSubmitListener(function(Player $player) use ($product) {
@@ -45,7 +50,7 @@ class CategoryForm extends SimpleForm {
         if($this->canPurchaseProduct($product) and $product->onPurchase($this->session)) {
             $player = $this->session->getPlayer();
             $player->getInventory()->removeItem($product->getOre());
-            $player->sendForm(new CategoryForm($this->session, $this->category, true));
+            $player->sendForm(new CategoryForm($this->session, $this->category));
 
             $this->session->message("{GREEN}You purchased {GOLD}" . $product->getName());
         }

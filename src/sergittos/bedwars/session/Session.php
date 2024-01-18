@@ -393,7 +393,7 @@ class Session {
         $this->game_settings->decreasePickaxeTier();
         $this->game_settings->decreaseAxeTier();
 
-        if($this->team->isBedDestroyed()) {
+        if($this->hasTeam() and $this->team->isBedDestroyed()) {
             $this->game->removePlayer($this, false, true);
             return;
         } elseif($this->game->getStage() instanceof EndingStage) {
@@ -438,12 +438,11 @@ class Session {
 
     private function unvanish(): void {
         foreach($this->game->getPlayers() as $session) {
-            $player = $session->getPlayer();
-            $viewers = array_map(fn(Player $target) => $target->getNetworkSession(), $player->getViewers());
+            $network_session = $session->getPlayer()->getNetworkSession();
+            $broadcaster = $network_session->getEntityEventBroadcaster();
 
-            $broadcaster = $player->getNetworkSession()->getEntityEventBroadcaster();
-            $broadcaster->onMobArmorChange($viewers, $this->player);
-            $broadcaster->onMobMainHandItemChange($viewers, $this->player);
+            $broadcaster->onMobArmorChange([$network_session], $this->player);
+            $broadcaster->onMobMainHandItemChange([$network_session], $this->player);
         }
     }
 

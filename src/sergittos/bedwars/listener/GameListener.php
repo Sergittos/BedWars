@@ -99,7 +99,8 @@ class GameListener implements Listener {
     public function onEntityDamageByEntity(EntityDamageByEntityEvent $event): void {
         $damager = $event->getDamager();
         $entity = $event->getEntity();
-        if(!$damager instanceof Player or !$entity instanceof Player) {
+        if(!$damager instanceof Player or !$entity instanceof Player or
+            !SessionFactory::hasSession($damager) or !SessionFactory::hasSession($entity)) {
             return;
         }
         $damager_session = SessionFactory::getSession($damager);

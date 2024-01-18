@@ -39,6 +39,7 @@ class Game {
 
     private Map $map;
     private Stage $stage;
+
     private ?World $world = null;
 
     /** @var Generator[] */

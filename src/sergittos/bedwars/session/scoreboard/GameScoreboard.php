@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace sergittos\bedwars\session\scoreboard;
 
 
-use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\stage\PlayingStage;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\session\Session;
@@ -17,6 +16,10 @@ use function gmdate;
 class GameScoreboard extends Scoreboard {
 
     protected function getLines(Session $session): array {
+        if(!$session->hasGame()) {
+            return [];
+        }
+
         $stage = $session->getGame()->getStage();
         if(!$stage instanceof PlayingStage) {
             return [];
