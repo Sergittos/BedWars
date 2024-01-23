@@ -187,11 +187,17 @@ class GameListener implements Listener {
             return;
         }
 
-        foreach($event->getTransaction()->getBlocks() as [$x, $y, $z, $block]) {
-            if($block instanceof TNT) {
-                BedWars::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($block) {
-                    $block->ignite(60);
-                }), 1);
+        foreach ($event->getTransaction()->getBlocks() as [$x, $y, $z, $block]) {
+            if ($block instanceof TNT) {
+                $world = $block->getPosition()->getWorld();
+                if ($world !== null && $world->isLoaded()) {
+                    BedWars::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($block) {
+                        // Ensure the world is still loaded when the task runs
+                        if ($block->getPosition()->getWorld() !== null) {
+                            $block->ignite(60);
+                        }
+                    }), 1);
+                }
                 continue;
             }
             $session->getGame()->addBlock($block->getPosition());
