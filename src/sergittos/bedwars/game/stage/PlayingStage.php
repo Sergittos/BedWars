@@ -69,10 +69,12 @@ class PlayingStage extends Stage {
         $session->resetSettings();
         $session->setTrackingSession(null);
 
-        $team = $session->getTeam();
-        $team->removeMember($session);
-        if(!$team->isAlive()) {
-            $this->game->broadcastMessage("{BOLD}{WHITE}TEAM ELIMINATED > {RESET}" . $team->getColoredName() . " Team {RED}has been eliminated!");
+        if ($session->getTeam() !== null) {
+            $team = $session->getTeam();
+            $team->removeMember($session);
+            if (!$team->isAlive()) {
+                $this->game->broadcastMessage("{BOLD}{WHITE}TEAM ELIMINATED > {RESET}" . $team->getColoredName() . " Team {RED}has been eliminated!");
+            }
         }
 
         $this->game->despawnGeneratorsFrom($session);
