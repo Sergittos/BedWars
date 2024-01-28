@@ -441,24 +441,26 @@ class GameListener implements Listener {
     }
 
     private function checkEntities(Player $player): void {
-        $network_session = $player->getNetworkSession();
-        $position = $player->getPosition();
-        foreach($player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy(12, 12, 12), $player) as $entity) {
-            if(!$entity instanceof Villager) {
-                continue;
+        if($player->getNetworkSession()->isConnected()){
+            $network_session = $player->getNetworkSession();
+            $position = $player->getPosition();
+            foreach($player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy(12, 12, 12), $player) as $entity) {
+                if(!$entity instanceof Villager) {
+                    continue;
+                }
+
+                $yaw = MathUtils::calculateYaw($position, $location = $entity->getLocation());
+                $pitch = MathUtils::calculatePitch($position, $location);
+
+                $network_session->sendDataPacket(MoveActorAbsolutePacket::create(
+                    $entity->getId(),
+                    $location,
+                    $pitch,
+                    $yaw,
+                    $yaw,
+                    0
+                ));
             }
-
-            $yaw = MathUtils::calculateYaw($position, $location = $entity->getLocation());
-            $pitch = MathUtils::calculatePitch($position, $location);
-
-            $network_session->sendDataPacket(MoveActorAbsolutePacket::create(
-                $entity->getId(),
-                $location,
-                $pitch,
-                $yaw,
-                $yaw,
-                0
-            ));
         }
     }
 
