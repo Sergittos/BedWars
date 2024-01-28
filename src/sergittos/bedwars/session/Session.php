@@ -173,9 +173,11 @@ class Session {
     }
 
     public function updateCompassDirection(): void {
-        $this->player->getNetworkSession()->syncWorldSpawnPoint(
-            $this->tracking_session !== null ? $this->tracking_session->getPlayer()->getPosition() : $this->player->getWorld()->getSpawnLocation()
-        );
+        if ($this->player->isConnected()) {
+            $this->player->getNetworkSession()->syncWorldSpawnPoint(
+                $this->tracking_session !== null ? $this->tracking_session->getPlayer()->getPosition() : $this->player->getWorld()->getSpawnLocation()
+            );
+        }
     }
 
     public function updateScoreboard(): void {
@@ -284,19 +286,24 @@ class Session {
     }
 
     public function sendDataPacket(ClientboundPacket $packet): void {
-        $this->player->getNetworkSession()->sendDataPacket($packet);
+        if ($this->player->isConnected()) {
+            $this->player->getNetworkSession()->sendDataPacket($packet);
+        }
     }
 
     public function playSound(string $sound, float $volume = 1.0, float $pitch = 1.0): void {
-        $location = $this->player->getLocation();
-        $this->sendDataPacket(PlaySoundPacket::create(
-            $sound,
-            $location->getX(),
-            $location->getY(),
-            $location->getZ(),
-            $volume,
-            $pitch
-        ));
+        if ($this->player->isConnected()) {
+            $location = $this->player->getLocation();
+                $this->sendDataPacket(PlaySoundPacket::create(
+                $sound,
+                $location->getX(),
+                $location->getY(),
+                $location->getZ(),
+                $volume,
+                $pitch
+            )
+            );
+        }
     }
 
     public function clearAllInventories(): void {
@@ -430,19 +437,23 @@ class Session {
         $slot = $this->player->getInventory()->getHeldItemIndex();
 
         foreach($this->game->getPlayers() as $session) {
-            $session = $session->getPlayer()->getNetworkSession();
-            $session->sendDataPacket(MobEquipmentPacket::create($id, $item, $slot, $slot, ContainerIds::INVENTORY));
-            $session->sendDataPacket(MobArmorEquipmentPacket::create($id, $item, $item, $item, $item));
+            if ($session->getPlayer()->getNetworkSession()->isConnected()) {
+                $session = $session->getPlayer()->getNetworkSession();
+                $session->sendDataPacket(MobEquipmentPacket::create($id, $item, $slot, $slot, ContainerIds::INVENTORY));
+                $session->sendDataPacket(MobArmorEquipmentPacket::create($id, $item, $item, $item, $item));
+            }
         }
     }
 
     private function unvanish(): void {
         foreach($this->game->getPlayers() as $session) {
-            $network_session = $session->getPlayer()->getNetworkSession();
-            $broadcaster = $network_session->getEntityEventBroadcaster();
+            if($session->getPlayer()->getNetworkSession()->isConnected()){
+                $network_session = $session->getPlayer()->getNetworkSession();
+                $broadcaster = $network_session->getEntityEventBroadcaster();
 
-            $broadcaster->onMobArmorChange([$network_session], $this->player);
-            $broadcaster->onMobMainHandItemChange([$network_session], $this->player);
+                $broadcaster->onMobArmorChange([$network_session], $this->player);
+                $broadcaster->onMobMainHandItemChange([$network_session], $this->player);
+            }
         }
     }
 
@@ -457,13 +468,17 @@ class Session {
     }
 
     public function title(string $title, string $subtitle = "", int $fade_in = 0, int $stay = 21, int $fade_out = 0): void {
-        $this->player->sendTitle(
-            ColorUtils::translate($title), ColorUtils::translate($subtitle), $fade_in, $stay, $fade_out
-        );
+        if ($this->player->isConnected()) {
+            $this->player->sendTitle(
+                ColorUtils::translate($title), ColorUtils::translate($subtitle), $fade_in, $stay, $fade_out
+            );
+        }
     }
 
     public function message(string $message): void {
-        $this->player->sendMessage(ColorUtils::translate($message));
+        if ($this->player instanceof Player and $this->player->isConnected()) {
+            $this->player->sendMessage(ColorUtils::translate($message));
+        }
     }
 
 }
