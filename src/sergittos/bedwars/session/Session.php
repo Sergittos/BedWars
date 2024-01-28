@@ -60,9 +60,9 @@ class Session {
     private ?int $respawn_time = null;
     private ?int $last_session_hit_time = null;
 
-    private int $coins;
-    private int $kills;
-    private int $wins;
+    private int $coins = 0;
+    private int $kills = 0;
+    private int $wins = 0;
 
     private bool $loading_data;
 
