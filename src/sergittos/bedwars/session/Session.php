@@ -271,6 +271,9 @@ class Session {
     public function isOnline(): bool {
         return $this->player->isOnline();
     }
+    public function isConnected(): bool { //It will be used soon...
+        return $this->player->isConnected();
+    }
 
     public function showBossBar(string $title): void {
         $this->hideBossBar();
@@ -344,7 +347,10 @@ class Session {
     }
 
     public function teleportToHub(): void {
-        $this->player->getEffects()->clear();
+        if ($this->player instanceof Player) {
+            $this->player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED())); //The easiest way to fix an important crash
+            $this->player->getEffects()->clear();
+        }
         $this->player->setGamemode(GameMode::ADVENTURE());
         $this->player->setHealth($this->player->getMaxHealth());
         $this->player->setNameTag($this->player->getDisplayName());
