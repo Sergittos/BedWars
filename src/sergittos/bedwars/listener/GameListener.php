@@ -156,19 +156,21 @@ class GameListener implements Listener {
         }
 
         $bed_position = $team->getBedPosition();
-        $half_position = $block->getOtherHalf()->getPosition();
+        if ($block->getOtherHalf() instanceof Bed) {
+            $half_position = $block->getOtherHalf()->getPosition();
 
-        if($team->isBedDestroyed() or $half_position === null or (!$bed_position->equals($half_position) and !$bed_position->equals($position))) {
-            return;
-        }
+            if($team->isBedDestroyed() or $half_position === null or (!$bed_position->equals($half_position) and !$bed_position->equals($position))) {
+                return;
+            }
 
-        if($session->getTeam()->getName() !== $team->getName()) {
-            $team->destroyBed($game, false);
-            $game->broadcastMessage("{BOLD}{WHITE}BED DESTRUCTION > {RESET}" . $team->getColoredName() . " Bed {GRAY}was destroyed by " . $session->getColoredUsername() . "{GRAY}!");
-            $event->setDrops([]);
-        } else {
-            $session->message("{RED}You can't destroy your own bed!");
-            $event->cancel();
+            if($session->getTeam()->getName() !== $team->getName()) {
+                $team->destroyBed($game, false);
+                $game->broadcastMessage("{BOLD}{WHITE}BED DESTRUCTION > {RESET}" . $team->getColoredName() . " Bed {GRAY}was destroyed by " . $session->getColoredUsername() . "{GRAY}!");
+                $event->setDrops([]);
+            } else {
+                $session->message("{RED}You can't destroy your own bed!");
+                $event->cancel();
+            }
         }
     }
 
