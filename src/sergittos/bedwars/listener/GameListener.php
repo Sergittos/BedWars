@@ -64,7 +64,6 @@ use sergittos\bedwars\utils\GameUtils;
 use sergittos\bedwars\utils\MathUtils;
 use function array_map;
 use function in_array;
-use function property_exists;
 use function strtoupper;
 
 class GameListener implements Listener {
@@ -209,7 +208,7 @@ class GameListener implements Listener {
     public function onMove(PlayerMoveEvent $event): void {
         $player = $event->getPlayer();
         $session = SessionFactory::getSession($player);
-        if(!$session->isPlaying()) {
+        if(!$session->isPlaying() or !$session->hasTeam()) {
             return;
         }
 
