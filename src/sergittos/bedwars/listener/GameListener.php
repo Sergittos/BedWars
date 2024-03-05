@@ -9,7 +9,7 @@ namespace sergittos\bedwars\listener;
 use pocketmine\block\Air;
 use pocketmine\block\Bed;
 use pocketmine\block\Chest;
-use pocketmine\block\Glass;
+use pocketmine\block\StainedGlass;
 use pocketmine\block\TNT;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\object\ItemEntity;
@@ -307,7 +307,10 @@ class GameListener implements Listener {
 
         $block_list = [];
         foreach($event->getBlockList() as $block) {
-            if(!$game->checkBlock($block->getPosition()) or $block instanceof Glass) {
+            if($block instanceof StainedGlass) {
+                continue;
+            }
+            if(!$game->checkBlock($block->getPosition())) {
                 continue;
             }
             $block_list[] = $block;
