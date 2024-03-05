@@ -6,6 +6,7 @@ projects:
   BedwarsPM:
     path: ""
     icon: icon.png
+    projectId: 13099
     libs:
       - src: dresnite/easyui/libEasyUI
         version: 1.0.3
