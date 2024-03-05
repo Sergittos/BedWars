@@ -3,7 +3,7 @@ build-by-default: true
 branches:
 - master
 projects:
-  BedWars:
+  BedwarsPM:
     path: ""
     icon: icon.png
     libs:
