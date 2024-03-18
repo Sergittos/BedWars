@@ -22,6 +22,10 @@ class ConfigGetter {
         return self::get("ip", "play.server.net");
     }
 
+    static public function getBossbarColor(): int {
+        return self::get("Bossbar-Color", 1);
+    }
+
     static public function isSpawnProtectionEnabled(): bool {
         return self::get("spawn-protection", true);
     }
