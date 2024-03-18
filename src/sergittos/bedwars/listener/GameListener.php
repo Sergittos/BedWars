@@ -403,6 +403,10 @@ class GameListener implements Listener {
             foreach($entity->getInventory()->addItem($event->getItem()) as $remains) {
                 $world->dropItem($origin->getLocation(), $remains, new Vector3(0, 0, 0));
             }
+
+            if ($entity->getGamemode() === GameMode::SPECTATOR){
+                $event->cancel();
+            }
         }
 
         $origin->flagForDespawn();
