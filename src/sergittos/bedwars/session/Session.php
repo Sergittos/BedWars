@@ -275,7 +275,7 @@ class Session {
     public function showBossBar(string $title): void {
         $this->hideBossBar();
         $this->sendDataPacket(
-            BossEventPacket::show($this->player->getId(), ColorUtils::translate($title), 10, false, 0, BossBarColor::BLUE)
+            BossEventPacket::show($this->player->getId(), ColorUtils::translate($title), 10, false, 0, ConfigGetter::getBossbarColor())
         );
     }
 
