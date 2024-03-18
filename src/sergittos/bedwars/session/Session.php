@@ -284,7 +284,9 @@ class Session {
     }
 
     public function sendDataPacket(ClientboundPacket $packet): void {
-        $this->player->getNetworkSession()->sendDataPacket($packet);
+        if(Server::getInstance()->getPlayerExact($this->player->getName()) !== null and Server::getInstance()->getPlayerExact($this->player->getName())->getNetworkSession() !== null){
+            $this->player->getNetworkSession()->sendDataPacket($packet);
+        }
     }
 
     public function playSound(string $sound, float $volume = 1.0, float $pitch = 1.0): void {
