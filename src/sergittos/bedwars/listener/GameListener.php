@@ -51,6 +51,7 @@ use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\MoveActorAbsolutePacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\player\chat\LegacyRawChatFormatter;
+use pocketmine\player\GameMode;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
@@ -402,6 +403,9 @@ class GameListener implements Listener {
 
             foreach($entity->getInventory()->addItem($event->getItem()) as $remains) {
                 $world->dropItem($origin->getLocation(), $remains, new Vector3(0, 0, 0));
+            }
+            if ($entity->getGamemode() === GameMode::SPECTATOR){
+                $event->cancel();
             }
         }
 

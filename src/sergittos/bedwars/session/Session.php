@@ -275,7 +275,7 @@ class Session {
     public function showBossBar(string $title): void {
         $this->hideBossBar();
         $this->sendDataPacket(
-            BossEventPacket::show($this->player->getId(), ColorUtils::translate($title), 10, false, 0, BossBarColor::BLUE)
+            BossEventPacket::show($this->player->getId(), ColorUtils::translate($title), 10, false, 0, ConfigGetter::getBossbarColor())
         );
     }
 
@@ -284,7 +284,9 @@ class Session {
     }
 
     public function sendDataPacket(ClientboundPacket $packet): void {
-        $this->player->getNetworkSession()->sendDataPacket($packet);
+        if(Server::getInstance()->getPlayerExact($this->player->getName()) !== null and Server::getInstance()->getPlayerExact($this->player->getName())->getNetworkSession() !== null){
+            $this->player->getNetworkSession()->sendDataPacket($packet);
+        }
     }
 
     public function playSound(string $sound, float $volume = 1.0, float $pitch = 1.0): void {

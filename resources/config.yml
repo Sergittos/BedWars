@@ -7,6 +7,16 @@ ip: "play.server.net"
 # Players won't be able to break/place blocks or receive damage on the lobby if this is enabled
 spawn-protection: true
 
+# PINK = 0
+# BLUE = 1
+# RED = 2
+# GREEN = 3
+# YELLOW = 4
+# PURPLE = 5
+# REBECCA_PURPLE = 6
+# WHITE = 7
+Bossbar-Color: 1
+
 # Provider
 # Available providers: sqlite, mysql, json
 provider: "sqlite"

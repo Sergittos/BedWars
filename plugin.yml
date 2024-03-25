@@ -1,7 +1,7 @@
 main: sergittos\bedwars\BedWars
 name: BedwarsPM
 api: 5.0.0
-version: 1.0.9
-author: Sergittos (@Sergittos)
+version: 1.0.10
+author: [Sergittos, UnknownNull]
 website: github.com/Sergittos
 description: 🛏️ A BedWars plugin for PocketMine-MP servers
