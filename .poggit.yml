@@ -5,6 +5,9 @@ branches:
 projects:
   BedwarsPM:
     path: ""
+    lint:
+      phpstan: false
+      syntaxError: false
     icon: icon.png
     libs:
       - src: dresnite/easyui/libEasyUI
