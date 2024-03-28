@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace sergittos\bedwars\listener;
 
-
+use pocketmine\player\GameMode;
 use pocketmine\block\Air;
 use pocketmine\block\Bed;
 use pocketmine\block\Chest;
