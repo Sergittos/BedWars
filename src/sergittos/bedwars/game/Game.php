@@ -24,7 +24,7 @@ use sergittos\bedwars\game\generator\presets\TextGenerator;
 use sergittos\bedwars\game\map\Map;
 use sergittos\bedwars\game\stage\Stage;
 use sergittos\bedwars\game\stage\WaitingStage;
-use sergittos\bedwars\game\task\RemoveGameTask;
+use sergittos\bedwars\game\task\DirectoryUnlinkTask;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\session\Session;
 use function array_merge;
@@ -281,7 +281,6 @@ class Game {
         }
 
         $this->world = $worldManager->getWorldByName($name);
-        $this->world->setAutoSave(false);
         $this->world->setTime(World::TIME_DAY);
         $this->world->stopTime();
 
@@ -294,11 +293,9 @@ class Game {
     }
 
     public function unloadWorld(): void {
-        if($this->world !== null) {
+        if($this->world !== null and $this->world->isLoaded()) {
             Server::getInstance()->getWorldManager()->unloadWorld($this->world);
-
             $this->world = null;
-            $this->blocks = [];
         }
     }
 
@@ -309,22 +306,12 @@ class Game {
         foreach($this->spectators as $spectator) {
             $this->removeSpectator($spectator);
         }
-        foreach($this->generators as $generator) {
-            $generator->reset();
-        }
 
         $this->unloadWorld();
 
-        if(BedWars::getInstance()->getGameManager()->getGamesCount($this->map) > 5) {
-            Server::getInstance()->getAsyncPool()->submitTask(new RemoveGameTask($this));
-            return;
-        }
-
-        foreach($this->teams as $team) {
-            $team->reset();
-        }
-
-        $this->setStage(new WaitingStage());
+        Server::getInstance()->getAsyncPool()->submitTask(new DirectoryUnlinkTask([$this->map->createWorldPath($this->id)], function() {
+            BedWars::getInstance()->getGameManager()->removeGame($this->id);
+        }));
     }
 
 }

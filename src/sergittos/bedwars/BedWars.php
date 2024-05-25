@@ -23,7 +23,6 @@ use sergittos\bedwars\game\entity\shop\UpgradesShopVillager;
 use sergittos\bedwars\game\GameHeartbeat;
 use sergittos\bedwars\game\GameManager;
 use sergittos\bedwars\game\map\MapFactory;
-use sergittos\bedwars\game\task\RemoveGameTask;
 use sergittos\bedwars\listener\GameListener;
 use sergittos\bedwars\listener\ItemListener;
 use sergittos\bedwars\listener\SessionListener;
@@ -83,13 +82,12 @@ class BedWars extends PluginBase {
     }
 
     protected function onDisable(): void {
-        foreach(SessionFactory::getSessions() as $session) {
-            $session->save();
+        foreach($this->gameManager->getGames() as $game) {
+            $game->reset();
         }
 
-        foreach($this->gameManager->getGames() as $game) {
-            $game->unloadWorld();
-            $this->getServer()->getAsyncPool()->submitTask(new RemoveGameTask($game));
+        foreach(SessionFactory::getSessions() as $session) {
+            $session->save();
         }
     }
 

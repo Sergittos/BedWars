@@ -158,15 +158,6 @@ class Team implements JsonSerializable {
         $this->generators[] = $generator;
     }
 
-    private function removeEmeraldGenerator(): void {
-        foreach($this->generators as $index => $generator) {
-            if($generator->getType() === GeneratorType::TEAM_EMERALD) {
-                unset($this->generators[$index]);
-                break;
-            }
-        }
-    }
-
     public function addMember(Session $session): void {
         $this->members[] = $session;
 
@@ -207,21 +198,6 @@ class Team implements JsonSerializable {
             $member->message($message);
             // TODO: Play sound
         }
-    }
-
-    public function reset(): void {
-        $this->bedDestroyed = false;
-        $this->upgrades = new Upgrades();
-
-        $this->removeEmeraldGenerator();
-
-        foreach($this->generators as $generator) {
-            $generator->reset();
-        }
-        foreach($this->members as $member) {
-            $member->setTeam(null);
-        }
-        $this->members = [];
     }
 
     public function jsonSerialize(): array {

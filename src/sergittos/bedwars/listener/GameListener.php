@@ -38,7 +38,6 @@ use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketSendEvent;
-use pocketmine\event\world\ChunkUnloadEvent;
 use pocketmine\item\ItemTypeIds;
 use pocketmine\item\MilkBucket;
 use pocketmine\item\VanillaItems;
@@ -424,13 +423,6 @@ class GameListener implements Listener {
             $game->removePlayer($session, false);
         } elseif($session->isSpectator()) {
             $game->removeSpectator($session);
-        }
-    }
-
-    public function onChunkUnload(ChunkUnloadEvent $event): void {
-        $game = BedWars::getInstance()->getGameManager()->getGameByWorld($event->getWorld());
-        if($game !== null and $game->getStage() instanceof PlayingStage) {
-            $event->cancel();
         }
     }
 

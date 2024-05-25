@@ -46,7 +46,6 @@ class CreateMapTask extends AsyncTask {
         file_put_contents($path, json_encode($data, JSON_THROW_ON_ERROR));
 
         MapFactory::addMap($map);
-        $plugin->getGameManager()->generateGames($map);
     }
 
 }

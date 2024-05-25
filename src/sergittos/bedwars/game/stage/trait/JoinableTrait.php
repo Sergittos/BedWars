@@ -32,6 +32,10 @@ trait JoinableTrait {
 
     public function onQuit(Session $session): void {
         $this->game->broadcastMessage("{GRAY}" . $session->getUsername() . " {YELLOW}has quit!");
+
+        if($this->game->getPlayersCount() === 0) {
+            $this->game->reset();
+        }
     }
 
 }

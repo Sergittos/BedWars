@@ -10,13 +10,13 @@ use pocketmine\Server;
 use pocketmine\world\World;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\map\Map;
-use sergittos\bedwars\game\map\MapFactory;
 use sergittos\bedwars\game\shop\ShopFactory;
 use sergittos\bedwars\game\stage\StartingStage;
 use sergittos\bedwars\game\stage\WaitingStage;
-use sergittos\bedwars\game\task\GenerateGameTask;
-use function array_rand;
+use sergittos\bedwars\game\task\DirectoryCopyTask;
+use sergittos\bedwars\session\Session;
 use function count;
+use function usort;
 
 class GameManager {
 
@@ -27,9 +27,6 @@ class GameManager {
 
     public function __construct() {
         ShopFactory::init();
-        foreach(MapFactory::getMaps() as $map) { // Generate 3 games per map by default
-            $this->generateGames($map);
-        }
     }
 
     public function getNextGameId(): int {
@@ -69,17 +66,10 @@ class GameManager {
         return null;
     }
 
-    public function findRandomGame(int $playersPerTeam): ?Game {
-        $maps = MapFactory::getMapsByPlayers($playersPerTeam);
-        if($maps !== []) {
-            $map = $maps[array_rand($maps)];
-
-            return $this->findGame($map);
-        }
-        return null;
-    }
-
-    public function findGame(Map $map): ?Game {
+    /**
+     * @return Game[]
+     */
+    public function getAvailableGames(Map $map): array {
         $games = [];
         foreach($this->getGamesByMap($map) as $game) {
             $stage = $game->getStage();
@@ -89,28 +79,38 @@ class GameManager {
         }
 
         if(empty($games)) {
-            $this->generateGames($map);
-            return null;
+            return [];
         }
 
-        $found = null;
-        $index = PHP_INT_MIN;
-        foreach($games as $game) {
-            $count = $game->getPlayersCount();
-            if($count > $index) {
-                $index = $count;
-                $found = $game;
-            }
-        }
-        return $found;
+        usort($games, function($a, $b) {
+            return $b->getPlayersCount() <=> $a->getPlayersCount();
+        });
+
+        return $games;
     }
 
-    public function generateGames(Map $map): void {
-        for($i = 0; $i < 3; ++$i) {
-            Server::getInstance()->getAsyncPool()->submitTask(new GenerateGameTask(
-                $this->getNextGameId(), $map
-            ));
+    public function findGame(Map $map, Session $session): void {
+        $games = $this->getAvailableGames($map);
+        if(count($games) === 0) {
+            $this->generateGame($map, $session);
+        } else {
+            $games[0]->addPlayer($session);
         }
+    }
+
+    private function generateGame(Map $map, Session $session): void {
+        $id = $this->getNextGameId();
+
+        Server::getInstance()->getAsyncPool()->submitTask(new DirectoryCopyTask($map->getWorldPath(), $map->createWorldPath($id), function() use ($map, $session, $id): void {
+            $this->addGame($game = new Game($map, $id));
+
+            if($session->isSpectator()) {
+                $session->getGame()->removeSpectator($session);
+            }
+            if(!$session->isPlaying()) {
+                $game->addPlayer($session);
+            }
+        }));
     }
 
     public function addGame(Game $game): void {

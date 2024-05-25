@@ -9,25 +9,23 @@ namespace sergittos\bedwars\form\queue\element;
 use EasyUI\element\Button;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\Game;
+use sergittos\bedwars\game\map\Map;
+use sergittos\bedwars\game\map\MapFactory;
 use sergittos\bedwars\session\SessionFactory;
 
 class PlayGameButton extends Button {
 
-    public function __construct(string $text, ?Game $game) {
-        parent::__construct($text, null, function(Player $player) use ($game) {
-            if($game === null) {
-                $player->sendMessage(TextFormat::RED . "There are no games for this map! Try again in a few seconds");
+    public function __construct(string $name, ?Map $map, int $playersPerTeam) {
+        parent::__construct($name, null, function(Player $player) use ($map, $playersPerTeam) {
+            $map = $map !== null ? $map : MapFactory::getRandomMap($playersPerTeam);
+            if($map === null) {
+                $player->sendMessage(TextFormat::RED . "There are no maps available at this moment, try again in a few minutes");
                 return;
             }
 
-            $session = SessionFactory::getSession($player);
-            if($session->isSpectator()) {
-                $session->getGame()->removeSpectator($session);
-            } elseif($session->isPlaying()) {
-                return;
-            }
-            $game->addPlayer($session);
+            BedWars::getInstance()->getGameManager()->findGame($map, SessionFactory::getSession($player));
         });
     }
 

@@ -23,7 +23,7 @@ class PlayBedwarsForm extends SimpleForm {
     }
 
     protected function onCreation(): void {
-        $this->addButton(new PlayGameButton("Random map", BedWars::getInstance()->getGameManager()->findRandomGame($this->playersPerTeam)));
+        $this->addButton(new PlayGameButton("Random map", null, $this->playersPerTeam));
         $this->addSelectMapButton();
     }
 

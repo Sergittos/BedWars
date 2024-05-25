@@ -22,7 +22,7 @@ class SelectMapForm extends SimpleForm {
 
     protected function onCreation(): void {
         foreach(MapFactory::getMapsByPlayers($this->playersPerTeam) as $map) {
-            $this->addButton(new PlayGameButton($map->getName(), BedWars::getInstance()->getGameManager()->findGame($map)));
+            $this->addButton(new PlayGameButton($map->getName(), $map, $this->playersPerTeam));
         }
     }
 

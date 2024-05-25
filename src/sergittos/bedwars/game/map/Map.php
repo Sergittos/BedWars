@@ -8,10 +8,13 @@ namespace sergittos\bedwars\game\map;
 
 use JsonSerializable;
 use pocketmine\math\Vector3;
+use pocketmine\Server;
 use pocketmine\world\World;
+use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\generator\Generator;
 use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\game\team\Team;
+use Symfony\Component\Filesystem\Path;
 use function array_map;
 use function uniqid;
 
@@ -43,6 +46,14 @@ class Map implements JsonSerializable {
      */
     public function getTeams(): array {
         return $this->teams;
+    }
+
+    public function getWorldPath(): string {
+        return Path::join(BedWars::getInstance()->getDataFolder(), "worlds", $this->name);
+    }
+
+    public function createWorldPath(int $id): string {
+        return Path::join(Server::getInstance()->getDataPath(), "worlds", $this->name . "-" . $id);
     }
 
     public function jsonSerialize(): array {

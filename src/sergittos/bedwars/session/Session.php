@@ -152,6 +152,9 @@ class Session {
 
     public function setGame(?Game $game): void {
         $this->game = $game;
+        if($this->game === null) {
+            $this->team = null;
+        }
     }
 
     public function setTeam(?Team $team): void {

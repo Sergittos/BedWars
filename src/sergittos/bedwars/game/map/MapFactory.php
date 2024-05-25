@@ -17,6 +17,7 @@ use sergittos\bedwars\game\team\Area;
 use sergittos\bedwars\game\team\Team;
 use function array_filter;
 use function array_map;
+use function array_rand;
 use function file_get_contents;
 use function json_decode;
 use function strtolower;
@@ -90,9 +91,18 @@ class MapFactory {
      * @return Map[]
      */
     static public function getMapsByPlayers(int $playersPerTeam): array {
-        return array_filter(self::$maps, function(Map $map) use ($playersPerTeam) {
-            return $map->getPlayersPerTeam() === $playersPerTeam;
-        });
+        $maps = [];
+        foreach(self::$maps as $map) {
+            if($map->getPlayersPerTeam() === $playersPerTeam) {
+                $maps[] = $map;
+            }
+        }
+        return $maps;
+    }
+
+    static public function getRandomMap(int $playersPerTeam): ?Map {
+        $maps = self::getMapsByPlayers($playersPerTeam);
+        return $maps[array_rand($maps)];
     }
 
     /**
