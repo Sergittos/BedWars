@@ -11,7 +11,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
 use sergittos\bedwars\game\team\Area;
 use sergittos\bedwars\item\BedwarsItem;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\item\setup\ClaimingWandItem;
 use sergittos\bedwars\session\setup\builder\TeamBuilder;
 use sergittos\bedwars\session\setup\step\PreparingMapStep;
@@ -37,8 +37,8 @@ abstract class SetAreaStep extends Step {
         $this->session->message("{GREEN}Gave you a claim wand.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, BedwarsItems::CLAIMING_WAND()->asItem());
-        $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::CLAIMING_WAND()->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem());
     }
 
     public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {

@@ -18,7 +18,7 @@ class SetTeamGeneratorItem extends SetupItem {
 
     public function onInteract(Session $session): void {}
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaBlocks::IRON()->asItem();
     }
 

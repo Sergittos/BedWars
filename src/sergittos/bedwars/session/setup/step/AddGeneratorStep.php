@@ -9,7 +9,7 @@ namespace sergittos\bedwars\session\setup\step;
 use pocketmine\block\Block;
 use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\item\BedwarsItem;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\item\setup\AddGeneratorItem;
 
 class AddGeneratorStep extends Step {
@@ -21,17 +21,17 @@ class AddGeneratorStep extends Step {
     }
 
     protected function onStart(): void {
-        $block = match($this->type) {
-            GeneratorType::DIAMOND => BedwarsItems::DIAMOND_GENERATOR(),
-            GeneratorType::EMERALD => BedwarsItems::EMERALD_GENERATOR()
+        $item = match($this->type) {
+            GeneratorType::DIAMOND => BedwarsItemRegistry::DIAMOND_GENERATOR(),
+            GeneratorType::EMERALD => BedwarsItemRegistry::EMERALD_GENERATOR()
         };
 
         $this->session->clearAllInventories();
         $this->session->message("{YELLOW}Break the block below the generator with the item you have received in your inventory to set the generator.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, $block->asItem());
-        $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
+        $inventory->setItem(0, $item);
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL());
     }
 
     public function onBlockBreak(Block $block, BedwarsItem $item): void {

@@ -27,7 +27,7 @@ use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\stage\EndingStage;
 use sergittos\bedwars\game\team\Team;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\session\scoreboard\LobbyScoreboard;
 use sergittos\bedwars\session\scoreboard\Scoreboard;
 use sergittos\bedwars\session\settings\GameSettings;
@@ -315,24 +315,24 @@ class Session {
         $this->clearAllInventories();
 
         $inventory = $this->player->getInventory();
-        $inventory->setItem(0, BedwarsItems::CONFIGURATION()->asItem());
-        $inventory->setItem(4, BedwarsItems::CREATE_MAP()->asItem());
-        $inventory->setItem(8, BedwarsItems::EXIT_SETUP()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::CONFIGURATION());
+        $inventory->setItem(4, BedwarsItemRegistry::CREATE_MAP());
+        $inventory->setItem(8, BedwarsItemRegistry::EXIT_SETUP());
     }
 
     public function giveWaitingItems(): void {
         $this->clearAllInventories();
-        $this->player->getInventory()->setItem(8, BedwarsItems::LEAVE_GAME()->asItem());
+        $this->player->getInventory()->setItem(8, BedwarsItemRegistry::LEAVE_GAME());
     }
 
     public function giveSpectatorItems(): void {
         $this->clearAllInventories();
 
         $inventory = $this->player->getInventory();
-        $inventory->setItem(0, BedwarsItems::TELEPORTER()->asItem());
-        $inventory->setItem(4, BedwarsItems::SPECTATOR_SETTINGS()->asItem());
-        $inventory->setItem(7, BedwarsItems::PLAY_AGAIN()->asItem());
-        $inventory->setItem(8, BedwarsItems::RETURN_TO_LOBBY()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::TELEPORTER());
+        $inventory->setItem(4, BedwarsItemRegistry::SPECTATOR_SETTINGS());
+        $inventory->setItem(7, BedwarsItemRegistry::PLAY_AGAIN());
+        $inventory->setItem(8, BedwarsItemRegistry::RETURN_TO_LOBBY());
     }
 
     public function addEffect(EffectInstance $effectInstance): void {

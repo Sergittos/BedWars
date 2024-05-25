@@ -22,7 +22,7 @@ class ConfigurationItem extends BedwarsItem {
         $session->getPlayer()->sendForm(new SetupMapForm($session));
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaItems::PAPER();
     }
 

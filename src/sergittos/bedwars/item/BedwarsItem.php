@@ -23,7 +23,7 @@ abstract class BedwarsItem {
     }
 
     public function asItem(): Item {
-        $item = $this->realItem();
+        $item = $this->getMaterial();
         $item->setCustomName($this->name);
 
         $nbt = $item->getNamedTag();
@@ -38,6 +38,6 @@ abstract class BedwarsItem {
 
     abstract public function onInteract(Session $session): void;
 
-    abstract protected function realItem(): Item;
+    abstract protected function getMaterial(): Item;
 
 }

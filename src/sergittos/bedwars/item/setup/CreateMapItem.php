@@ -29,7 +29,7 @@ class CreateMapItem extends BedwarsItem {
         }
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaItems::EMERALD();
     }
 

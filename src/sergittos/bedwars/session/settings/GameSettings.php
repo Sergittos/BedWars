@@ -13,7 +13,7 @@ use pocketmine\item\Item;
 use pocketmine\item\StringToItemParser;
 use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\session\Session;
 use function strtolower;
 use function time;
@@ -108,7 +108,7 @@ class GameSettings {
 
         $inventory = $player->getInventory();
         $inventory->addItem(VanillaItems::WOODEN_SWORD()->setUnbreakable());
-        $inventory->setItem(8, BedwarsItems::TRACKER_SHOP()->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::TRACKER_SHOP()->asItem());
 
         if($this->permanentShears) {
             $inventory->addItem(VanillaItems::SHEARS());

@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\item;
 
 
+use pocketmine\item\Item;
 use pocketmine\utils\CloningRegistryTrait;
 use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\game\shop\Shop;
@@ -24,28 +25,38 @@ use sergittos\bedwars\item\spectator\PlayAgainItem;
 use sergittos\bedwars\item\spectator\ReturnToLobbyItem;
 use sergittos\bedwars\item\spectator\SpectatorSettingsItem;
 use sergittos\bedwars\item\spectator\TeleporterItem;
+use function count;
 
 /**
- * @method static LeaveGameItem LEAVE_GAME()
- * @method static PlayAgainItem PLAY_AGAIN()
- * @method static ReturnToLobbyItem RETURN_TO_LOBBY()
- * @method static SpectatorSettingsItem SPECTATOR_SETTINGS()
- * @method static TeleporterItem TELEPORTER()
- * @method static TrackerShopItem TRACKER_SHOP()
- * @method static AddGeneratorItem DIAMOND_GENERATOR()
- * @method static AddGeneratorItem EMERALD_GENERATOR()
- * @method static AddVillagerItem ITEM_VILLAGER()
- * @method static AddVillagerItem UPGRADES_VILLAGER()
- * @method static ConfigurationItem CONFIGURATION()
- * @method static CreateMapItem CREATE_MAP()
- * @method static ExitSetupItem EXIT_SETUP()
- * @method static SetTeamGeneratorItem TEAM_GENERATOR()
- * @method static SetBedPositionItem BED_POSITION()
- * @method static ClaimingWandItem CLAIMING_WAND()
- * @method static CancelItem CANCEL()
+ * @method static Item LEAVE_GAME()
+ * @method static Item PLAY_AGAIN()
+ * @method static Item RETURN_TO_LOBBY()
+ * @method static Item SPECTATOR_SETTINGS()
+ * @method static Item TELEPORTER()
+ * @method static Item TRACKER_SHOP()
+ * @method static Item DIAMOND_GENERATOR()
+ * @method static Item EMERALD_GENERATOR()
+ * @method static Item ITEM_VILLAGER()
+ * @method static Item UPGRADES_VILLAGER()
+ * @method static Item CONFIGURATION()
+ * @method static Item CREATE_MAP()
+ * @method static Item EXIT_SETUP()
+ * @method static Item TEAM_GENERATOR()
+ * @method static Item BED_POSITION()
+ * @method static Item CLAIMING_WAND()
+ * @method static Item CANCEL()
  */
-class BedwarsItems {
-    use CloningRegistryTrait;
+class BedwarsItemRegistry {
+    use CloningRegistryTrait {
+        _registryFromString as fromString;
+    }
+
+    /**
+     * @return BedwarsItem[]
+     */
+    static public function getAll(): array {
+        return self::_registryGetAll();
+    }
 
     protected static function setup(): void {
         self::register("leave_game", new LeaveGameItem());
@@ -69,21 +80,36 @@ class BedwarsItems {
     }
 
     /**
-     * @return BedwarsItem[]
-     */
-    static public function getAll(): array {
-        return self::_registryGetAll();
-    }
-
-    /**
      * @return BedwarsItem
      */
     static public function get(string $name): object {
-        return self::_registryFromString($name);
+        return self::fromString($name);
+    }
+
+    static public function _registryFromString(string $name): Item {
+        return self::fromString($name)->asItem();
     }
 
     static private function register(string $name, BedwarsItem $item): void {
         self::_registryRegister($name, $item);
+    }
+
+    static public function __callStatic($name, $arguments) {
+        if(count($arguments) > 0) {
+            throw new \ArgumentCountError("Expected exactly 0 arguments, " . count($arguments) . " passed");
+        }
+
+        //fast path
+        if(self::$members !== null and isset(self::$members[$name])) {
+            return self::preprocessMember(self::$members[$name])->asItem();
+        }
+
+        //fallback
+        try {
+            return self::_registryFromString($name);
+        } catch(\InvalidArgumentException $exception) {
+            throw new \Error($exception->getMessage(), 0, $exception);
+        }
     }
 
 }

@@ -24,7 +24,7 @@ class PlayAgainItem extends SpectatorItem {
         $session->getPlayer()->sendForm($form);
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaItems::PAPER();
     }
 

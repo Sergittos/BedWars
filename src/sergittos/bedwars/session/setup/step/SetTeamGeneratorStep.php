@@ -8,7 +8,7 @@ namespace sergittos\bedwars\session\setup\step;
 
 use pocketmine\block\Block;
 use sergittos\bedwars\item\BedwarsItem;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\item\setup\SetTeamGeneratorItem;
 use sergittos\bedwars\session\setup\builder\TeamBuilder;
 
@@ -25,8 +25,8 @@ class SetTeamGeneratorStep extends Step {
         $this->session->message("{YELLOW}Break the block below the generator with the item you have received in your inventory to set the generator.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, BedwarsItems::TEAM_GENERATOR()->asItem());
-        $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::TEAM_GENERATOR()->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem());
     }
 
     public function onBlockBreak(Block $block, BedwarsItem $item): void {

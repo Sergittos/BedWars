@@ -9,7 +9,7 @@ namespace sergittos\bedwars\listener;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemUseEvent;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\session\SessionFactory;
 use function strtolower;
 
@@ -29,7 +29,7 @@ class ItemListener implements Listener {
             return;
         }
 
-        BedwarsItems::get(strtolower($tag->getValue()))->onInteract(SessionFactory::getSession($event->getPlayer())); // TODO: Clean
+        BedwarsItemRegistry::get(strtolower($tag->getValue()))->onInteract(SessionFactory::getSession($event->getPlayer())); // TODO: Clean
     }
 
 }

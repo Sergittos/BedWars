@@ -24,7 +24,7 @@ class TrackerShopItem extends BedwarsItem {
         $session->getPlayer()->sendForm(new ShopForm($session, "Tracker & Communication", ShopFactory::getShop(Shop::TRACKER), false));
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaItems::COMPASS();
     }
 

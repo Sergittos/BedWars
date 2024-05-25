@@ -25,7 +25,7 @@ class AddVillagerItem extends SetupItem {
 
     public function onInteract(Session $session): void {}
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaItems::VILLAGER_SPAWN_EGG();
     }
 

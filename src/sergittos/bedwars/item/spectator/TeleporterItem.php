@@ -21,7 +21,7 @@ class TeleporterItem extends SpectatorItem {
         $session->getPlayer()->sendForm(new TeleporterForm($session));
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaItems::COMPASS();
     }
 

@@ -22,7 +22,7 @@ class AddGeneratorItem extends SetupItem {
         parent::__construct(GameUtils::getGeneratorColor($name = $type->toString()) . $name . " generator");
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return StringToItemParser::getInstance()->parse(strtolower($this->type->toString()) . "_block");
     }
 

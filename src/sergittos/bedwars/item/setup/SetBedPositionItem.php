@@ -26,7 +26,7 @@ class SetBedPositionItem extends SetupItem {
 
     public function onInteract(Session $session): void {}
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         $block = VanillaBlocks::BED();
         if($this->color !== null) {
             $block->setColor($this->color);

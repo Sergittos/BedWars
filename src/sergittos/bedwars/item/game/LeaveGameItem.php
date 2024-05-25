@@ -24,7 +24,7 @@ class LeaveGameItem extends BedwarsItem {
         }
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaBlocks::BED()->setColor(DyeColor::RED())->asItem();
     }
 

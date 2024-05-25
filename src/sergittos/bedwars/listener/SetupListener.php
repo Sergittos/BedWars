@@ -12,7 +12,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\item\Item;
 use sergittos\bedwars\item\BedwarsItem;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\SessionFactory;
 
@@ -46,7 +46,7 @@ class SetupListener implements Listener {
     }
 
     private function getBedwarsItem(Item $item): BedwarsItem {
-        return BedwarsItems::get($item->getNamedTag()->getString("bedwars_name"));
+        return BedwarsItemRegistry::get($item->getNamedTag()->getString("bedwars_name"));
     }
 
     private function isCreatingMap(Session $session, Item $item): bool {

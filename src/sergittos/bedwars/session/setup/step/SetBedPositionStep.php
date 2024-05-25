@@ -13,7 +13,7 @@ use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\world\BlockTransaction;
 use sergittos\bedwars\item\BedwarsItem;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\item\setup\SetBedPositionItem;
 use sergittos\bedwars\session\setup\builder\TeamBuilder;
 
@@ -30,8 +30,8 @@ class SetBedPositionStep extends Step {
         $this->session->message("{YELLOW}Place the bed you received in your inventory to set the position.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, BedwarsItems::BED_POSITION()->setColor($this->team->getDyeColor())->asItem());
-        $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::BED_POSITION()->setColor($this->team->getDyeColor())->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem());
     }
 
     public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {

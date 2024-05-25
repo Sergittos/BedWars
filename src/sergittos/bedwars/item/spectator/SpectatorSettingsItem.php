@@ -21,7 +21,7 @@ class SpectatorSettingsItem extends SpectatorItem {
         $session->getPlayer()->sendForm(new SpectatorSettingsForm($session));
     }
 
-    protected function realItem(): Item {
+    protected function getMaterial(): Item {
         return VanillaBlocks::REDSTONE_COMPARATOR()->asItem();
     }
 

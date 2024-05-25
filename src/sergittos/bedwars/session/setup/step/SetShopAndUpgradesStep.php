@@ -12,7 +12,7 @@ use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
 use sergittos\bedwars\game\shop\Shop;
 use sergittos\bedwars\item\BedwarsItem;
-use sergittos\bedwars\item\BedwarsItems;
+use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\item\setup\AddVillagerItem;
 
 class SetShopAndUpgradesStep extends Step {
@@ -22,9 +22,9 @@ class SetShopAndUpgradesStep extends Step {
         $this->session->message("{YELLOW}Use the eggs you received in your inventory to set the shop and upgrades of the team");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, BedwarsItems::ITEM_VILLAGER()->asItem());
-        $inventory->setItem(1, BedwarsItems::UPGRADES_VILLAGER()->asItem());
-        $inventory->setItem(8, BedwarsItems::CANCEL()->asItem()->setCustomName(TextFormat::GREEN . "Done"));
+        $inventory->setItem(0, BedwarsItemRegistry::ITEM_VILLAGER()->asItem());
+        $inventory->setItem(1, BedwarsItemRegistry::UPGRADES_VILLAGER()->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem()->setCustomName(TextFormat::GREEN . "Done"));
     }
 
     public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {
