@@ -5,7 +5,9 @@
   "license": "LGPL-3.0",
   "require": {
     "pocketmine/pocketmine-mp": "^5.0.0",
-    "muqsit/invmenu": "^4.6.5"
+    "muqsit/invmenu": "^4.6.5",
+    "ext-mysqli": "*",
+    "ext-sqlite3": "*"
   },
   "autoload": {
     "psr-4": {
