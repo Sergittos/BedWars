@@ -57,8 +57,6 @@ class BedWars extends PluginBase {
         if(!is_dir($worldsDir)) {
             mkdir($worldsDir);
         }
-
-        $this->saveResource("maps.json");
     }
 
     protected function onEnable(): void {

@@ -14,6 +14,7 @@ namespace sergittos\bedwars\game\map;
 
 use pocketmine\math\Vector3;
 use pocketmine\Server;
+use pocketmine\utils\Config;
 use pocketmine\utils\ServerException;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\generator\GeneratorType;
@@ -24,19 +25,19 @@ use sergittos\bedwars\game\team\Team;
 use function array_filter;
 use function array_map;
 use function array_rand;
-use function file_get_contents;
-use function json_decode;
 use function strtolower;
-use function strtoupper;
 use function ucfirst;
 
 class MapFactory {
+
+    static private Config $config;
 
     /** @var Map[] */
     static private array $maps = [];
 
     static public function init(): void {
-        foreach(json_decode(file_get_contents(BedWars::getInstance()->getDataFolder() . "maps.json"), true) as $mapData) {
+        self::$config = new Config(BedWars::getInstance()->getDataFolder() . "maps.json");
+        foreach(self::$config->getAll() as $mapData) {
             $name = $mapData["name"];
             $worldName = $mapData["waiting_world"];
             $positionData = $mapData["spectator_spawn_position"];
@@ -84,6 +85,21 @@ class MapFactory {
                 $shopLocations, $upgradesLocations
             ));
         }
+    }
+
+    static public function injectMap(Map $map): void {
+        $data = self::$config->getAll();
+        $data[] = $map->jsonSerialize();
+
+        self::$config->setAll($data);
+        self::$config->save();
+    }
+
+    static public function destroyMap(Map $target): void {
+        self::$config->setAll(array_filter(self::$maps, function(Map $map) use ($target) {
+            return $map->getName() !== $target->getName();
+        }));
+        self::$config->save();
     }
 
     /**
@@ -141,8 +157,8 @@ class MapFactory {
         self::$maps[$map->getId()] = $map;
     }
 
-    static public function removeMap(string $id): void {
-        unset(self::$maps[$id]);
+    static public function removeMap(Map $map): void {
+        unset(self::$maps[$map->getId()]);
     }
 
     static private function createVector(array $data): Vector3 {

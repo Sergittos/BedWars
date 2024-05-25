@@ -35,20 +35,11 @@ class DeleteMapTask extends AsyncTask {
         Filesystem::recursiveUnlink($this->worldPath);
     }
 
-    public function onCompletion(): void { // TODO: Do not reuse code
+    public function onCompletion(): void {
         $map = $this->fetchLocal("map");
 
-        $plugin = BedWars::getInstance();
-        $path = $plugin->getDataFolder() . "maps.json";
-
-        $data = json_decode(file_get_contents($path), true);
-        $data = array_filter($data, function(array $mapData) use ($map): bool {
-            return $mapData["name"] !== $map->getName();
-        });
-
-        file_put_contents($path, json_encode($data, JSON_THROW_ON_ERROR));
-
-        MapFactory::removeMap($map->getId());
+        MapFactory::destroyMap($map);
+        MapFactory::removeMap($map);
     }
 
 }
