@@ -174,16 +174,16 @@ class Game {
         $this->updatePlayEntities();
     }
 
-    public function removePlayer(Session $session, bool $teleport_to_hub = true, bool $set_spectator = false): void {
+    public function removePlayer(Session $session, bool $teleportToHub = true, bool $setSpectator = false): void {
         unset($this->players[array_search($session, $this->players, true)]);
 
         $this->stage->onQuit($session);
 
-        if($teleport_to_hub) {
+        if($teleportToHub) {
             $session->teleportToHub();
         }
 
-        if($set_spectator) {
+        if($setSpectator) {
             $this->addSpectator($session);
         } else {
             $session->setGame(null);
@@ -275,12 +275,12 @@ class Game {
     public function setupWorld(): void {
         $name = $this->map->getName() . "-" . $this->id;
 
-        $world_manager = Server::getInstance()->getWorldManager();
-        if(!$world_manager->loadWorld($name)) {
+        $worldManager = Server::getInstance()->getWorldManager();
+        if(!$worldManager->loadWorld($name)) {
             throw new WorldException("Failed to load world");
         }
 
-        $this->world = $world_manager->getWorldByName($name);
+        $this->world = $worldManager->getWorldByName($name);
         $this->world->setAutoSave(false);
         $this->world->setTime(World::TIME_DAY);
         $this->world->stopTime();

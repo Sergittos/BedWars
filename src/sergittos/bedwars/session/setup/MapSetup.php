@@ -16,18 +16,18 @@ use sergittos\bedwars\session\setup\step\Step;
 class MapSetup {
 
     private Session $session;
-    private MapBuilder $map_builder;
+    private MapBuilder $mapBuilder;
     private Step $step;
 
     public function __construct(Session $session, MapBuilder $map_builder) {
         $this->session = $session;
-        $this->map_builder = $map_builder;
+        $this->mapBuilder = $map_builder;
 
         $this->setStep(new PreparingMapStep());
     }
 
     public function getMapBuilder(): MapBuilder {
-        return $this->map_builder;
+        return $this->mapBuilder;
     }
 
     public function getStep(): Step {
@@ -40,7 +40,7 @@ class MapSetup {
     }
 
     public function createMap(): void {
-        Server::getInstance()->getAsyncPool()->submitTask(new CreateMapTask($this->map_builder));
+        Server::getInstance()->getAsyncPool()->submitTask(new CreateMapTask($this->mapBuilder));
     }
 
 }

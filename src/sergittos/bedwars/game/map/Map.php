@@ -28,14 +28,14 @@ class Map implements JsonSerializable {
     public function __construct(string $name, Vector3 $spectator_spawn_position, int $players_per_team, int $max_capacity, World $waiting_world, array $generators, array $teams, array $shop_locations, array $upgrades_locations) {
         $this->id = uniqid("map-");
         $this->name = $name;
-        $this->spectator_spawn_position = $spectator_spawn_position;
-        $this->players_per_team = $players_per_team;
-        $this->max_capacity = $max_capacity;
-        $this->waiting_world = $waiting_world;
+        $this->spectatorSpawnPosition = $spectator_spawn_position;
+        $this->playersPerTeam = $players_per_team;
+        $this->maxCapacity = $max_capacity;
+        $this->waitingWorld = $waiting_world;
         $this->generators = $generators;
         $this->teams = $teams;
-        $this->shop_positions = $shop_locations;
-        $this->upgrades_positions = $upgrades_locations;
+        $this->shopPositions = $shop_locations;
+        $this->upgradesPositions = $upgrades_locations;
     }
 
     /**
@@ -48,14 +48,14 @@ class Map implements JsonSerializable {
     public function jsonSerialize(): array {
         return [
             "name" => $this->name,
-            "waiting_world" => $this->waiting_world->getFolderName(),
+            "waiting_world" => $this->waitingWorld->getFolderName(),
             "spectator_spawn_position" => [
-                "x" => $this->spectator_spawn_position->getX(),
-                "y" => $this->spectator_spawn_position->getY(),
-                "z" => $this->spectator_spawn_position->getZ()
+                "x" => $this->spectatorSpawnPosition->getX(),
+                "y" => $this->spectatorSpawnPosition->getY(),
+                "z" => $this->spectatorSpawnPosition->getZ()
             ],
-            "players_per_team" => $this->players_per_team,
-            "max_capacity" => $this->max_capacity,
+            "players_per_team" => $this->playersPerTeam,
+            "max_capacity" => $this->maxCapacity,
             "generators" => [
                 "diamond" => $this->jsonSerializePositions($this->getGeneratorPositions(GeneratorType::DIAMOND)),
                 "emerald" => $this->jsonSerializePositions($this->getGeneratorPositions(GeneratorType::EMERALD))
@@ -63,8 +63,8 @@ class Map implements JsonSerializable {
             "teams" => array_map(function(Team $team) {
                 return $team->jsonSerialize();
             }, $this->teams),
-            "shop_positions" => $this->jsonSerializePositions($this->shop_positions),
-            "upgrades_positions" => $this->jsonSerializePositions($this->upgrades_positions)
+            "shop_positions" => $this->jsonSerializePositions($this->shopPositions),
+            "upgrades_positions" => $this->jsonSerializePositions($this->upgradesPositions)
         ];
     }
 

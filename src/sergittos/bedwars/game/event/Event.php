@@ -16,7 +16,7 @@ abstract class Event {
     protected string $name;
 
     private int $duration;
-    private int $start_time;
+    private int $startTime;
 
     public function __construct(string $name, int $duration) {
         $this->name = $name;
@@ -28,7 +28,7 @@ abstract class Event {
     }
 
     private function getTimeElapsed(): int {
-        return time() - $this->start_time;
+        return time() - $this->startTime;
     }
 
     public function getTimeRemaining(): int {
@@ -45,7 +45,7 @@ abstract class Event {
 
     public function start(Game $game): void {
         $this->game = $game;
-        $this->start_time = time();
+        $this->startTime = time();
     }
 
     abstract protected function end(): void;

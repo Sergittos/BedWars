@@ -18,19 +18,19 @@ use function strtoupper;
 class TeamBuilder {
     use TeamProperties;
 
-    private Vector3 $generator_position;
+    private Vector3 $generatorPosition;
 
     public function __construct(string $name) {
         $this->name = $name;
         $this->color = ColorUtils::translate("{" . strtoupper($name) . "}");
     }
 
-    public function setSpawnPoint(Vector3 $spawn_point): void {
-        $this->spawn_point = $spawn_point;
+    public function setSpawnPoint(Vector3 $spawnPoint): void {
+        $this->spawn_point = $spawnPoint;
     }
 
-    public function setBedPosition(Vector3 $bed_position): void {
-        $this->bed_position = $bed_position;
+    public function setBedPosition(Vector3 $bedPosition): void {
+        $this->bed_position = $bedPosition;
     }
 
     public function setZone(Area $zone): void {
@@ -41,8 +41,8 @@ class TeamBuilder {
         $this->claim = $claim;
     }
 
-    public function setGeneratorPosition(Vector3 $generator_position): void {
-        $this->generator_position = $generator_position;
+    public function setGeneratorPosition(Vector3 $generatorPosition): void {
+        $this->generatorPosition = $generatorPosition;
     }
 
     public function canBeBuilt(): bool {
@@ -51,21 +51,21 @@ class TeamBuilder {
             $this->bed_position,
             $this->zone,
             $this->claim,
-            $this->generator_position
+            $this->generatorPosition
         );
     }
 
-    public function build(MapBuilder $map_builder): Team {
+    public function build(MapBuilder $mapBuilder): Team {
         return new Team(
             $this->name,
-            $map_builder->getPlayersPerTeam(),
+            $mapBuilder->getPlayersPerTeam(),
             $this->spawn_point,
             $this->bed_position,
             $this->zone,
             $this->claim,
             [
-                new IronGenerator($this->generator_position),
-                new GoldGenerator($this->generator_position)
+                new IronGenerator($this->generatorPosition),
+                new GoldGenerator($this->generatorPosition)
             ]
         );
     }

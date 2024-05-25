@@ -18,8 +18,8 @@ class CustomForm extends EasyUICustomForm {
 
     protected function addSelectModeDropdown(): void {
         $dropdown = new Dropdown("Select the mode:");
-        foreach([1, 2, 4] as $players_per_team) {
-            $dropdown->addOption(new Option((string) $players_per_team, GameUtils::getMode($players_per_team)));
+        foreach([1, 2, 4] as $playersPerTeam) {
+            $dropdown->addOption(new Option((string) $playersPerTeam, GameUtils::getMode($playersPerTeam)));
         }
         $this->addElement("players_per_team", $dropdown);
     }

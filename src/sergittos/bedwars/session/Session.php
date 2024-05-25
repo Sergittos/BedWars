@@ -46,29 +46,29 @@ class Session {
     private Player $player;
     private Scoreboard $scoreboard;
 
-    private GameSettings $game_settings;
-    private SpectatorSettings $spectator_settings;
+    private GameSettings $gameSettings;
+    private SpectatorSettings $spectatorSettings;
 
     private ?Game $game = null;
     private ?Team $team = null;
 
     private ?MapSetup $mapSetup = null;
 
-    private ?Session $last_session_hit = null;
-    private ?Session $tracking_session = null;
+    private ?Session $lastSessionHit = null;
+    private ?Session $trackingSession = null;
 
-    private ?int $respawn_time = null;
-    private ?int $last_session_hit_time = null;
+    private ?int $respawnTime = null;
+    private ?int $lastSessionHitTime = null;
 
     private int $coins = 0;
     private int $kills = 0;
     private int $wins = 0;
 
-    private bool $loading_data;
+    private bool $loadingData;
 
     public function __construct(Player $player) {
         $this->player = $player;
-        $this->game_settings = new GameSettings($this);
+        $this->gameSettings = new GameSettings($this);
 
         $this->load();
         $this->setEffectHooks();
@@ -91,11 +91,11 @@ class Session {
     }
 
     public function getGameSettings(): GameSettings {
-        return $this->game_settings;
+        return $this->gameSettings;
     }
 
     public function getSpectatorSettings(): SpectatorSettings {
-        return $this->spectator_settings;
+        return $this->spectatorSettings;
     }
 
     public function getGame(): ?Game {
@@ -111,17 +111,17 @@ class Session {
     }
 
     public function getLastSessionHit(): ?Session {
-        if($this->last_session_hit_time === null) {
+        if($this->lastSessionHitTime === null) {
             return null;
         }
-        if(time() - $this->last_session_hit_time <= 10) {
-            return $this->last_session_hit;
+        if(time() - $this->lastSessionHitTime <= 10) {
+            return $this->lastSessionHit;
         }
         return null;
     }
 
     public function getTrackingSession(): ?Session {
-        return $this->tracking_session;
+        return $this->trackingSession;
     }
 
     public function getCoins(): int {
@@ -137,12 +137,12 @@ class Session {
     }
 
     public function resetSettings(): void {
-        $this->game_settings = new GameSettings($this);
-        $this->respawn_time = null;
+        $this->gameSettings = new GameSettings($this);
+        $this->respawnTime = null;
     }
 
-    public function setSpectatorSettings(SpectatorSettings $spectator_settings): void {
-        $this->spectator_settings = $spectator_settings;
+    public function setSpectatorSettings(SpectatorSettings $spectatorSettings): void {
+        $this->spectatorSettings = $spectatorSettings;
     }
 
     public function setScoreboard(Scoreboard $scoreboard): void {
@@ -162,19 +162,19 @@ class Session {
         $this->mapSetup = $mapSetup;
     }
 
-    public function setLastSessionHit(?Session $last_session_hit): void {
-        $this->last_session_hit = $last_session_hit;
-        $this->last_session_hit_time = time();
+    public function setLastSessionHit(?Session $lastSessionHit): void {
+        $this->lastSessionHit = $lastSessionHit;
+        $this->lastSessionHitTime = time();
     }
 
-    public function setTrackingSession(?Session $tracking_session): void {
-        $this->tracking_session = $tracking_session;
+    public function setTrackingSession(?Session $trackingSession): void {
+        $this->trackingSession = $trackingSession;
         $this->updateCompassDirection();
     }
 
     public function updateCompassDirection(): void {
         $this->player->getNetworkSession()->syncWorldSpawnPoint(
-            $this->tracking_session !== null ? $this->tracking_session->getPlayer()->getPosition() : $this->player->getWorld()->getSpawnLocation()
+            $this->trackingSession !== null ? $this->trackingSession->getPlayer()->getPosition() : $this->player->getWorld()->getSpawnLocation()
         );
     }
 
@@ -183,26 +183,26 @@ class Session {
     }
 
     public function attemptToRespawn(): void {
-        if($this->respawn_time <= 0) {
-            $this->respawn_time = null;
+        if($this->respawnTime <= 0) {
+            $this->respawnTime = null;
             $this->respawn();
             return;
         }
 
-        if($this->respawn_time < 5) {
-            $message = "{YELLOW}You will respawn in {RED}" . $this->respawn_time . " {YELLOW}" . ($this->respawn_time === 1 ? "second" : "seconds") . "!";
+        if($this->respawnTime < 5) {
+            $message = "{YELLOW}You will respawn in {RED}" . $this->respawnTime . " {YELLOW}" . ($this->respawnTime === 1 ? "second" : "seconds") . "!";
             $this->title("{RED}YOU DIED!", $message);
             $this->message($message);
         }
 
-        $this->respawn_time--;
+        $this->respawnTime--;
     }
 
     private function respawn(): void {
         $this->message("{YELLOW}You have respawned!");
         $this->title("{GREEN}RESPAWNED!", "", 7, 21, 7);
 
-        $this->game_settings->apply();
+        $this->gameSettings->apply();
         $this->player->setGamemode(GameMode::SURVIVAL());
         $this->player->setHealth($this->player->getMaxHealth());
         $this->player->teleport($this->team->getSpawnPoint());
@@ -211,7 +211,7 @@ class Session {
     public function setCoins(int $coins): void {
         $this->coins = $coins;
 
-        if(!$this->loading_data) {
+        if(!$this->loadingData) {
             BedWars::getInstance()->getProvider()->updateCoins($this);
         }
     }
@@ -223,7 +223,7 @@ class Session {
     public function setKills(int $kills): void {
         $this->kills = $kills;
 
-        if(!$this->loading_data) {
+        if(!$this->loadingData) {
             BedWars::getInstance()->getProvider()->updateKills($this);
         }
     }
@@ -235,7 +235,7 @@ class Session {
     public function setWins(int $wins): void {
         $this->wins = $wins;
 
-        if(!$this->loading_data) {
+        if(!$this->loadingData) {
             BedWars::getInstance()->getProvider()->updateWins($this);
         }
     }
@@ -265,7 +265,7 @@ class Session {
     }
 
     public function isRespawning(): bool {
-        return $this->respawn_time !== null;
+        return $this->respawnTime !== null;
     }
 
     public function isOnline(): bool {
@@ -335,8 +335,8 @@ class Session {
         $inventory->setItem(8, BedwarsItems::RETURN_TO_LOBBY()->asItem());
     }
 
-    public function addEffect(EffectInstance $effect_instance): void {
-        $this->player->getEffects()->add($effect_instance);
+    public function addEffect(EffectInstance $effectInstance): void {
+        $this->player->getEffects()->add($effectInstance);
     }
 
     public function teleportToWaitingWorld(): void {
@@ -357,41 +357,41 @@ class Session {
     }
 
     public function kill(int $cause): void {
-        $killer_session = $this->getLastSessionHit();
-        $session_username = $this->getColoredUsername();
+        $killerSession = $this->getLastSessionHit();
+        $sessionUsername = $this->getColoredUsername();
 
-        if($killer_session !== null) {
-            $killer_session->addCoins(8); // TODO: Check for final kill
-            $killer_session->addKill();
-            $killer_session->playSound("random.orb");
+        if($killerSession !== null) {
+            $killerSession->addCoins(8); // TODO: Check for final kill
+            $killerSession->addKill();
+            $killerSession->playSound("random.orb");
 
-            $killer_username = $killer_session->getColoredUsername();
+            $killerUsername = $killerSession->getColoredUsername();
             if($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK) {
-                $this->game->broadcastMessage($session_username . " {GRAY}was killed by " . $killer_username . "{GRAY}.");
+                $this->game->broadcastMessage($sessionUsername . " {GRAY}was killed by " . $killerUsername . "{GRAY}.");
             } elseif($cause === EntityDamageEvent::CAUSE_VOID) {
-                $this->game->broadcastMessage($session_username . " {GRAY}was knocked into the void by " . $killer_username . "{GRAY}.");
+                $this->game->broadcastMessage($sessionUsername . " {GRAY}was knocked into the void by " . $killerUsername . "{GRAY}.");
             }
 
-            if(!$killer_session->isSpectator()) {
+            if(!$killerSession->isSpectator()) {
                 foreach($this->player->getInventory()->getContents() as $item) {
                     if(!in_array($item->getTypeId(), [ItemTypeIds::IRON_INGOT, ItemTypeIds::GOLD_INGOT, ItemTypeIds::DIAMOND, ItemTypeIds::EMERALD])) {
                         continue;
                     }
-                    $killer_session->getPlayer()->getInventory()->addItem($item);
+                    $killerSession->getPlayer()->getInventory()->addItem($item);
                 }
             }
         }
 
-        if($cause === EntityDamageEvent::CAUSE_VOID and $killer_session === null) {
-            $this->game->broadcastMessage($session_username . " {GRAY}fell to the void.");
+        if($cause === EntityDamageEvent::CAUSE_VOID and $killerSession === null) {
+            $this->game->broadcastMessage($sessionUsername . " {GRAY}fell to the void.");
         }
 
         $this->player->getEffects()->clear();
         $this->player->teleport($this->game->getMap()->getSpectatorSpawnPosition());
         $this->player->setGamemode(GameMode::SPECTATOR());
 
-        $this->game_settings->decreasePickaxeTier();
-        $this->game_settings->decreaseAxeTier();
+        $this->gameSettings->decreasePickaxeTier();
+        $this->gameSettings->decreaseAxeTier();
 
         if($this->hasTeam() and $this->team->isBedDestroyed()) {
             $this->game->removePlayer($this, false, true);
@@ -399,7 +399,7 @@ class Session {
         } elseif($this->game->getStage() instanceof EndingStage) {
             return;
         }
-        $this->respawn_time = self::RESPAWN_DURATION;
+        $this->respawnTime = self::RESPAWN_DURATION;
 
         $this->clearCommonInventories();
         $this->title(
@@ -412,13 +412,13 @@ class Session {
     private function setEffectHooks(): void {
         $effects = $this->player->getEffects();
 
-        $effects->getEffectAddHooks()->add(function(EffectInstance $effect_instance): void {
-            if($effect_instance->getType() instanceof InvisibilityEffect and $this->isPlaying()) {
+        $effects->getEffectAddHooks()->add(function(EffectInstance $effectInstance): void {
+            if($effectInstance->getType() instanceof InvisibilityEffect and $this->isPlaying()) {
                 $this->vanish();
             }
         });
-        $effects->getEffectRemoveHooks()->add(function(EffectInstance $effect_instance): void {
-            if($effect_instance->getType() instanceof InvisibilityEffect and $this->isPlaying()) {
+        $effects->getEffectRemoveHooks()->add(function(EffectInstance $effectInstance): void {
+            if($effectInstance->getType() instanceof InvisibilityEffect and $this->isPlaying()) {
                 $this->unvanish();
             }
         });
@@ -438,27 +438,27 @@ class Session {
 
     private function unvanish(): void {
         foreach($this->game->getPlayers() as $session) {
-            $network_session = $session->getPlayer()->getNetworkSession();
-            $broadcaster = $network_session->getEntityEventBroadcaster();
+            $networkSession = $session->getPlayer()->getNetworkSession();
+            $broadcaster = $networkSession->getEntityEventBroadcaster();
 
-            $broadcaster->onMobArmorChange([$network_session], $this->player);
-            $broadcaster->onMobMainHandItemChange([$network_session], $this->player);
+            $broadcaster->onMobArmorChange([$networkSession], $this->player);
+            $broadcaster->onMobMainHandItemChange([$networkSession], $this->player);
         }
     }
 
     public function load(): void {
-        $this->loading_data = true;
+        $this->loadingData = true;
         BedWars::getInstance()->getProvider()->loadSession($this);
-        $this->loading_data = false;
+        $this->loadingData = false;
     }
 
     public function save(): void {
         BedWars::getInstance()->getProvider()->saveSession($this);
     }
 
-    public function title(string $title, string $subtitle = "", int $fade_in = 0, int $stay = 21, int $fade_out = 0): void {
+    public function title(string $title, string $subtitle = "", int $fadeIn = 0, int $stay = 21, int $fadeOut = 0): void {
         $this->player->sendTitle(
-            ColorUtils::translate($title), ColorUtils::translate($subtitle), $fade_in, $stay, $fade_out
+            ColorUtils::translate($title), ColorUtils::translate($subtitle), $fadeIn, $stay, $fadeOut
         );
     }
 

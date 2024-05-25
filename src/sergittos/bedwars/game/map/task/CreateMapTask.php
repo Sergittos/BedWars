@@ -17,21 +17,21 @@ use function file_put_contents;
 
 class CreateMapTask extends AsyncTask {
 
-    private string $world_path;
-    private string $destination_path;
+    private string $worldPath;
+    private string $destinationPath;
 
     public function __construct(MapBuilder $map) {
         $this->storeLocal("map", $map);
 
-        $this->world_path = Server::getInstance()->getDataPath() . "worlds/" . $map->getPlayingWorld();
-        $this->destination_path = BedWars::getInstance()->getDataFolder() . "worlds/" . $map->getName();
+        $this->worldPath = Server::getInstance()->getDataPath() . "worlds/" . $map->getPlayingWorld();
+        $this->destinationPath = BedWars::getInstance()->getDataFolder() . "worlds/" . $map->getName();
 
-        $world_manager = Server::getInstance()->getWorldManager();
-        $world_manager->unloadWorld($world_manager->getWorldByName($map->getPlayingWorld()));
+        $worldManager = Server::getInstance()->getWorldManager();
+        $worldManager->unloadWorld($worldManager->getWorldByName($map->getPlayingWorld()));
     }
 
     public function onRun(): void {
-        Filesystem::recursiveCopy($this->world_path, $this->destination_path);
+        Filesystem::recursiveCopy($this->worldPath, $this->destinationPath);
     }
 
     public function onCompletion(): void { // TODO: Do not reuse code

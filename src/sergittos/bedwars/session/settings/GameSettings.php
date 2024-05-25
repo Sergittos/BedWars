@@ -22,21 +22,21 @@ class GameSettings {
 
     private Session $session;
 
-    private bool $permanent_shears = false;
+    private bool $permanentShears = false;
 
     private ?string $armor = null;
 
-    private int $magic_milk_time = 0;
+    private int $magicMilkTime = 0;
 
-    private int $pickaxe_tier = 0;
-    private int $axe_tier = 0;
+    private int $pickaxeTier = 0;
+    private int $axeTier = 0;
 
     public function __construct(Session $session) {
         $this->session = $session;
     }
 
     public function hasPermanentShears(): bool {
-        return $this->permanent_shears;
+        return $this->permanentShears;
     }
 
     public function hasArmor(): bool {
@@ -44,15 +44,15 @@ class GameSettings {
     }
 
     public function isUnderMagicMilkEffect(): bool {
-        return time() - $this->magic_milk_time < 30;
+        return time() - $this->magicMilkTime < 30;
     }
 
     public function isPickaxeFullUpgraded(): bool {
-        return $this->pickaxe_tier >= 4;
+        return $this->pickaxeTier >= 4;
     }
 
     public function isAxeFullUpgraded(): bool {
-        return $this->axe_tier >= 4;
+        return $this->axeTier >= 4;
     }
 
     public function getArmor(): ?string {
@@ -60,38 +60,38 @@ class GameSettings {
     }
 
     public function getPickaxeTier(): int {
-        return $this->pickaxe_tier;
+        return $this->pickaxeTier;
     }
 
     public function getAxeTier(): int {
-        return $this->axe_tier;
+        return $this->axeTier;
     }
 
     public function setPermanentShears(): void {
-        $this->permanent_shears = true;
+        $this->permanentShears = true;
     }
 
     public function setMagicMilk(): void {
-        $this->magic_milk_time = time();
+        $this->magicMilkTime = time();
     }
 
     public function incrasePickaxeTier(): void {
-        $this->pickaxe_tier++;
+        $this->pickaxeTier++;
     }
 
     public function incraseAxeTier(): void {
-        $this->axe_tier++;
+        $this->axeTier++;
     }
 
     public function decreasePickaxeTier(): void {
-        if($this->pickaxe_tier > 1) {
-            $this->pickaxe_tier--;
+        if($this->pickaxeTier > 1) {
+            $this->pickaxeTier--;
         }
     }
 
     public function decreaseAxeTier(): void {
-        if($this->axe_tier > 1) {
-            $this->axe_tier--;
+        if($this->axeTier > 1) {
+            $this->axeTier--;
         }
     }
 
@@ -110,14 +110,14 @@ class GameSettings {
         $inventory->addItem(VanillaItems::WOODEN_SWORD()->setUnbreakable());
         $inventory->setItem(8, BedwarsItems::TRACKER_SHOP()->asItem());
 
-        if($this->permanent_shears) {
+        if($this->permanentShears) {
             $inventory->addItem(VanillaItems::SHEARS());
         }
-        if($this->pickaxe_tier > 0) {
-            $inventory->addItem($this->getTool("pickaxe", $this->pickaxe_tier));
+        if($this->pickaxeTier > 0) {
+            $inventory->addItem($this->getTool("pickaxe", $this->pickaxeTier));
         }
-        if($this->axe_tier > 0) {
-            $inventory->addItem($this->getTool("axe", $this->axe_tier));
+        if($this->axeTier > 0) {
+            $inventory->addItem($this->getTool("axe", $this->axeTier));
         }
 
         $inventory = $player->getArmorInventory();

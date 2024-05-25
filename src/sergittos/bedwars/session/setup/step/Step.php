@@ -26,7 +26,7 @@ abstract class Step {
 
     public function onBlockBreak(Block $block, BedwarsItem $item): void {}
 
-    public function onBlockInteract(Vector3 $touch_vector, int $action, Cancellable $event, BedwarsItem $item): void {}
+    public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {}
 
     public function onInteract(BedwarsItem $item): void {}
 

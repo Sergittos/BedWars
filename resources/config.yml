@@ -1,5 +1,5 @@
 # The version
-version: 1.0
+version: 2.0
 
 # The IP that will be showed on the scoreboard and the bossbar
 ip: "play.server.net"

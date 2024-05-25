@@ -15,7 +15,7 @@ class ConfigGetter {
     }
 
     static public function getVersion(): int|float {
-        return self::get("version", 1.0);
+        return self::get("version", 2.0);
     }
 
     static public function getIP(): string {

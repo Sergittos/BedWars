@@ -33,7 +33,7 @@ class Team implements JsonSerializable {
 
     private Upgrades $upgrades;
 
-    private bool $bed_destroyed = false;
+    private bool $bedDestroyed = false;
 
     /** @var Generator[] */
     private array $generators;
@@ -44,12 +44,12 @@ class Team implements JsonSerializable {
     /**
      * @param Generator[] $generators
      */
-    public function __construct(string $name, int $capacity, Vector3 $spawn_point, Vector3 $bed_position, Area $zone, Area $claim, array $generators) {
+    public function __construct(string $name, int $capacity, Vector3 $spawnPoint, Vector3 $bedPosition, Area $zone, Area $claim, array $generators) {
         $this->name = $name;
         $this->color = ColorUtils::translate("{" . strtoupper($name) . "}");
         $this->capacity = $capacity;
-        $this->spawn_point = $spawn_point;
-        $this->bed_position = $bed_position;
+        $this->spawnPoint = $spawnPoint;
+        $this->bedPosition = $bedPosition;
         $this->zone = $zone;
         $this->claim = $claim;
         $this->generators = $generators;
@@ -69,7 +69,7 @@ class Team implements JsonSerializable {
     }
 
     public function isBedDestroyed(): bool {
-        return $this->bed_destroyed;
+        return $this->bedDestroyed;
     }
 
     /**
@@ -106,10 +106,10 @@ class Team implements JsonSerializable {
         return in_array($session, $this->members, true);
     }
 
-    public function destroyBed(Game $game, bool $break_block = true, bool $silent = false): void {
-        $this->bed_destroyed = true;
+    public function destroyBed(Game $game, bool $breakBlock = true, bool $silent = false): void {
+        $this->bedDestroyed = true;
 
-        if($break_block) {
+        if($breakBlock) {
             $this->breakBedBlock($game);
         }
 
@@ -129,7 +129,7 @@ class Team implements JsonSerializable {
 
     private function breakBedBlock(Game $game): void {
         $world = $game->getWorld();
-        $position = Position::fromObject($this->bed_position, $world);
+        $position = Position::fromObject($this->bedPosition, $world);
 
         $world->requestChunkPopulation($position->getX() >> Chunk::COORD_BIT_SIZE, $position->getZ() >> Chunk::COORD_BIT_SIZE, null)->onCompletion(
             function() use ($world, $position) {
@@ -177,7 +177,7 @@ class Team implements JsonSerializable {
         $player = $session->getPlayer();
         $player->setNameTag($this->color . $this->getFirstLetter() . " " . $player->getName());
         $player->setGamemode(GameMode::SURVIVAL());
-        $player->teleport(Position::fromObject($this->spawn_point, $session->getGame()->getWorld()));
+        $player->teleport(Position::fromObject($this->spawnPoint, $session->getGame()->getWorld()));
     }
 
     public function removeMember(Session $session): void {
@@ -210,7 +210,7 @@ class Team implements JsonSerializable {
     }
 
     public function reset(): void {
-        $this->bed_destroyed = false;
+        $this->bedDestroyed = false;
         $this->upgrades = new Upgrades();
 
         $this->removeEmeraldGenerator();
@@ -228,14 +228,14 @@ class Team implements JsonSerializable {
         return [
             "name" => $this->name,
             "spawn_point" => [
-                "x" => $this->spawn_point->getX(),
-                "y" => $this->spawn_point->getY(),
-                "z" => $this->spawn_point->getZ()
+                "x" => $this->spawnPoint->getX(),
+                "y" => $this->spawnPoint->getY(),
+                "z" => $this->spawnPoint->getZ()
             ],
             "bed" => [
-                "x" => $this->bed_position->getX(),
-                "y" => $this->bed_position->getY(),
-                "z" => $this->bed_position->getZ()
+                "x" => $this->bedPosition->getX(),
+                "y" => $this->bedPosition->getY(),
+                "z" => $this->bedPosition->getZ()
             ],
             "generator" => [
                 "x" => $this->generators[0]->getPosition()->getX(),

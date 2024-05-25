@@ -38,19 +38,19 @@ class SpectatorSettingsForm extends CustomForm {
     }
 
     protected function onSubmit(Player $player, FormResponse $response): void {
-        $flying_speed = (int) $response->getSliderSubmittedStep("flying_speed");
-        $auto_teleport = $response->getToggleSubmittedChoice("auto_teleport");
-        $night_vision = $response->getToggleSubmittedChoice("night_vision");
+        $flyingSpeed = (int) $response->getSliderSubmittedStep("flying_speed");
+        $autoTeleport = $response->getToggleSubmittedChoice("auto_teleport");
+        $nightVision = $response->getToggleSubmittedChoice("night_vision");
 
         $settings = $this->session->getSpectatorSettings();
-        if($settings->getFlyingSpeed() !== $flying_speed) {
-            $settings->setFlyingSpeed($flying_speed);
+        if($settings->getFlyingSpeed() !== $flyingSpeed) {
+            $settings->setFlyingSpeed($flyingSpeed);
         }
-        if($settings->getAutoTeleport() !== $auto_teleport) {
-            $settings->setAutoTeleport($auto_teleport);
+        if($settings->getAutoTeleport() !== $autoTeleport) {
+            $settings->setAutoTeleport($autoTeleport);
         }
-        if($settings->getNightVision() !== $night_vision) {
-            $settings->setNightVision($night_vision);
+        if($settings->getNightVision() !== $nightVision) {
+            $settings->setNightVision($nightVision);
         }
         if($this->session->isSpectator()) {
             $settings->apply();

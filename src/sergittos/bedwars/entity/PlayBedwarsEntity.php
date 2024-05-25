@@ -28,10 +28,10 @@ use function count;
 
 class PlayBedwarsEntity extends Human {
 
-    private int $players_per_team;
+    private int $playersPerTeam;
 
     public function __construct(Location $location, Skin $skin, CompoundTag $nbt) {
-        $this->players_per_team = $nbt->getInt("players_per_team");
+        $this->playersPerTeam = $nbt->getInt("players_per_team");
         parent::__construct($location, $skin);
     }
 
@@ -46,7 +46,7 @@ class PlayBedwarsEntity extends Human {
         $amount = $this->getSessionsCount();
         $this->setNameTag(ColorUtils::translate(
             "{YELLOW}{BOLD}CLICK TO PLAY{RESET}\n" .
-            "{AQUA}" . GameUtils::getMode($this->players_per_team) . " {GRAY}[v" . ConfigGetter::getVersion() . "]\n" .
+            "{AQUA}" . GameUtils::getMode($this->playersPerTeam) . " {GRAY}[v" . ConfigGetter::getVersion() . "]\n" .
             "{YELLOW}{BOLD}" . $amount . " " . ($amount === 1 ? "Player" : "Players")
         ));
     }
@@ -66,25 +66,25 @@ class PlayBedwarsEntity extends Human {
             return;
         }
 
-        $damager->sendForm(new PlayBedwarsForm($this->players_per_team));
+        $damager->sendForm(new PlayBedwarsForm($this->playersPerTeam));
     }
 
     public function onInteract(Player $player, Vector3 $clickPos): bool {
-        $player->sendForm(new PlayBedwarsForm($this->players_per_team));
+        $player->sendForm(new PlayBedwarsForm($this->playersPerTeam));
         return true;
     }
 
     public function saveNBT(): CompoundTag {
-        return parent::saveNBT()->setInt("players_per_team", $this->players_per_team);
+        return parent::saveNBT()->setInt("players_per_team", $this->playersPerTeam);
     }
 
     public function getPlayersPerTeam(): int {
-        return $this->players_per_team;
+        return $this->playersPerTeam;
     }
 
     private function getSessionsCount(): int {
         return count(array_filter(SessionFactory::getSessions(), function(Session $session) {
-            return $session->isPlaying() and $session->getGame()->getMap()->getPlayersPerTeam() === $this->players_per_team;
+            return $session->isPlaying() and $session->getGame()->getMap()->getPlayersPerTeam() === $this->playersPerTeam;
         }));
     }
 

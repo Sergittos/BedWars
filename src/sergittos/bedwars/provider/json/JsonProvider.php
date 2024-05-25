@@ -17,9 +17,9 @@ use function mkdir;
 class JsonProvider extends Provider {
 
     public function __construct() {
-        $users_dir = $this->getUsersDir();
-        if(!is_dir($users_dir)) {
-            mkdir($users_dir);
+        $usersDir = $this->getUsersDir();
+        if(!is_dir($usersDir)) {
+            mkdir($usersDir);
         }
     }
 

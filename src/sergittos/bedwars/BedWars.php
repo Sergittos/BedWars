@@ -43,14 +43,14 @@ class BedWars extends PluginBase {
     use SingletonTrait;
 
     private Provider $provider;
-    private GameManager $game_manager;
+    private GameManager $gameManager;
 
     protected function onLoad(): void {
         self::setInstance($this);
 
-        $worlds_dir = $this->getDataFolder() . "worlds/";
-        if(!is_dir($worlds_dir)) {
-            mkdir($worlds_dir);
+        $worldsDir = $this->getDataFolder() . "worlds/";
+        if(!is_dir($worldsDir)) {
+            mkdir($worldsDir);
         }
 
         $this->saveResource("maps.json");
@@ -60,7 +60,7 @@ class BedWars extends PluginBase {
         MapFactory::init();
 
         $this->provider = $this->obtainProvider();
-        $this->game_manager = new GameManager();
+        $this->gameManager = new GameManager();
 
         $this->registerEntity(PlayBedwarsEntity::class);
         $this->registerEntity(ItemShopVillager::class);
@@ -87,7 +87,7 @@ class BedWars extends PluginBase {
             $session->save();
         }
 
-        foreach($this->game_manager->getGames() as $game) {
+        foreach($this->gameManager->getGames() as $game) {
             $game->unloadWorld();
             $this->getServer()->getAsyncPool()->submitTask(new RemoveGameTask($game));
         }
@@ -123,7 +123,7 @@ class BedWars extends PluginBase {
     }
 
     public function getGameManager(): GameManager {
-        return $this->game_manager;
+        return $this->gameManager;
     }
 
 }

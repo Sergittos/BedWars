@@ -103,14 +103,14 @@ class GameListener implements Listener {
             !SessionFactory::hasSession($damager) or !SessionFactory::hasSession($entity)) {
             return;
         }
-        $damager_session = SessionFactory::getSession($damager);
-        $entity_session = SessionFactory::getSession($entity);
+        $damagerSession = SessionFactory::getSession($damager);
+        $entitySession = SessionFactory::getSession($entity);
 
-        $entity_session->setLastSessionHit($damager_session);
+        $entitySession->setLastSessionHit($damagerSession);
 
-        if($damager_session->isPlaying() and $entity_session->isPlaying() and
-            $damager_session->hasTeam() and $entity_session->hasTeam() and
-            $damager_session->getTeam()->hasMember($entity_session)) {
+        if($damagerSession->isPlaying() and $entitySession->isPlaying() and
+            $damagerSession->hasTeam() and $entitySession->hasTeam() and
+            $damagerSession->getTeam()->hasMember($entitySession)) {
             $event->cancel();
         }
     }
@@ -150,8 +150,8 @@ class GameListener implements Listener {
             return;
         }
 
-        $other_half = $block->getOtherHalf();
-        if($other_half === null) {
+        $otherHalf = $block->getOtherHalf();
+        if($otherHalf === null) {
             return;
         }
 
@@ -160,10 +160,10 @@ class GameListener implements Listener {
             return;
         }
 
-        $bed_position = $team->getBedPosition();
-        $half_position = $other_half->getPosition();
+        $bedPosition = $team->getBedPosition();
+        $halfPosition = $otherHalf->getPosition();
 
-        if($team->isBedDestroyed() or $half_position === null or (!$bed_position->equals($half_position) and !$bed_position->equals($position))) {
+        if($team->isBedDestroyed() or $halfPosition === null or (!$bedPosition->equals($halfPosition) and !$bedPosition->equals($position))) {
             return;
         }
 
@@ -306,7 +306,7 @@ class GameListener implements Listener {
             return;
         }
 
-        $block_list = [];
+        $blockList = [];
         foreach($event->getBlockList() as $block) {
             if($block instanceof StainedGlass) {
                 continue;
@@ -314,10 +314,10 @@ class GameListener implements Listener {
             if(!$game->checkBlock($block->getPosition())) {
                 continue;
             }
-            $block_list[] = $block;
+            $blockList[] = $block;
         }
 
-        $event->setBlockList($block_list);
+        $event->setBlockList($blockList);
     }
 
     public function onDataPacketSend(DataPacketSendEvent $event): void {
@@ -456,7 +456,7 @@ class GameListener implements Listener {
     }
 
     private function checkEntities(Player $player): void {
-        $network_session = $player->getNetworkSession();
+        $networkSession = $player->getNetworkSession();
         $position = $player->getPosition();
         foreach($player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy(12, 12, 12), $player) as $entity) {
             if(!$entity instanceof Villager) {
@@ -466,7 +466,7 @@ class GameListener implements Listener {
             $yaw = MathUtils::calculateYaw($position, $location = $entity->getLocation());
             $pitch = MathUtils::calculatePitch($position, $location);
 
-            $network_session->sendDataPacket(MoveActorAbsolutePacket::create(
+            $networkSession->sendDataPacket(MoveActorAbsolutePacket::create(
                 $entity->getId(),
                 $location,
                 $pitch,

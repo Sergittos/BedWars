@@ -20,11 +20,11 @@ class MathUtils {
     }
 
     static public function calculatePitch(Position $player_position, Position $entity_position): float {
-        $player_vector = new Vector2($player_position->getX(), $player_position->getZ());
-        $entity_vector = new Vector2($entity_position->getX(), $entity_position->getZ());
+        $playerVector = new Vector2($player_position->getX(), $player_position->getZ());
+        $entityVector = new Vector2($entity_position->getX(), $entity_position->getZ());
 
         return self::toDegrees(atan2(
-            $player_vector->distance($entity_vector),
+            $playerVector->distance($entityVector),
             $player_position->getY() - $entity_position->getY()
         ));
     }

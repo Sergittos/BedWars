@@ -22,50 +22,50 @@ use function time;
 
 class Upgrades {
 
-    private ArmorProtection $armor_protection;
-    private ManiacMiner $maniac_miner;
-    private IronForge $iron_forge;
-    private SharpenedSwords $sharpened_swords;
-    private HealPool $heal_pool;
+    private ArmorProtection $armorProtection;
+    private ManiacMiner $maniacMiner;
+    private IronForge $ironForge;
+    private SharpenedSwords $sharpenedSwords;
+    private HealPool $healPool;
 
-    private int $trap_trigger_time = 0;
+    private int $trapTriggerTime = 0;
 
     /** @var Trap[] */
     private array $traps = [];
 
     public function __construct() {
-        $this->armor_protection = new ArmorProtection();
-        $this->maniac_miner = new ManiacMiner();
-        $this->iron_forge = new IronForge();
-        $this->sharpened_swords = new SharpenedSwords();
-        $this->heal_pool = new HealPool();
+        $this->armorProtection = new ArmorProtection();
+        $this->maniacMiner = new ManiacMiner();
+        $this->ironForge = new IronForge();
+        $this->sharpenedSwords = new SharpenedSwords();
+        $this->healPool = new HealPool();
     }
 
     /**
      * @return Upgrade[]
      */
     public function getAll(): array {
-        return [$this->armor_protection, $this->maniac_miner, $this->iron_forge, $this->sharpened_swords, $this->heal_pool];
+        return [$this->armorProtection, $this->maniacMiner, $this->ironForge, $this->sharpenedSwords, $this->healPool];
     }
 
     public function getArmorProtection(): ArmorProtection {
-        return $this->armor_protection;
+        return $this->armorProtection;
     }
 
     public function getManiacMiner(): ManiacMiner {
-        return $this->maniac_miner;
+        return $this->maniacMiner;
     }
 
     public function getIronForge(): IronForge {
-        return $this->iron_forge;
+        return $this->ironForge;
     }
 
     public function getSharpenedSwords(): SharpenedSwords {
-        return $this->sharpened_swords;
+        return $this->sharpenedSwords;
     }
 
     public function getHealPool(): HealPool {
-        return $this->heal_pool;
+        return $this->healPool;
     }
 
     public function getUpgrade(string $name): ?Upgrade {
@@ -78,8 +78,8 @@ class Upgrades {
     }
 
     public function canTriggerTrap(): bool {
-        if(time() - $this->trap_trigger_time >= 30 and !empty($this->traps)) {
-            $this->trap_trigger_time = time();
+        if(time() - $this->trapTriggerTime >= 30 and !empty($this->traps)) {
+            $this->trapTriggerTime = time();
             return true;
         }
         return false;

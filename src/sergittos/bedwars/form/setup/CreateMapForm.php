@@ -38,10 +38,10 @@ class CreateMapForm extends CustomForm {
 
     protected function onSubmit(Player $player, FormResponse $response): void {
         $name = $response->getInputSubmittedText("name");
-        $waiting_world = $response->getDropdownSubmittedOptionId("waiting_world");
-        $playing_world = $response->getDropdownSubmittedOptionId("playing_world");
+        $waitingWorld = $response->getDropdownSubmittedOptionId("waiting_world");
+        $playingWorld = $response->getDropdownSubmittedOptionId("playing_world");
         $teams = $response->getSliderSubmittedStep("teams");
-        $players_per_team = (int) $response->getDropdownSubmittedOptionId("players_per_team");
+        $playersPerTeam = (int) $response->getDropdownSubmittedOptionId("players_per_team");
 
         if($name === "") {
             $player->sendMessage(TextFormat::RED . "You must set a name!");
@@ -49,29 +49,29 @@ class CreateMapForm extends CustomForm {
         } elseif(MapFactory::getMapByName($name) !== null) {
             $player->sendMessage(TextFormat::RED . "A map with that name already exists!");
             return;
-        } elseif($this->checkIfDefaultWorld($waiting_world) or $this->checkIfDefaultWorld($playing_world)) {
+        } elseif($this->checkIfDefaultWorld($waitingWorld) or $this->checkIfDefaultWorld($playingWorld)) {
             $player->sendMessage(TextFormat::RED ."You world must not be the default world!");
             return;
-        } elseif($waiting_world === $playing_world) {
+        } elseif($waitingWorld === $playingWorld) {
             $player->sendMessage(TextFormat::RED . "Your waiting world cannot be the same as the playing world!");
             return;
         }
 
-        $world_manager = Server::getInstance()->getWorldManager();
-        if(!$world_manager->loadWorld($playing_world)) {
-            $player->sendMessage(TextFormat::RED . "Couldn't teleport to playing world ($playing_world) because the world has been unloaded.");
+        $worldManager = Server::getInstance()->getWorldManager();
+        if(!$worldManager->loadWorld($playingWorld)) {
+            $player->sendMessage(TextFormat::RED . "Couldn't teleport to playing world ($playingWorld) because the world has been unloaded.");
             return;
-        } elseif(!$world_manager->loadWorld($waiting_world)) {
-            $player->sendMessage(TextFormat::RED . "Couldn't load waiting world ($waiting_world)");
+        } elseif(!$worldManager->loadWorld($waitingWorld)) {
+            $player->sendMessage(TextFormat::RED . "Couldn't load waiting world ($waitingWorld)");
             return;
         }
 
         $player->setGamemode(GameMode::CREATIVE());
-        $player->teleport($world_manager->getWorldByName($playing_world)->getSafeSpawn());
+        $player->teleport($worldManager->getWorldByName($playingWorld)->getSafeSpawn());
 
         $session = SessionFactory::getSession($player);
         $session->setMapSetup(new MapSetup($session, new MapBuilder(
-            $name, $world_manager->getWorldByName($waiting_world), $playing_world, $players_per_team, (int) ($teams * $players_per_team)
+            $name, $worldManager->getWorldByName($waitingWorld), $playingWorld, $playersPerTeam, (int) ($teams * $playersPerTeam)
         )));
     }
 

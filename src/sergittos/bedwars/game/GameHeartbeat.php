@@ -12,17 +12,17 @@ use sergittos\bedwars\game\stage\PlayingStage;
 
 class GameHeartbeat extends Task {
 
-    private int $current_tick = 0;
+    private int $currentTick = 0;
 
     public function onRun(): void {
-        $this->current_tick++;
+        $this->currentTick++;
 
         foreach(BedWars::getInstance()->getGameManager()->getGames() as $game) {
             if($game->getStage() instanceof PlayingStage) {
                 $game->tickGenerators();
             }
 
-            if($this->current_tick % 20 === 0) {
+            if($this->currentTick % 20 === 0) {
                 $game->getStage()->tick();
             }
         }

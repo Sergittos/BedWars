@@ -14,12 +14,12 @@ use function min;
 class Area implements JsonSerializable {
 
 
-    private Vector3 $first_vector;
-    private Vector3 $second_vector;
+    private Vector3 $firstVector;
+    private Vector3 $secondVector;
 
-    public function __construct(Vector3 $first_vector, Vector3 $second_vector) {
-        $this->first_vector = $first_vector->floor();
-        $this->second_vector = $second_vector->floor();
+    public function __construct(Vector3 $firstVector, Vector3 $secondVector) {
+        $this->firstVector = $firstVector->floor();
+        $this->secondVector = $secondVector->floor();
     }
 
     static public function fromData(array $data): Area {
@@ -30,27 +30,27 @@ class Area implements JsonSerializable {
     }
 
     public function getMinX(): int {
-        return min($this->first_vector->getFloorX(), $this->second_vector->getFloorX());
+        return min($this->firstVector->getFloorX(), $this->secondVector->getFloorX());
     }
 
     public function getMinY(): int {
-        return min($this->first_vector->getFloorY(), $this->second_vector->getFloorY());
+        return min($this->firstVector->getFloorY(), $this->secondVector->getFloorY());
     }
 
     public function getMinZ(): int {
-        return min($this->first_vector->getFloorZ(), $this->second_vector->getFloorZ());
+        return min($this->firstVector->getFloorZ(), $this->secondVector->getFloorZ());
     }
 
     public function getMaxX(): int {
-        return max($this->first_vector->getFloorX(), $this->second_vector->getFloorX());
+        return max($this->firstVector->getFloorX(), $this->secondVector->getFloorX());
     }
 
     public function getMaxY(): int {
-        return max($this->first_vector->getFloorY(), $this->second_vector->getFloorY());
+        return max($this->firstVector->getFloorY(), $this->secondVector->getFloorY());
     }
 
     public function getMaxZ(): int {
-        return max($this->first_vector->getFloorZ(), $this->second_vector->getFloorZ());
+        return max($this->firstVector->getFloorZ(), $this->secondVector->getFloorZ());
     }
 
     public function isInside(Vector3 $position): bool {
@@ -60,12 +60,12 @@ class Area implements JsonSerializable {
 
     public function jsonSerialize(): array {
         return [
-            "first_x" => $this->first_vector->getFloorX(),
-            "first_y" => $this->first_vector->getFloorY(),
-            "first_z" => $this->first_vector->getFloorZ(),
-            "second_x" => $this->second_vector->getFloorX(),
-            "second_y" => $this->second_vector->getFloorY(),
-            "second_z" => $this->second_vector->getFloorZ()
+            "first_x" => $this->firstVector->getFloorX(),
+            "first_y" => $this->firstVector->getFloorY(),
+            "first_z" => $this->firstVector->getFloorZ(),
+            "second_x" => $this->secondVector->getFloorX(),
+            "second_y" => $this->secondVector->getFloorY(),
+            "second_z" => $this->secondVector->getFloorZ()
         ];
     }
 

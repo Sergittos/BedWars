@@ -17,35 +17,35 @@ use function array_map;
 class MapBuilder {
     use MapProperties;
 
-    private string $playing_world;
+    private string $playingWorld;
 
     /** @var TeamBuilder[] */
     private array $teams;
 
-    public function __construct(string $name, World $waiting_world, string $playing_world, int $players_per_team, int $max_capacity) {
+    public function __construct(string $name, World $waitingWorld, string $playingWorld, int $playersPerTeam, int $maxCapacity) {
         $this->name = $name;
-        $this->waiting_world = $waiting_world;
-        $this->playing_world = $playing_world;
-        $this->players_per_team = $players_per_team;
-        $this->max_capacity = $max_capacity;
+        $this->waitingWorld = $waitingWorld;
+        $this->playingWorld = $playingWorld;
+        $this->playersPerTeam = $playersPerTeam;
+        $this->maxCapacity = $maxCapacity;
 
         $this->setDefaultTeams();
     }
 
     public function getPlayingWorld(): string {
-        return $this->playing_world;
+        return $this->playingWorld;
     }
 
-    public function setSpectatorSpawnPosition(Vector3 $spectator_spawn_position): void {
-        $this->spectator_spawn_position = $spectator_spawn_position;
+    public function setSpectatorSpawnPosition(Vector3 $spectatorSpawnPosition): void {
+        $this->spectatorSpawnPosition = $spectatorSpawnPosition;
     }
 
     public function addShopPosition(Vector3 $position): void {
-        $this->shop_positions[] = $position;
+        $this->shopPositions[] = $position;
     }
 
     public function addUpgradesPosition(Vector3 $position): void {
-        $this->upgrades_positions[] = $position;
+        $this->upgradesPositions[] = $position;
     }
 
     public function addGenerator(Generator $generator): void {
@@ -68,7 +68,7 @@ class MapBuilder {
     }
 
     private function getTeamsCount(): int {
-        return (int) ($this->max_capacity / $this->players_per_team);
+        return (int) ($this->maxCapacity / $this->playersPerTeam);
     }
 
     /**
@@ -89,11 +89,11 @@ class MapBuilder {
         }
 
         $is_set = isset(
-            $this->spectator_spawn_position,
+            $this->spectatorSpawnPosition,
             $this->generators,
             $this->teams,
-            $this->shop_positions,
-            $this->upgrades_positions
+            $this->shopPositions,
+            $this->upgradesPositions
         );
 
         return $is_set and $can_build;
@@ -102,16 +102,16 @@ class MapBuilder {
     public function build(): Map {
         return new Map(
             $this->name,
-            $this->spectator_spawn_position,
-            $this->players_per_team,
-            $this->max_capacity,
-            $this->waiting_world,
+            $this->spectatorSpawnPosition,
+            $this->playersPerTeam,
+            $this->maxCapacity,
+            $this->waitingWorld,
             $this->generators,
-            array_map(function(TeamBuilder $team_builder): Team {
-                return $team_builder->build($this);
+            array_map(function(TeamBuilder $teamBuilder): Team {
+                return $teamBuilder->build($this);
             }, $this->teams),
-            $this->shop_positions,
-            $this->upgrades_positions
+            $this->shopPositions,
+            $this->upgradesPositions
         );
     }
 

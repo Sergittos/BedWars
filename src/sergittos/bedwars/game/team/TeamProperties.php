@@ -15,8 +15,8 @@ trait TeamProperties {
     private string $name;
     private string $color;
 
-    private Vector3 $spawn_point;
-    private Vector3 $bed_position;
+    private Vector3 $spawnPoint;
+    private Vector3 $bedPosition;
 
     private Area $zone;
     private Area $claim;
@@ -34,11 +34,11 @@ trait TeamProperties {
     }
 
     public function getSpawnPoint(): Vector3 {
-        return $this->spawn_point;
+        return $this->spawnPoint;
     }
 
     public function getBedPosition(): Vector3 {
-        return $this->bed_position;
+        return $this->bedPosition;
     }
 
     public function getZone(): Area {

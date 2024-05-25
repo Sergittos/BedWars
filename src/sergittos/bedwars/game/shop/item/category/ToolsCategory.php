@@ -40,14 +40,14 @@ class ToolsCategory extends Category {
         ];
     }
 
-    private function createToolProduct(string $name, int $tier, GameSettings $settings, bool $is_full_upgraded, Closure $on_purchase): ItemProduct {
+    private function createToolProduct(string $name, int $tier, GameSettings $settings, bool $isFullUpgraded, Closure $onPurchase): ItemProduct {
         $tier++;
         return new ItemProduct(
             $settings->getMaterial($tier) . " $name " . ($tier <= 4 ? "Tier " . GameUtils::intToRoman($tier) : "MAX TIER"),
-            $this->getPrice($tier), 1, $settings->getTool($name, $tier), $this->getOre($tier), function(Session $session) use ($name, $tier, $settings, $is_full_upgraded, $on_purchase) {
+            $this->getPrice($tier), 1, $settings->getTool($name, $tier), $this->getOre($tier), function(Session $session) use ($name, $tier, $settings, $isFullUpgraded, $onPurchase) {
                 $session->getPlayer()->getInventory()->remove($settings->getTool($name, $tier - 1));
-                $on_purchase();
-        }, !$is_full_upgraded);
+                $onPurchase();
+        }, !$isFullUpgraded);
     }
 
     private function getPrice(int $tier): int {

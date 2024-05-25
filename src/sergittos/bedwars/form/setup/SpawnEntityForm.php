@@ -24,9 +24,9 @@ class SpawnEntityForm extends CustomForm {
     }
 
     protected function onSubmit(Player $player, FormResponse $response): void {
-        $players_per_team = (int) $response->getDropdownSubmittedOptionId("players_per_team");
+        $playersPerTeam = (int) $response->getDropdownSubmittedOptionId("players_per_team");
 
-        $entity = new PlayBedwarsEntity($player->getLocation(), $player->getSkin(), CompoundTag::create()->setInt("players_per_team", $players_per_team));
+        $entity = new PlayBedwarsEntity($player->getLocation(), $player->getSkin(), CompoundTag::create()->setInt("players_per_team", $playersPerTeam));
         $entity->spawnToAll();
 
         $player->sendMessage(TextFormat::GREEN . "You have spawned the entity successfully!");

@@ -20,7 +20,7 @@ use function count;
 
 class GameManager {
 
-    private int $next_game_id = 0;
+    private int $nextGameId = 0;
 
     /** @var Game[] */
     private array $games = [];
@@ -33,7 +33,7 @@ class GameManager {
     }
 
     public function getNextGameId(): int {
-        return $this->next_game_id++;
+        return $this->nextGameId++;
     }
 
     /**
@@ -69,8 +69,8 @@ class GameManager {
         return null;
     }
 
-    public function findRandomGame(int $players_per_team): ?Game {
-        $maps = MapFactory::getMapsByPlayers($players_per_team);
+    public function findRandomGame(int $playersPerTeam): ?Game {
+        $maps = MapFactory::getMapsByPlayers($playersPerTeam);
         if($maps !== []) {
             $map = $maps[array_rand($maps)];
 

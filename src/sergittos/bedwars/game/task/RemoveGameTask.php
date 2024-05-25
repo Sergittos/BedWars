@@ -16,16 +16,16 @@ class RemoveGameTask extends AsyncTask {
 
     private int $id;
 
-    private string $world_path;
+    private string $worldPath;
 
     public function __construct(Game $game) {
         $this->id = $game->getId();
 
-        $this->world_path = Server::getInstance()->getDataPath() . "worlds/" . $game->getMap()->getName() . "-" . $this->id;
+        $this->worldPath = Server::getInstance()->getDataPath() . "worlds/" . $game->getMap()->getName() . "-" . $this->id;
     }
 
     public function onRun(): void {
-        Filesystem::recursiveUnlink($this->world_path);
+        Filesystem::recursiveUnlink($this->worldPath);
     }
 
     public function onCompletion(): void {

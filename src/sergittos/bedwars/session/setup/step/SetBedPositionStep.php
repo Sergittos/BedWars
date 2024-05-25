@@ -34,9 +34,9 @@ class SetBedPositionStep extends Step {
         $inventory->setItem(8, BedwarsItems::CANCEL()->asItem());
     }
 
-    public function onBlockInteract(Vector3 $touch_vector, int $action, Cancellable $event, BedwarsItem $item): void {
+    public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {
         if($item instanceof SetBedPositionItem and $action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-            $this->team->setBedPosition($touch_vector);
+            $this->team->setBedPosition($touchVector);
             
             $this->session->getMapSetup()->setStep(new PreparingMapStep());
             $this->session->message("{GREEN}You have successfully set the bed position.");

@@ -16,16 +16,16 @@ class SpectatorSettings {
 
     private Session $session;
 
-    private int $flying_speed;
+    private int $flyingSpeed;
 
-    private bool $auto_teleport;
-    private bool $night_vision;
+    private bool $autoTeleport;
+    private bool $nightVision;
 
-    public function __construct(Session $session, int $flying_speed, bool $auto_teleport, bool $night_vision) {
+    public function __construct(Session $session, int $flyingSpeed, bool $autoTeleport, bool $nightVision) {
         $this->session = $session;
-        $this->flying_speed = $flying_speed;
-        $this->auto_teleport = $auto_teleport;
-        $this->night_vision = $night_vision;
+        $this->flyingSpeed = $flyingSpeed;
+        $this->autoTeleport = $autoTeleport;
+        $this->nightVision = $nightVision;
     }
 
     static public function fromData(Session $session, array $data): SpectatorSettings {
@@ -33,41 +33,41 @@ class SpectatorSettings {
     }
 
     public function getFlyingSpeed(): int {
-        return $this->flying_speed;
+        return $this->flyingSpeed;
     }
 
     public function getAutoTeleport(): bool {
-        return $this->auto_teleport;
+        return $this->autoTeleport;
     }
 
     public function getNightVision(): bool {
-        return $this->night_vision;
+        return $this->nightVision;
     }
 
-    public function setFlyingSpeed(int $flying_speed): void {
-        $this->flying_speed = $flying_speed;
+    public function setFlyingSpeed(int $flyingSpeed): void {
+        $this->flyingSpeed = $flyingSpeed;
 
-        if($this->flying_speed !== 0) {
-            $this->session->message("{GREEN}You now have Speed " . GameUtils::intToRoman($flying_speed) . "!");
+        if($this->flyingSpeed !== 0) {
+            $this->session->message("{GREEN}You now have Speed " . GameUtils::intToRoman($flyingSpeed) . "!");
         } else {
             $this->session->message("{RED}You no longer have any speed effects!");
         }
     }
 
-    public function setAutoTeleport(bool $auto_teleport): void {
-        $this->auto_teleport = $auto_teleport;
+    public function setAutoTeleport(bool $autoTeleport): void {
+        $this->autoTeleport = $autoTeleport;
 
-        if($this->auto_teleport) {
+        if($this->autoTeleport) {
             $this->session->message("{GREEN}Once you select a player using your compass, it will auto teleport you to them!");
         } else {
             $this->session->message("{RED}You will no longer auto teleport to targets!");
         }
     }
 
-    public function setNightVision(bool $night_vision): void {
-        $this->night_vision = $night_vision;
+    public function setNightVision(bool $nightVision): void {
+        $this->nightVision = $nightVision;
 
-        if($this->night_vision) {
+        if($this->nightVision) {
             $this->session->message("{GREEN}You now have night vision!");
         } else {
             $this->session->message("{RED}You no longer have night vision!");
@@ -76,10 +76,10 @@ class SpectatorSettings {
 
     public function apply(): void {
         $this->session->getPlayer()->getEffects()->clear();
-        if($this->flying_speed !== 0) {
-            $this->session->addEffect(new EffectInstance(VanillaEffects::SPEED(), Limits::INT32_MAX, $this->flying_speed - 1, false));
+        if($this->flyingSpeed !== 0) {
+            $this->session->addEffect(new EffectInstance(VanillaEffects::SPEED(), Limits::INT32_MAX, $this->flyingSpeed - 1, false));
         }
-        if($this->night_vision) {
+        if($this->nightVision) {
             $this->session->addEffect(new EffectInstance(VanillaEffects::NIGHT_VISION(), Limits::INT32_MAX, 0, false));
         }
     }

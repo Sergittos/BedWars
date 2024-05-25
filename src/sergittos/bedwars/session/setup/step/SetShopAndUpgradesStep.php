@@ -27,7 +27,7 @@ class SetShopAndUpgradesStep extends Step {
         $inventory->setItem(8, BedwarsItems::CANCEL()->asItem()->setCustomName(TextFormat::GREEN . "Done"));
     }
 
-    public function onBlockInteract(Vector3 $touch_vector, int $action, Cancellable $event, BedwarsItem $item): void {
+    public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {
         if($action !== PlayerInteractEvent::RIGHT_CLICK_BLOCK or !$item instanceof AddVillagerItem) {
             return;
         }
@@ -36,8 +36,8 @@ class SetShopAndUpgradesStep extends Step {
 
         $name = $item->getName();
         match($name) {
-            Shop::ITEM => $map->addShopPosition($touch_vector),
-            Shop::UPGRADES => $map->addUpgradesPosition($touch_vector)
+            Shop::ITEM => $map->addShopPosition($touchVector),
+            Shop::UPGRADES => $map->addUpgradesPosition($touchVector)
         };
 
         $this->session->message("{GREEN}You have successfully set the $name position.");

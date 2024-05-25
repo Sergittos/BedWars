@@ -18,8 +18,8 @@ use function strtolower;
 
 class GameUtils {
 
-    static public function getMode(int $players_per_team): string {
-        return match($players_per_team) {
+    static public function getMode(int $playersPerTeam): string {
+        return match($playersPerTeam) {
             1 => "Solo",
             2 => "Duos",
             4 => "Squads",

@@ -23,19 +23,19 @@ use function shuffle;
 
 class PlayingStage extends Stage {
 
-    private ?Event $next_event = null;
+    private ?Event $nextEvent = null;
 
     public function getNextEvent(): Event {
-        return $this->next_event;
+        return $this->nextEvent;
     }
 
     public function hasStarted(): bool {
-        return $this->next_event !== null;
+        return $this->nextEvent !== null;
     }
 
     private function startNextEvent(?Event $event = null): void {
-        $this->next_event = $event ?? $this->next_event->getNextEvent();
-        $this->next_event?->start($this->game);
+        $this->nextEvent = $event ?? $this->nextEvent->getNextEvent();
+        $this->nextEvent?->start($this->game);
     }
 
     protected function onStart(): void {
@@ -85,7 +85,7 @@ class PlayingStage extends Stage {
     }
 
     public function tick(): void {
-        if($this->next_event->hasEnded()) {
+        if($this->nextEvent->hasEnded()) {
             $this->startNextEvent();
         }
         $this->game->updateScoreboards();
@@ -122,24 +122,24 @@ class PlayingStage extends Stage {
     }
 
     private function checkTrackingSession(Session $session): void {
-        $tracking_session = $session->getTrackingSession();
-        if($tracking_session === null) {
+        $trackingSession = $session->getTrackingSession();
+        if($trackingSession === null) {
             return;
         }
 
         $player = $session->getPlayer();
-        if($tracking_session->isRespawning()) {
+        if($trackingSession->isRespawning()) {
             $player->sendPopup(TextFormat::RED . "Target lost");
             $session->setTrackingSession(null);
             return;
         }
         $session->updateCompassDirection();
 
-        $position = $tracking_session->getPlayer()->getPosition();
+        $position = $trackingSession->getPlayer()->getPosition();
         $distance = $player->getPosition()->distance($position);
 
         $player->sendPopup(ColorUtils::translate(
-            "Target: {GREEN}{BOLD}" . $tracking_session->getUsername() . "  {RESET}{WHITE}Distance: {GREEN}{BOLD}" . round($distance, 1) . "m"
+            "Target: {GREEN}{BOLD}" . $trackingSession->getUsername() . "  {RESET}{WHITE}Distance: {GREEN}{BOLD}" . round($distance, 1) . "m"
         ));
 
         if($session->isSpectator() and $session->getSpectatorSettings()->getAutoTeleport() and $distance >= 10) {

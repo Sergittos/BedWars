@@ -18,15 +18,15 @@ use function json_encode;
 
 class DeleteMapTask extends AsyncTask {
 
-    private string $world_path;
+    private string $worldPath;
 
     public function __construct(Map $map) {
         $this->storeLocal("map", $map);
-        $this->world_path = BedWars::getInstance()->getDataFolder() . "worlds/" . $map->getName();
+        $this->worldPath = BedWars::getInstance()->getDataFolder() . "worlds/" . $map->getName();
     }
 
     public function onRun(): void {
-        Filesystem::recursiveUnlink($this->world_path);
+        Filesystem::recursiveUnlink($this->worldPath);
     }
 
     public function onCompletion(): void { // TODO: Do not reuse code
@@ -36,8 +36,8 @@ class DeleteMapTask extends AsyncTask {
         $path = $plugin->getDataFolder() . "maps.json";
 
         $data = json_decode(file_get_contents($path), true);
-        $data = array_filter($data, function(array $map_data) use ($map): bool {
-            return $map_data["name"] !== $map->getName();
+        $data = array_filter($data, function(array $mapData) use ($map): bool {
+            return $mapData["name"] !== $map->getName();
         });
 
         file_put_contents($path, json_encode($data, JSON_THROW_ON_ERROR));

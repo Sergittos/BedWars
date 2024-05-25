@@ -29,52 +29,52 @@ class MapFactory {
     static private array $maps = [];
 
     static public function init(): void {
-        foreach(json_decode(file_get_contents(BedWars::getInstance()->getDataFolder() . "maps.json"), true) as $map_data) {
-            $name = $map_data["name"];
-            $world_name = $map_data["waiting_world"];
-            $position_data = $map_data["spectator_spawn_position"];
-            $players_per_team = $map_data["players_per_team"];
-            $capacity = $map_data["max_capacity"];
+        foreach(json_decode(file_get_contents(BedWars::getInstance()->getDataFolder() . "maps.json"), true) as $mapData) {
+            $name = $mapData["name"];
+            $worldName = $mapData["waiting_world"];
+            $positionData = $mapData["spectator_spawn_position"];
+            $playersPerTeam = $mapData["players_per_team"];
+            $capacity = $mapData["max_capacity"];
 
-            $world_manager = Server::getInstance()->getWorldManager();
-            if(!$world_manager->loadWorld($world_name)) {
-                throw new ServerException("Couldn't load " . $name . " map because the world doesn't exist. (" . $world_name . ")");
+            $worldManager = Server::getInstance()->getWorldManager();
+            if(!$worldManager->loadWorld($worldName)) {
+                throw new ServerException("Couldn't load " . $name . " map because the world doesn't exist. (" . $worldName . ")");
             }
 
-            $waiting_world = $world_manager->getWorldByName($world_name);
-            $spectator_spawn_position = new Vector3($position_data["x"], $position_data["y"], $position_data["z"]);
+            $waitingWorld = $worldManager->getWorldByName($worldName);
+            $spectatorSpawnPosition = new Vector3($positionData["x"], $positionData["y"], $positionData["z"]);
 
             $generators = [];
-            foreach($map_data["generators"] as $type => $generator_data) {
-                foreach($generator_data as $position) {
+            foreach($mapData["generators"] as $type => $generatorData) {
+                foreach($generatorData as $position) {
                     $generators[] = GeneratorType::toGenerator(self::createVector($position), GeneratorType::fromString($type));
                 }
             }
 
-            $shop_locations = self::createPositions($map_data["shop_positions"]);
-            $upgrades_locations = self::createPositions($map_data["upgrades_positions"]);
+            $shopLocations = self::createPositions($mapData["shop_positions"]);
+            $upgradesLocations = self::createPositions($mapData["upgrades_positions"]);
 
             $teams = [];
-            foreach($map_data["teams"] as $data) {
-                $generator_data = $data["generator"];
-                $areas_data = $data["areas"];
-                $bed_data = $data["bed"];
+            foreach($mapData["teams"] as $data) {
+                $generatorData = $data["generator"];
+                $areasData = $data["areas"];
+                $bedData = $data["bed"];
 
-                $team_generators = [];
-                $team_generators[] = new IronGenerator(self::createVector($generator_data));
-                $team_generators[] = new GoldGenerator(self::createVector($generator_data));
+                $teamGenerators = [];
+                $teamGenerators[] = new IronGenerator(self::createVector($generatorData));
+                $teamGenerators[] = new GoldGenerator(self::createVector($generatorData));
 
                 $teams[] = new Team(
-                    ucfirst($data["name"]), $players_per_team,
-                    self::createVector($data["spawn_point"]), new Vector3($bed_data["x"], $bed_data["y"] + 1, $bed_data["z"]),
-                    Area::fromData($areas_data["zone"]), Area::fromData($areas_data["claim"]), $team_generators
+                    ucfirst($data["name"]), $playersPerTeam,
+                    self::createVector($data["spawn_point"]), new Vector3($bedData["x"], $bedData["y"] + 1, $bedData["z"]),
+                    Area::fromData($areasData["zone"]), Area::fromData($areasData["claim"]), $teamGenerators
                 );
             }
 
             self::addMap(new Map(
-                $name, $spectator_spawn_position, $players_per_team,
-                $capacity, $waiting_world, $generators, $teams,
-                $shop_locations, $upgrades_locations
+                $name, $spectatorSpawnPosition, $playersPerTeam,
+                $capacity, $waitingWorld, $generators, $teams,
+                $shopLocations, $upgradesLocations
             ));
         }
     }
@@ -89,9 +89,9 @@ class MapFactory {
     /**
      * @return Map[]
      */
-    static public function getMapsByPlayers(int $players_per_team): array {
-        return array_filter(self::$maps, function(Map $map) use ($players_per_team) {
-            return $map->getPlayersPerTeam() === $players_per_team;
+    static public function getMapsByPlayers(int $playersPerTeam): array {
+        return array_filter(self::$maps, function(Map $map) use ($playersPerTeam) {
+            return $map->getPlayersPerTeam() === $playersPerTeam;
         });
     }
 

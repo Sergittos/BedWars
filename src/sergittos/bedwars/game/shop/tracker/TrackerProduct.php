@@ -18,12 +18,12 @@ class TrackerProduct extends Product {
     }
 
     public function onPurchase(Session $session): bool {
-        $tracking_team = null;
+        $trackingTeam = null;
 
         $teams = $session->getGame()->getTeams();
         foreach($teams as $team) {
             if($team->getName() === $this->id) {
-                $tracking_team = $team;
+                $trackingTeam = $team;
             }
 
             if(!$team->isBedDestroyed()) {
@@ -32,14 +32,14 @@ class TrackerProduct extends Product {
             }
         }
 
-        if($tracking_team === null) { // this should never happen
+        if($trackingTeam === null) { // this should never happen
             return false;
-        } elseif(!$tracking_team->isAlive()) {
+        } elseif(!$trackingTeam->isAlive()) {
             $session->message("{RED}You can't track an eliminated team!");
             return false;
         }
 
-        $members = $tracking_team->getMembers();
+        $members = $trackingTeam->getMembers();
         $session->setTrackingSession($members[array_rand($members)]);
         return true;
     }

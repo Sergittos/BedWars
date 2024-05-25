@@ -18,28 +18,28 @@ class GenerateGameTask extends AsyncTask {
 
     private int $id;
 
-    private string $map_id;
-    private string $map_name;
+    private string $mapId;
+    private string $mapName;
 
-    private string $world_path;
-    private string $destination_path;
+    private string $worldPath;
+    private string $destinationPath;
 
     public function __construct(int $id, Map $map) {
         $this->id = $id;
 
-        $this->map_id = $map->getId();
-        $this->map_name = $map->getName();
+        $this->mapId = $map->getId();
+        $this->mapName = $map->getName();
 
-        $this->world_path = BedWars::getInstance()->getDataFolder() . "worlds/" . $this->map_name;
-        $this->destination_path = Server::getInstance()->getDataPath() . "worlds/" . $this->map_name . "-" . $id;
+        $this->worldPath = BedWars::getInstance()->getDataFolder() . "worlds/" . $this->mapName;
+        $this->destinationPath = Server::getInstance()->getDataPath() . "worlds/" . $this->mapName . "-" . $id;
     }
 
     public function onRun(): void {
-        Filesystem::recursiveCopy($this->world_path, $this->destination_path);
+        Filesystem::recursiveCopy($this->worldPath, $this->destinationPath);
     }
 
     public function onCompletion(): void {
-        BedWars::getInstance()->getGameManager()->addGame(new Game(MapFactory::getMapById($this->map_id), $this->id));
+        BedWars::getInstance()->getGameManager()->addGame(new Game(MapFactory::getMapById($this->mapId), $this->id));
     }
 
 }

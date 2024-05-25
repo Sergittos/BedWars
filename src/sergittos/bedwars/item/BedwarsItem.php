@@ -15,11 +15,11 @@ use function str_replace;
 abstract class BedwarsItem {
 
     private string $name;
-    private bool $disable_transactions;
+    private bool $disableTransactions;
 
     public function __construct(string $name, bool $disable_transactions = true) {
         $this->name = ColorUtils::translate($name);
-        $this->disable_transactions = $disable_transactions;
+        $this->disableTransactions = $disable_transactions;
     }
 
     public function asItem(): Item {
@@ -29,7 +29,7 @@ abstract class BedwarsItem {
         $nbt = $item->getNamedTag();
         $nbt->setString("bedwars_name", str_replace(" ", "_", TextFormat::clean($this->name)));
 
-        if($this->disable_transactions) {
+        if($this->disableTransactions) {
             $nbt->setByte("bedwars_item", 1);
         }
 

@@ -13,15 +13,15 @@ use sergittos\bedwars\game\map\MapFactory;
 
 class SelectMapForm extends SimpleForm {
 
-    private int $players_per_team;
+    private int $playersPerTeam;
 
-    public function __construct(int $players_per_team) {
-        $this->players_per_team = $players_per_team;
+    public function __construct(int $playersPerTeam) {
+        $this->playersPerTeam = $playersPerTeam;
         parent::__construct("Select a map!");
     }
 
     protected function onCreation(): void {
-        foreach(MapFactory::getMapsByPlayers($this->players_per_team) as $map) {
+        foreach(MapFactory::getMapsByPlayers($this->playersPerTeam) as $map) {
             $this->addButton(new PlayGameButton($map->getName(), BedWars::getInstance()->getGameManager()->findGame($map)));
         }
     }

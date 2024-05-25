@@ -15,18 +15,18 @@ trait MapProperties {
     protected string $id;
     protected string $name;
 
-    protected Vector3 $spectator_spawn_position;
+    protected Vector3 $spectatorSpawnPosition;
 
-    protected int $players_per_team; // TODO: Make an enum for this
-    protected int $max_capacity; // slots?
+    protected int $playersPerTeam; // TODO: Make an enum for this
+    protected int $maxCapacity; // slots?
 
-    protected World $waiting_world;
-
-    /** @var Vector3[] */
-    protected array $shop_positions;
+    protected World $waitingWorld;
 
     /** @var Vector3[] */
-    protected array $upgrades_positions;
+    protected array $shopPositions;
+
+    /** @var Vector3[] */
+    protected array $upgradesPositions;
 
     /** @var Generator[] */
     protected array $generators;
@@ -40,19 +40,19 @@ trait MapProperties {
     }
 
     public function getSpectatorSpawnPosition(): Vector3 {
-        return $this->spectator_spawn_position;
+        return $this->spectatorSpawnPosition;
     }
 
     public function getPlayersPerTeam(): int {
-        return $this->players_per_team;
+        return $this->playersPerTeam;
     }
 
     public function getMaxCapacity(): int {
-        return $this->max_capacity;
+        return $this->maxCapacity;
     }
 
     public function getWaitingWorld(): World {
-        return $this->waiting_world;
+        return $this->waitingWorld;
     }
 
     /**
@@ -66,14 +66,14 @@ trait MapProperties {
      * @return Vector3[]
      */
     public function getShopPositions(): array {
-        return $this->shop_positions;
+        return $this->shopPositions;
     }
 
     /**
      * @return Vector3[]
      */
     public function getUpgradesPositions(): array {
-        return $this->upgrades_positions;
+        return $this->upgradesPositions;
     }
 
 }
