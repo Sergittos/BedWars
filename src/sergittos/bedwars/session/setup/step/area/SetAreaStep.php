@@ -43,8 +43,8 @@ abstract class SetAreaStep extends Step {
         $this->session->message("{GREEN}Gave you a claim wand.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, BedwarsItemRegistry::CLAIMING_WAND()->asItem());
-        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::CLAIMING_WAND());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL());
     }
 
     public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {

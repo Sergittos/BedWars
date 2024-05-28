@@ -114,7 +114,7 @@ class GameSettings {
 
         $inventory = $player->getInventory();
         $inventory->addItem(VanillaItems::WOODEN_SWORD()->setUnbreakable());
-        $inventory->setItem(8, BedwarsItemRegistry::TRACKER_SHOP()->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::TRACKER_SHOP());
 
         if($this->permanentShears) {
             $inventory->addItem(VanillaItems::SHEARS());

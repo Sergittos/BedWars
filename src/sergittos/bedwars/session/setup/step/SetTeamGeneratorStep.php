@@ -31,8 +31,8 @@ class SetTeamGeneratorStep extends Step {
         $this->session->message("{YELLOW}Break the block below the generator with the item you have received in your inventory to set the generator.");
 
         $inventory = $this->session->getPlayer()->getInventory();
-        $inventory->setItem(0, BedwarsItemRegistry::TEAM_GENERATOR()->asItem());
-        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem());
+        $inventory->setItem(0, BedwarsItemRegistry::TEAM_GENERATOR());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL());
     }
 
     public function onBlockBreak(Block $block, BedwarsItem $item): void {

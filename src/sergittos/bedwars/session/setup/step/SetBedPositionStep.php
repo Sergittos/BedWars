@@ -37,7 +37,7 @@ class SetBedPositionStep extends Step {
 
         $inventory = $this->session->getPlayer()->getInventory();
         $inventory->setItem(0, BedwarsItemRegistry::BED_POSITION()->setColor($this->team->getDyeColor())->asItem());
-        $inventory->setItem(8, BedwarsItemRegistry::CANCEL()->asItem());
+        $inventory->setItem(8, BedwarsItemRegistry::CANCEL());
     }
 
     public function onBlockInteract(Vector3 $touchVector, int $action, Cancellable $event, BedwarsItem $item): void {
