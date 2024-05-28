@@ -41,6 +41,7 @@ use sergittos\bedwars\provider\Provider;
 use sergittos\bedwars\provider\sqlite\SqliteProvider;
 use sergittos\bedwars\session\SessionFactory;
 use sergittos\bedwars\utils\ConfigGetter;
+use sergittos\bedwars\utils\message\MessageManager;
 use function basename;
 use function strtolower;
 
@@ -49,6 +50,7 @@ class BedWars extends PluginBase {
 
     private Provider $provider;
     private GameManager $gameManager;
+    private MessageManager $messageManager;
 
     protected function onLoad(): void {
         self::setInstance($this);
@@ -57,6 +59,8 @@ class BedWars extends PluginBase {
         if(!is_dir($worldsDir)) {
             mkdir($worldsDir);
         }
+
+        $this->saveResource("messages.json", true);
     }
 
     protected function onEnable(): void {
@@ -64,6 +68,7 @@ class BedWars extends PluginBase {
 
         $this->provider = $this->obtainProvider();
         $this->gameManager = new GameManager();
+        $this->messageManager = new MessageManager();
 
         $this->registerEntity(PlayBedwarsEntity::class);
         $this->registerEntity(ItemShopVillager::class);
@@ -126,6 +131,10 @@ class BedWars extends PluginBase {
 
     public function getGameManager(): GameManager {
         return $this->gameManager;
+    }
+
+    public function getMessageManager(): MessageManager {
+        return $this->messageManager;
     }
 
 }

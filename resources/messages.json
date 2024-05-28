@@ -1,0 +1,44 @@
+{
+  "LOBBY_SCOREBOARD": [
+    "{GRAY}{date}",
+    "",
+    "{WHITE}Coins: {GREEN}{coins}",
+    "     ",
+    "{WHITE}Total Kills: {GREEN}{kills}",
+    "{WHITE}Total Wins: {GREEN}{wins}",
+    "      ",
+    " {YELLOW}play.server.net"
+  ],
+  "WAITING_SCOREBOARD": [
+    "{GRAY}{date}",
+    "",
+    "{WHITE}Map: {GREEN}{map}",
+    "{WHITE}Players: {GREEN}{players_count}/{slots}",
+    " ",
+    "{stage}",
+    "  ",
+    "{WHITE}Mode: {GREEN}{mode}",
+    "{WHITE}Version: {GRAY}v{version}",
+    "   ",
+    "{YELLOW}play.server.net"
+  ],
+  "GAME_SCOREBOARD": [
+    "{GRAY}{date}",
+    "",
+    "{event}",
+    " ",
+    "{teams}",
+    "  ",
+    "{YELLOW}play.server.net"
+  ],
+
+  "SCOREBOARD_TITLE": "{YELLOW}BED WARS",
+  "WAITING_STAGE": "{WHITE}Waiting...",
+  "STARTING_STAGE": "{WHITE}Starting in {GREEN}{time}s",
+  "GAME_EVENT_ENDED": "{GREEN}Game Ended",
+  "GAME_EVENT": "{WHITE}{event} in: {GREEN}{time}",
+  "TEAM_SCOREBOARD": "{color}{first_letter} {WHITE}{name}: {status} {you}",
+  "TEAM_STATUS_ELIMINATED": "{RED}X",
+  "TEAM_STATUS_WITHOUT_BED": "{GREEN}{players}",
+  "TEAM_STATUS_ALIVE": "{GREEN}Alive"
+}
