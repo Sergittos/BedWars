@@ -25,11 +25,11 @@ class AddGeneratorItem extends SetupItem {
 
     public function __construct(GeneratorType $type) {
         $this->type = $type;
-        parent::__construct(GameUtils::getGeneratorColor($name = $type->toString()) . $name . " generator");
+        parent::__construct($type->getDisplayName() . " generator");
     }
 
     protected function getMaterial(): Item {
-        return StringToItemParser::getInstance()->parse(strtolower($this->type->toString()) . "_block");
+        return StringToItemParser::getInstance()->parse(strtolower($this->type->getDisplayName()) . "_block");
     }
 
     public function onInteract(Session $session): void {}

@@ -32,15 +32,15 @@ class AddGeneratorForm extends CustomForm {
 
     protected function onCreation(): void {
         $dropdown = new Dropdown("Select the generator:");
-        $dropdown->addOption(new Option(GeneratorType::DIAMOND->name, "Diamond Generator"));
-        $dropdown->addOption(new Option(GeneratorType::EMERALD->name, "Emerald Generator"));
+        $dropdown->addOption(new Option(GeneratorType::DIAMOND->value, "Diamond Generator"));
+        $dropdown->addOption(new Option(GeneratorType::EMERALD->value, "Emerald Generator"));
 
         $this->addElement("id", $dropdown);
     }
 
     protected function onSubmit(Player $player, FormResponse $response): void {
         $this->session->getMapSetup()->setStep(new AddGeneratorStep(
-            GeneratorType::fromString($response->getDropdownSubmittedOptionId("id"))
+            GeneratorType::from($response->getDropdownSubmittedOptionId("id"))
         ));
     }
 

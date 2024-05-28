@@ -10,22 +10,24 @@ namespace sergittos\bedwars\game\generator;
 
 
 use pocketmine\math\Vector3;
+use pocketmine\utils\TextFormat;
 use sergittos\bedwars\game\generator\presets\DiamondGenerator;
 use sergittos\bedwars\game\generator\presets\EmeraldGenerator;
 use sergittos\bedwars\game\generator\presets\GoldGenerator;
 use sergittos\bedwars\game\generator\presets\IronGenerator;
 use sergittos\bedwars\game\generator\presets\TeamEmeraldGenerator;
+use function ucfirst;
 
-enum GeneratorType {
+enum GeneratorType: string {
 
-    case IRON;
-    case GOLD;
-    case DIAMOND;
-    case EMERALD;
-    case TEAM_EMERALD;
+    case IRON = "iron";
+    case GOLD = "gold";
+    case DIAMOND = "diamond";
+    case EMERALD = "emerald";
+    case TEAM_EMERALD = "team emerald";
 
-    static public function toGenerator(Vector3 $position, GeneratorType $type): Generator {
-        return match($type) {
+    public function createGenerator(Vector3 $position): Generator {
+        return match($this) {
             self::IRON => new IronGenerator($position),
             self::GOLD => new GoldGenerator($position),
             self::DIAMOND => new DiamondGenerator($position),
@@ -34,25 +36,22 @@ enum GeneratorType {
         };
     }
 
-    static public function fromString(string $type): self {
-        return match(strtolower($type)) {
-            "iron" => self::IRON,
-            "gold" => self::GOLD,
-            "diamond" => self::DIAMOND,
-            "emerald" => self::EMERALD,
-            "team_emerald" => self::TEAM_EMERALD,
-            default => throw new \InvalidArgumentException("Invalid generator type: $type"),
+    public function getColor(): string {
+        return match($this) {
+            self::IRON => TextFormat::WHITE,
+            self::GOLD => TextFormat::GOLD,
+            self::DIAMOND => TextFormat::AQUA,
+            self::EMERALD => TextFormat::DARK_GREEN,
+            self::TEAM_EMERALD => "",
         };
     }
 
-    public function toString(): string {
-        return match($this) {
-            self::IRON => "Iron",
-            self::GOLD => "Gold",
-            self::DIAMOND => "Diamond",
-            self::EMERALD => "Emerald",
-            self::TEAM_EMERALD => "Team Emerald",
-        };
+    public function getDisplayName(): string {
+        return $this->getColor() . $this->getName();
+    }
+
+    public function getName(): string {
+        return ucfirst($this->value);
     }
 
 }

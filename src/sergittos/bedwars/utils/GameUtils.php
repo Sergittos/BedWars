@@ -20,19 +20,8 @@ use sergittos\bedwars\game\team\upgrade\trap\CounterOffensiveTrap;
 use sergittos\bedwars\game\team\upgrade\trap\DefaultTrap;
 use sergittos\bedwars\game\team\upgrade\trap\MinerFatigueTrap;
 use sergittos\bedwars\game\team\upgrade\trap\Trap;
-use function strtolower;
 
 class GameUtils {
-
-    static public function getGeneratorColor(string $name): string {
-        return match(strtolower($name)) {
-            "emerald" => "{DARK_GREEN}",
-            "diamond" => "{AQUA}",
-            "gold" => "{GOLD}",
-            "iron" => "{WHITE}",
-            default => ""
-        };
-    }
 
     static public function intToRoman(int $number): string {
         return match($number) {

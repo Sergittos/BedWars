@@ -14,6 +14,7 @@ namespace sergittos\bedwars\game\shop;
 
 use pocketmine\item\Item;
 use pocketmine\utils\TextFormat;
+use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
 use sergittos\bedwars\utils\GameUtils;
@@ -59,7 +60,7 @@ abstract class Product {
 
     public function getDescription(Session $session): string {
         $name = strtok(strtolower($this->ore->getVanillaName()), " ");
-        $color = GameUtils::getGeneratorColor($name);
+        $color = GeneratorType::from($name)->getColor();
 
         if($name !== "iron" and $name !== "gold" and $this->price !== 1) {
             $name .= "s";

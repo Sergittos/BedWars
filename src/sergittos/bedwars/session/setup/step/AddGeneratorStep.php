@@ -46,7 +46,7 @@ class AddGeneratorStep extends Step {
             $position->getWorld()->setBlock($position, $item->asItem()->getBlock());
 
             $setup = $this->session->getMapSetup();
-            $setup->getMapBuilder()->addGenerator(GeneratorType::toGenerator($position, $this->type));
+            $setup->getMapBuilder()->addGenerator($this->type->createGenerator($position));
             $setup->setStep(new PreparingMapStep());
 
             $this->session->message("{GREEN}You have successfully set the generator.");

@@ -55,7 +55,7 @@ class MapFactory {
             $generators = [];
             foreach($mapData["generators"] as $type => $generatorData) {
                 foreach($generatorData as $position) {
-                    $generators[] = GeneratorType::toGenerator(self::createVector($position), GeneratorType::fromString($type));
+                    $generators[] = GeneratorType::from(strtolower($type))->createGenerator(self::createVector($position));
                 }
             }
 

@@ -16,8 +16,6 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\world\World;
 use sergittos\bedwars\game\Game;
-use sergittos\bedwars\utils\ColorUtils;
-use sergittos\bedwars\utils\GameUtils;
 
 abstract class Generator {
 
@@ -35,8 +33,7 @@ abstract class Generator {
     }
 
     public function getName(): string {
-        $name = $this->getType()->toString();
-        return ColorUtils::translate(GameUtils::getGeneratorColor($name) . $name);
+        return $this->getType()->getDisplayName();
     }
 
     public function getPosition(): Vector3 {

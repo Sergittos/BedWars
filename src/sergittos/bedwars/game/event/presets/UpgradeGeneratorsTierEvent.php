@@ -26,7 +26,7 @@ class UpgradeGeneratorsTierEvent extends Event {
     public function __construct(GeneratorType $type, Tier $tier) {
         $this->type = $type;
         $this->tier = $tier;
-        parent::__construct($type->toString() . " " . $tier->name, 6);
+        parent::__construct($type->getDisplayName() . " " . $tier->name, 6);
     }
 
     public function end(): void {
@@ -41,7 +41,7 @@ class UpgradeGeneratorsTierEvent extends Event {
                 $generator->updateText($this->game->getWorld());
             }
         }
-        $this->game->broadcastMessage(GameUtils::getGeneratorColor($name = $this->type->toString()) . $name . " Generators {YELLOW}have been upgraded to Tier {RED}" . $this->tier->name);
+        $this->game->broadcastMessage($this->type->getDisplayName() . " Generators {YELLOW}have been upgraded to Tier {RED}" . $this->tier->name);
     }
 
     public function getNextEvent(): ?Event {
