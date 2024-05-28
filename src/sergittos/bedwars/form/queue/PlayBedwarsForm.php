@@ -17,26 +17,27 @@ use EasyUI\variant\SimpleForm;
 use pocketmine\player\Player;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\form\queue\element\PlayGameButton;
+use sergittos\bedwars\game\map\Mode;
 use sergittos\bedwars\utils\GameUtils;
 
 class PlayBedwarsForm extends SimpleForm {
 
-    private int $playersPerTeam;
+    private Mode $mode;
 
-    public function __construct(int $playersPerTeam) {
-        $this->playersPerTeam = $playersPerTeam;
-        parent::__construct("Play bedwars " . GameUtils::getMode($playersPerTeam));
+    public function __construct(Mode $mode) {
+        $this->mode = $mode;
+        parent::__construct("Play bedwars " . $mode->getDisplayName());
     }
 
     protected function onCreation(): void {
-        $this->addButton(new PlayGameButton("Random map", null, $this->playersPerTeam));
+        $this->addButton(new PlayGameButton("Random map", null, $this->mode));
         $this->addSelectMapButton();
     }
 
     private function addSelectMapButton(): void {
         $button = new Button("Select a map");
         $button->setSubmitListener(function(Player $player) {
-            $player->sendForm(new SelectMapForm($this->playersPerTeam));
+            $player->sendForm(new SelectMapForm($this->mode));
         });
         $this->addButton($button);
     }

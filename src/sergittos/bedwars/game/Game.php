@@ -224,7 +224,7 @@ class Game {
 
     private function updatePlayEntities(): void {
         foreach(Server::getInstance()->getWorldManager()->getDefaultWorld()->getEntities() as $entity) {
-            if($entity instanceof PlayBedwarsEntity and $entity->getPlayersPerTeam() === $this->map->getPlayersPerTeam()) {
+            if($entity instanceof PlayBedwarsEntity and $entity->getMode() === $this->map->getMode()) {
                 $entity->updateNameTag();
             }
         }

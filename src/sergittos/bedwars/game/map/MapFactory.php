@@ -80,7 +80,7 @@ class MapFactory {
             }
 
             self::addMap(new Map(
-                $name, $spectatorSpawnPosition, $playersPerTeam,
+                $name, $spectatorSpawnPosition, Mode::from($playersPerTeam),
                 $capacity, $waitingWorld, $generators, $teams,
                 $shopLocations, $upgradesLocations
             ));
@@ -112,18 +112,18 @@ class MapFactory {
     /**
      * @return Map[]
      */
-    static public function getMapsByPlayers(int $playersPerTeam): array {
+    static public function getMapsByPlayers(Mode $mode): array {
         $maps = [];
         foreach(self::$maps as $map) {
-            if($map->getPlayersPerTeam() === $playersPerTeam) {
+            if($map->getMode() === $mode) {
                 $maps[] = $map;
             }
         }
         return $maps;
     }
 
-    static public function getRandomMap(int $playersPerTeam): ?Map {
-        $maps = self::getMapsByPlayers($playersPerTeam);
+    static public function getRandomMap(Mode $mode): ?Map {
+        $maps = self::getMapsByPlayers($mode);
         return $maps[array_rand($maps)];
     }
 

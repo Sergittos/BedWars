@@ -23,9 +23,9 @@ trait MapProperties {
 
     protected Vector3 $spectatorSpawnPosition;
 
-    protected int $playersPerTeam; // TODO: Make an enum for this
     protected int $maxCapacity; // slots?
 
+    protected Mode $mode;
     protected World $waitingWorld;
 
     /** @var Vector3[] */
@@ -49,8 +49,8 @@ trait MapProperties {
         return $this->spectatorSpawnPosition;
     }
 
-    public function getPlayersPerTeam(): int {
-        return $this->playersPerTeam;
+    public function getMode(): Mode {
+        return $this->mode;
     }
 
     public function getMaxCapacity(): int {

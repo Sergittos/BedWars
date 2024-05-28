@@ -17,6 +17,7 @@ use EasyUI\element\Option;
 use EasyUI\variant\CustomForm as EasyUICustomForm;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use sergittos\bedwars\game\map\Mode;
 use sergittos\bedwars\utils\GameUtils;
 use function is_numeric;
 
@@ -24,8 +25,8 @@ class CustomForm extends EasyUICustomForm {
 
     protected function addSelectModeDropdown(): void {
         $dropdown = new Dropdown("Select the mode:");
-        foreach([1, 2, 4] as $playersPerTeam) {
-            $dropdown->addOption(new Option((string) $playersPerTeam, GameUtils::getMode($playersPerTeam)));
+        foreach(Mode::cases() as $mode) {
+            $dropdown->addOption(new Option((string) $mode->value, $mode->getDisplayName()));
         }
         $this->addElement("players_per_team", $dropdown);
     }

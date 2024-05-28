@@ -53,8 +53,8 @@ class TeamBuilder {
 
     public function canBeBuilt(): bool {
         return isset(
-            $this->spawn_point,
-            $this->bed_position,
+            $this->spawnPoint,
+            $this->bedPosition,
             $this->zone,
             $this->claim,
             $this->generatorPosition
@@ -64,9 +64,9 @@ class TeamBuilder {
     public function build(MapBuilder $mapBuilder): Team {
         return new Team(
             $this->name,
-            $mapBuilder->getPlayersPerTeam(),
-            $this->spawn_point,
-            $this->bed_position,
+            $mapBuilder->getMode()->value,
+            $this->spawnPoint,
+            $this->bedPosition,
             $this->zone,
             $this->claim,
             [

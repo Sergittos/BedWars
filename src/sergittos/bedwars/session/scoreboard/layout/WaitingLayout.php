@@ -32,7 +32,7 @@ class WaitingLayout implements Layout {
             "slots" => $map->getMaxCapacity(),
             "stage" => !$stage instanceof StartingStage ? new MessageContainer("WAITING_STAGE") : new MessageContainer("STARTING_STAGE", ["time" => $stage->getCountdown()]),
             "map" => $map->getName(),
-            "mode" => GameUtils::getMode($map->getPlayersPerTeam()),
+            "mode" => $map->getMode()->getDisplayName(),
             "version" => ConfigGetter::getVersion()
         ]);
     }

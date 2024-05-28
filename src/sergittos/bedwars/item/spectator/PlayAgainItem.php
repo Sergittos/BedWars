@@ -24,7 +24,7 @@ class PlayAgainItem extends SpectatorItem {
     }
 
     protected function onSpectatorInteract(Session $session): void {
-        $form = new PlayBedwarsForm($session->getGame()->getMap()->getPlayersPerTeam());
+        $form = new PlayBedwarsForm($session->getGame()->getMap()->getMode());
         $form->setTitle("Play again?");
 
         $session->getPlayer()->sendForm($form);

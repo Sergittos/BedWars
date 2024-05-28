@@ -17,6 +17,7 @@ use pocketmine\world\World;
 use sergittos\bedwars\game\generator\Generator;
 use sergittos\bedwars\game\map\Map;
 use sergittos\bedwars\game\map\MapProperties;
+use sergittos\bedwars\game\map\Mode;
 use sergittos\bedwars\game\team\Team;
 use function array_map;
 
@@ -32,7 +33,7 @@ class MapBuilder {
         $this->name = $name;
         $this->waitingWorld = $waitingWorld;
         $this->playingWorld = $playingWorld;
-        $this->playersPerTeam = $playersPerTeam;
+        $this->mode = Mode::from($playersPerTeam);
         $this->maxCapacity = $maxCapacity;
 
         $this->setDefaultTeams();
@@ -74,7 +75,7 @@ class MapBuilder {
     }
 
     private function getTeamsCount(): int {
-        return (int) ($this->maxCapacity / $this->playersPerTeam);
+        return (int) ($this->maxCapacity / $this->mode->value);
     }
 
     /**
@@ -109,7 +110,7 @@ class MapBuilder {
         return new Map(
             $this->name,
             $this->spectatorSpawnPosition,
-            $this->playersPerTeam,
+            $this->mode,
             $this->maxCapacity,
             $this->waitingWorld,
             $this->generators,

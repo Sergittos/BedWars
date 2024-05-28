@@ -34,11 +34,11 @@ class Map implements JsonSerializable {
      * @param Generator[] $generators
      * @param Team[] $teams
      */
-    public function __construct(string $name, Vector3 $spectator_spawn_position, int $players_per_team, int $max_capacity, World $waiting_world, array $generators, array $teams, array $shop_locations, array $upgrades_locations) {
+    public function __construct(string $name, Vector3 $spectator_spawn_position, Mode $mode, int $max_capacity, World $waiting_world, array $generators, array $teams, array $shop_locations, array $upgrades_locations) {
         $this->id = uniqid("map-");
         $this->name = $name;
         $this->spectatorSpawnPosition = $spectator_spawn_position;
-        $this->playersPerTeam = $players_per_team;
+        $this->mode = $mode;
         $this->maxCapacity = $max_capacity;
         $this->waitingWorld = $waiting_world;
         $this->generators = $generators;
@@ -71,7 +71,7 @@ class Map implements JsonSerializable {
                 "y" => $this->spectatorSpawnPosition->getY(),
                 "z" => $this->spectatorSpawnPosition->getZ()
             ],
-            "players_per_team" => $this->playersPerTeam,
+            "players_per_team" => $this->mode->value,
             "max_capacity" => $this->maxCapacity,
             "generators" => [
                 "diamond" => $this->jsonSerializePositions($this->getGeneratorPositions(GeneratorType::DIAMOND)),

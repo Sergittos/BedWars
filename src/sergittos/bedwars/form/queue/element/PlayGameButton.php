@@ -19,13 +19,14 @@ use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\map\Map;
 use sergittos\bedwars\game\map\MapFactory;
+use sergittos\bedwars\game\map\Mode;
 use sergittos\bedwars\session\SessionFactory;
 
 class PlayGameButton extends Button {
 
-    public function __construct(string $name, ?Map $map, int $playersPerTeam) {
-        parent::__construct($name, null, function(Player $player) use ($map, $playersPerTeam) {
-            $map = $map !== null ? $map : MapFactory::getRandomMap($playersPerTeam);
+    public function __construct(string $name, ?Map $map, Mode $mode) {
+        parent::__construct($name, null, function(Player $player) use ($map, $mode) {
+            $map = $map !== null ? $map : MapFactory::getRandomMap($mode);
             if($map === null) {
                 $player->sendMessage(TextFormat::RED . "There are no maps available at this moment, try again in a few minutes");
                 return;

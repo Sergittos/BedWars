@@ -16,19 +16,20 @@ use EasyUI\variant\SimpleForm;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\form\queue\element\PlayGameButton;
 use sergittos\bedwars\game\map\MapFactory;
+use sergittos\bedwars\game\map\Mode;
 
 class SelectMapForm extends SimpleForm {
 
-    private int $playersPerTeam;
+    private Mode $mode;
 
-    public function __construct(int $playersPerTeam) {
-        $this->playersPerTeam = $playersPerTeam;
+    public function __construct(Mode $mode) {
+        $this->mode = $mode;
         parent::__construct("Select a map!");
     }
 
     protected function onCreation(): void {
-        foreach(MapFactory::getMapsByPlayers($this->playersPerTeam) as $map) {
-            $this->addButton(new PlayGameButton($map->getName(), $map, $this->playersPerTeam));
+        foreach(MapFactory::getMapsByPlayers($this->mode) as $map) {
+            $this->addButton(new PlayGameButton($map->getName(), $map, $this->mode));
         }
     }
 

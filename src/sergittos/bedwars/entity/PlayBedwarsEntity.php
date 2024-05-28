@@ -24,6 +24,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use sergittos\bedwars\form\queue\PlayBedwarsForm;
+use sergittos\bedwars\game\map\Mode;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\SessionFactory;
 use sergittos\bedwars\utils\ColorUtils;
@@ -34,10 +35,10 @@ use function count;
 
 class PlayBedwarsEntity extends Human {
 
-    private int $playersPerTeam;
+    private Mode $mode;
 
     public function __construct(Location $location, Skin $skin, CompoundTag $nbt) {
-        $this->playersPerTeam = $nbt->getInt("players_per_team");
+        $this->mode = Mode::from($nbt->getInt("players_per_team"));
         parent::__construct($location, $skin);
     }
 
@@ -52,7 +53,7 @@ class PlayBedwarsEntity extends Human {
         $amount = $this->getSessionsCount();
         $this->setNameTag(ColorUtils::translate(
             "{YELLOW}{BOLD}CLICK TO PLAY{RESET}\n" .
-            "{AQUA}" . GameUtils::getMode($this->playersPerTeam) . " {GRAY}[v" . ConfigGetter::getVersion() . "]\n" .
+            "{AQUA}" . $this->mode->getDisplayName() . " {GRAY}[v" . ConfigGetter::getVersion() . "]\n" .
             "{YELLOW}{BOLD}" . $amount . " " . ($amount === 1 ? "Player" : "Players")
         ));
     }
@@ -72,25 +73,25 @@ class PlayBedwarsEntity extends Human {
             return;
         }
 
-        $damager->sendForm(new PlayBedwarsForm($this->playersPerTeam));
+        $damager->sendForm(new PlayBedwarsForm($this->mode));
     }
 
     public function onInteract(Player $player, Vector3 $clickPos): bool {
-        $player->sendForm(new PlayBedwarsForm($this->playersPerTeam));
+        $player->sendForm(new PlayBedwarsForm($this->mode));
         return true;
     }
 
     public function saveNBT(): CompoundTag {
-        return parent::saveNBT()->setInt("players_per_team", $this->playersPerTeam);
+        return parent::saveNBT()->setInt("players_per_team", $this->mode->value);
     }
 
-    public function getPlayersPerTeam(): int {
-        return $this->playersPerTeam;
+    public function getMode(): Mode {
+        return $this->mode;
     }
 
     private function getSessionsCount(): int {
         return count(array_filter(SessionFactory::getSessions(), function(Session $session) {
-            return $session->isPlaying() and $session->getGame()->getMap()->getPlayersPerTeam() === $this->playersPerTeam;
+            return $session->isPlaying() and $session->getGame()->getMap()->getMode() === $this->mode;
         }));
     }
 
