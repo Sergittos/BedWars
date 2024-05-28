@@ -34,13 +34,15 @@ use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\stage\EndingStage;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\item\BedwarsItemRegistry;
-use sergittos\bedwars\session\scoreboard\LobbyScoreboard;
+use sergittos\bedwars\session\scoreboard\layout\Layout;
+use sergittos\bedwars\session\scoreboard\layout\LobbyLayout;
 use sergittos\bedwars\session\scoreboard\Scoreboard;
 use sergittos\bedwars\session\settings\GameSettings;
 use sergittos\bedwars\session\settings\SpectatorSettings;
 use sergittos\bedwars\session\setup\MapSetup;
 use sergittos\bedwars\utils\ColorUtils;
 use sergittos\bedwars\utils\ConfigGetter;
+use sergittos\bedwars\utils\message\MessageContainer;
 use function in_array;
 use function strtoupper;
 use function time;
@@ -74,6 +76,7 @@ class Session {
 
     public function __construct(Player $player) {
         $this->player = $player;
+        $this->scoreboard = new Scoreboard($this);
         $this->gameSettings = new GameSettings($this);
 
         $this->load();
@@ -151,9 +154,8 @@ class Session {
         $this->spectatorSettings = $spectatorSettings;
     }
 
-    public function setScoreboard(Scoreboard $scoreboard): void {
-        $this->scoreboard = $scoreboard;
-        $this->updateScoreboard();
+    public function setScoreboardLayout(Layout $layout): void {
+        $this->scoreboard->setLayout($layout);
     }
 
     public function setGame(?Game $game): void {
@@ -188,7 +190,7 @@ class Session {
     }
 
     public function updateScoreboard(): void {
-        $this->scoreboard->show($this);
+        $this->scoreboard->update();
     }
 
     public function attemptToRespawn(): void {
@@ -361,7 +363,7 @@ class Session {
 
         $this->clearAllInventories();
         $this->setTrackingSession(null);
-        $this->setScoreboard(new LobbyScoreboard());
+        $this->setScoreboardLayout(new LobbyLayout());
         $this->showBossBar("{DARK_GREEN}You are playing on {AQUA}" . strtoupper(ConfigGetter::getIP()));
     }
 
@@ -465,14 +467,12 @@ class Session {
         BedWars::getInstance()->getProvider()->saveSession($this);
     }
 
-    public function title(string $title, string $subtitle = "", int $fadeIn = 0, int $stay = 21, int $fadeOut = 0): void {
-        $this->player->sendTitle(
-            ColorUtils::translate($title), ColorUtils::translate($subtitle), $fadeIn, $stay, $fadeOut
-        );
+    public function title(string $title, ?string $subtitle = null, int $fadeIn = 0, int $stay = 21, int $fadeOut = 0): void {
+        $this->player->sendTitle($title, $subtitle ?? "", $fadeIn, $stay, $fadeOut);
     }
 
-    public function message(string $message): void {
-        $this->player->sendMessage(ColorUtils::translate($message));
+    public function message(string $container): void {
+        $this->player->sendMessage($container);
     }
 
 }

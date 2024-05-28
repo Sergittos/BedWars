@@ -20,7 +20,7 @@ use sergittos\bedwars\game\event\Event;
 use sergittos\bedwars\game\event\presets\UpgradeGeneratorsTierEvent;
 use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\game\generator\Tier;
-use sergittos\bedwars\session\scoreboard\GameScoreboard;
+use sergittos\bedwars\session\scoreboard\layout\GameLayout;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
 use function count;
@@ -67,7 +67,7 @@ class PlayingStage extends Stage {
     }
 
     public function onJoin(Session $session): void {
-        $session->setScoreboard(new GameScoreboard());
+        $session->setScoreboardLayout(new GameLayout());
     }
 
     public function onQuit(Session $session): void {
