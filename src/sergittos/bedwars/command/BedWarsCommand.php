@@ -37,12 +37,13 @@ class BedWarsCommand extends Command implements PluginOwned {
         }
 
         $session = SessionFactory::getSession($sender);
-        if($session->isCreatingMap()) {
-            if($session->getMapSetup()->getStep() instanceof PreparingMapStep) {
-                $sender->sendForm(new SetupMapForm($session));
-            }
-        } else {
+        if(!$session->isCreatingMap()) {
             $sender->sendForm(new BedwarsForm());
+            return;
+        }
+
+        if($session->getMapSetup()->getStep() instanceof PreparingMapStep) {
+            $sender->sendForm(new SetupMapForm($session));
         }
     }
 
