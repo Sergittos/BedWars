@@ -396,7 +396,7 @@ class GameListener implements Listener {
 
         $world = $origin->getWorld();
         foreach($world->getNearbyEntities($origin->getBoundingBox()->expandedCopy(1, 0.5, 1), $origin) as $entity) {
-            if(!$entity instanceof Player) {
+            if(!$entity instanceof Player or $entity->isSpectator()) {
                 continue;
             }
 
@@ -406,7 +406,7 @@ class GameListener implements Listener {
             );
 
             foreach($entity->getInventory()->addItem($event->getItem()) as $remains) {
-                $world->dropItem($origin->getLocation(), $remains, new Vector3(0, 0, 0));
+                $world->dropItem($origin->getLocation(), $remains, Vector3::zero());
             }
         }
 
