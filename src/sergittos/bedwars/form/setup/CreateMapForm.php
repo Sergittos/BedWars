@@ -72,7 +72,7 @@ class CreateMapForm extends CustomForm {
             return;
         }
 
-        $player->setGamemode(GameMode::CREATIVE());
+        $player->setGamemode(GameMode::CREATIVE);
         $player->teleport($worldManager->getWorldByName($playingWorld)->getSafeSpawn());
 
         $session = SessionFactory::getSession($player);

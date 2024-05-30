@@ -22,14 +22,14 @@ class WaitingStage extends Stage {
 
     public function onJoin(Session $session): void {
         $this->onSessionJoin($session);
-        $this->startIfReady();
+        $this->game->setStage(new StartingStage());
     }
 
     private function startIfReady(): void {
         $map = $this->game->getMap();
         $count = $this->game->getPlayersCount();
 
-        if($count > $map->getPlayersPerTeam() and $count >= ($map->getMaxCapacity() / 2)) {
+        if($count > $map->getMode()->value and $count >= ($map->getMaxCapacity() / 2)) {
             $this->game->setStage(new StartingStage());
         }
     }

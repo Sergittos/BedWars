@@ -172,7 +172,7 @@ class Team implements JsonSerializable {
 
         $player = $session->getPlayer();
         $player->setNameTag($this->color . $this->getFirstLetter() . " " . $player->getName());
-        $player->setGamemode(GameMode::SURVIVAL());
+        $player->setGamemode(GameMode::SURVIVAL);
         $player->teleport(Position::fromObject($this->spawnPoint, $session->getGame()->getWorld()));
     }
 

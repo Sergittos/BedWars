@@ -214,7 +214,7 @@ class Session {
         $this->title("{GREEN}RESPAWNED!", "", 7, 21, 7);
 
         $this->gameSettings->apply();
-        $this->player->setGamemode(GameMode::SURVIVAL());
+        $this->player->setGamemode(GameMode::SURVIVAL);
         $this->player->setHealth($this->player->getMaxHealth());
         $this->player->teleport($this->team->getSpawnPoint());
     }
@@ -356,7 +356,7 @@ class Session {
 
     public function teleportToHub(): void {
         $this->player->getEffects()->clear();
-        $this->player->setGamemode(GameMode::ADVENTURE());
+        $this->player->setGamemode(GameMode::ADVENTURE);
         $this->player->setHealth($this->player->getMaxHealth());
         $this->player->setNameTag($this->player->getDisplayName());
         $this->player->teleport(Server::getInstance()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
@@ -399,7 +399,7 @@ class Session {
 
         $this->player->getEffects()->clear();
         $this->player->teleport($this->game->getMap()->getSpectatorSpawnPosition());
-        $this->player->setGamemode(GameMode::SPECTATOR());
+        $this->player->setGamemode(GameMode::SPECTATOR);
 
         $this->gameSettings->decreasePickaxeTier();
         $this->gameSettings->decreaseAxeTier();
