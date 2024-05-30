@@ -19,34 +19,17 @@ use function str_replace;
 class ColorUtils {
 
     static public function translate(string $message): string {
-        $message = str_replace("{BLACK}", TextFormat::BLACK, $message);
-        $message = str_replace("{DARK_BLUE}", TextFormat::DARK_BLUE, $message);
-        $message = str_replace("{BLUE}", TextFormat::DARK_BLUE, $message);
-        $message = str_replace("{DARK_GREEN}", TextFormat::DARK_GREEN, $message);
-        $message = str_replace("{DARK_AQUA}", TextFormat::DARK_AQUA, $message);
-        $message = str_replace("{DARK_RED}", TextFormat::DARK_RED, $message);
-        $message = str_replace("{DARK_PURPLE}", TextFormat::DARK_PURPLE, $message);
-        $message = str_replace("{MAGENTA}", TextFormat::DARK_PURPLE, $message);
-        $message = str_replace("{GOLD}", TextFormat::GOLD, $message);
-        $message = str_replace("{ORANGE}", TextFormat::GOLD, $message);
-        $message = str_replace("{GRAY}", TextFormat::GRAY, $message);
-        $message = str_replace("{DARK_GRAY}", TextFormat::DARK_GRAY, $message);
-        $message = str_replace("{CYAN}", TextFormat::BLUE, $message);
-        $message = str_replace("{GREEN}", TextFormat::GREEN, $message);
-        $message = str_replace("{AQUA}", TextFormat::AQUA, $message);
-        $message = str_replace("{RED}", TextFormat::RED, $message);
-        $message = str_replace("{LIGHT_PURPLE}", TextFormat::LIGHT_PURPLE, $message);
-        $message = str_replace("{PINK}", TextFormat::LIGHT_PURPLE, $message);
-        $message = str_replace("{YELLOW}", TextFormat::YELLOW, $message);
-        $message = str_replace("{WHITE}", TextFormat::WHITE, $message);
-        $message = str_replace("{OBFUSCATED}", TextFormat::OBFUSCATED, $message);
-        $message = str_replace("{BOLD}", TextFormat::BOLD, $message);
-        $message = str_replace("{STRIKETHROUGH}", TextFormat::STRIKETHROUGH, $message);
-        $message = str_replace("{UNDERLINE}", TextFormat::UNDERLINE, $message);
-        $message = str_replace("{ITALIC}", TextFormat::ITALIC, $message);
-        $message = str_replace("{RESET}", TextFormat::RESET, $message);
-
-        return $message;
+        return str_replace([
+            "{BLACK}", "{DARK_BLUE}", "{BLUE}", "{DARK_GREEN}", "{DARK_AQUA}", "{DARK_RED}", "{DARK_PURPLE}", "{MAGENTA}",
+            "{GOLD}", "{ORANGE}", "{GRAY}", "{DARK_GRAY}", "{CYAN}", "{GREEN}", "{AQUA}", "{RED}", "{LIGHT_PURPLE}", "{PINK}",
+            "{YELLOW}", "{WHITE}", "{OBFUSCATED}", "{BOLD}", "{STRIKETHROUGH}", "{UNDERLINE}", "{ITALIC}", "{RESET}"
+        ], [
+            TextFormat::BLACK, TextFormat::DARK_BLUE, TextFormat::BLUE, TextFormat::DARK_GREEN, TextFormat::DARK_AQUA,
+            TextFormat::DARK_RED, TextFormat::DARK_PURPLE, TextFormat::DARK_PURPLE, TextFormat::GOLD, TextFormat::GOLD,
+            TextFormat::GRAY, TextFormat::DARK_GRAY, TextFormat::BLUE, TextFormat::GREEN, TextFormat::AQUA, TextFormat::RED,
+            TextFormat::LIGHT_PURPLE, TextFormat::LIGHT_PURPLE, TextFormat::YELLOW, TextFormat::WHITE, TextFormat::OBFUSCATED,
+            TextFormat::BOLD, TextFormat::STRIKETHROUGH, TextFormat::UNDERLINE, TextFormat::ITALIC, TextFormat::RESET
+        ], $message);
     }
 
     static public function getDye(string $color): DyeColor {
