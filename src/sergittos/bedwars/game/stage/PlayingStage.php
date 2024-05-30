@@ -20,6 +20,7 @@ use sergittos\bedwars\game\event\Event;
 use sergittos\bedwars\game\event\presets\UpgradeGeneratorsTierEvent;
 use sergittos\bedwars\game\generator\GeneratorType;
 use sergittos\bedwars\game\generator\Tier;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use sergittos\bedwars\session\scoreboard\layout\GameLayout;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
@@ -111,7 +112,7 @@ class PlayingStage extends Stage {
             }
 
             $team = $session->getTeam();
-            if($team->getUpgrades()->getHealPool()->canLevelUp()) {
+            if($team->getUpgrades()->get(UpgradeIds::HEAL_POOL)->canLevelUp()) {
                 continue;
             }
 

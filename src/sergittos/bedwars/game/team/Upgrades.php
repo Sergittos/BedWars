@@ -13,13 +13,9 @@ namespace sergittos\bedwars\game\team;
 
 
 use pocketmine\utils\Utils;
-use sergittos\bedwars\game\team\upgrade\presets\ArmorProtection;
-use sergittos\bedwars\game\team\upgrade\presets\HealPool;
-use sergittos\bedwars\game\team\upgrade\presets\IronForge;
-use sergittos\bedwars\game\team\upgrade\presets\ManiacMiner;
-use sergittos\bedwars\game\team\upgrade\presets\SharpenedSwords;
 use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
+use sergittos\bedwars\game\team\upgrade\UpgradeRegistry;
 use sergittos\bedwars\session\Session;
 use function array_key_exists;
 use function array_shift;
@@ -28,63 +24,33 @@ use function time;
 
 class Upgrades {
 
-    private ArmorProtection $armorProtection;
-    private ManiacMiner $maniacMiner;
-    private IronForge $ironForge;
-    private SharpenedSwords $sharpenedSwords;
-    private HealPool $healPool;
-
     private int $trapTriggerTime = 0;
+
+    /** @var Upgrade[] */
+    private array $upgrades = [];
 
     /** @var Trap[] */
     private array $traps = [];
 
     public function __construct() {
-        $this->armorProtection = new ArmorProtection();
-        $this->maniacMiner = new ManiacMiner();
-        $this->ironForge = new IronForge();
-        $this->sharpenedSwords = new SharpenedSwords();
-        $this->healPool = new HealPool();
+        foreach(UpgradeRegistry::getAll() as $upgrade) {
+            $this->upgrades[$upgrade->getId()] = $upgrade;
+        }
     }
 
     /**
      * @return Upgrade[]
      */
     public function getAll(): array {
-        return [$this->armorProtection, $this->maniacMiner, $this->ironForge, $this->sharpenedSwords, $this->healPool];
+        return $this->upgrades;
     }
 
-    public function getArmorProtection(): ArmorProtection {
-        return $this->armorProtection;
-    }
-
-    public function getManiacMiner(): ManiacMiner {
-        return $this->maniacMiner;
-    }
-
-    public function getIronForge(): IronForge {
-        return $this->ironForge;
-    }
-
-    public function getSharpenedSwords(): SharpenedSwords {
-        return $this->sharpenedSwords;
-    }
-
-    public function getHealPool(): HealPool {
-        return $this->healPool;
-    }
-
-    public function getUpgrade(string $name): ?Upgrade {
-        foreach($this->getAll() as $upgrade) {
-            if($upgrade->getName() === $name) {
-                return $upgrade;
-            }
-        }
-        return null;
+    public function get(string $id): ?Upgrade {
+        return $this->upgrades[$id] ?? null;
     }
 
     public function canTriggerTrap(): bool {
-        if(time() - $this->trapTriggerTime >= 30 and !empty($this->traps)) {
+        if(time() - $this->trapTriggerTime >= 30 and count($this->traps) !== 0) {
             $this->trapTriggerTime = time();
             return true;
         }

@@ -16,9 +16,14 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\Sword;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use sergittos\bedwars\session\Session;
 
 class SharpenedSwords extends Upgrade {
+
+    public function getId(): string {
+        return UpgradeIds::SHARPENED_SWORDS;
+    }
 
     public function getName(): string {
         return "Sharpened Swords";
@@ -26,6 +31,10 @@ class SharpenedSwords extends Upgrade {
 
     public function getLevels(): int {
         return 1;
+    }
+
+    public function getPrice(): int {
+        return 4;
     }
 
     public function internalApplySession(Session $session): void {

@@ -46,8 +46,12 @@ abstract class Upgrade {
 
     protected function internalApplySession(Session $session): void {}
 
+    abstract public function getId(): string;
+
     abstract public function getName(): string;
 
     abstract public function getLevels(): int;
+
+    abstract public function getPrice(): int;
 
 }

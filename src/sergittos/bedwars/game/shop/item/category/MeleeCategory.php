@@ -20,6 +20,7 @@ use pocketmine\item\StringToItemParser;
 use pocketmine\item\VanillaItems;
 use sergittos\bedwars\game\shop\Category;
 use sergittos\bedwars\game\shop\item\ItemProduct;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use sergittos\bedwars\session\Session;
 use function ucfirst;
 
@@ -50,7 +51,7 @@ class MeleeCategory extends Category {
         if($sword instanceof Durable) {
             $sword->setUnbreakable();
         }
-        if(!$session->getTeam()->getUpgrades()->getSharpenedSwords()->canLevelUp()) {
+        if(!$session->getTeam()->getUpgrades()->get(UpgradeIds::SHARPENED_SWORDS)->canLevelUp()) {
             $sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SHARPNESS()));
         }
 

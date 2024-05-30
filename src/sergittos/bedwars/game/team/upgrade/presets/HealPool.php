@@ -13,14 +13,23 @@ namespace sergittos\bedwars\game\team\upgrade\presets;
 
 
 use sergittos\bedwars\game\team\upgrade\Upgrade;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 
 class HealPool extends Upgrade {
+
+    public function getId(): string {
+        return UpgradeIds::HEAL_POOL;
+    }
 
     public function getName(): string {
         return "Heal Pool";
     }
 
     public function getLevels(): int {
+        return 1;
+    }
+
+    public function getPrice(): int {
         return 1;
     }
 

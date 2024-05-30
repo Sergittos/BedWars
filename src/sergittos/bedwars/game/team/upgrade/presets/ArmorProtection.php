@@ -15,9 +15,14 @@ namespace sergittos\bedwars\game\team\upgrade\presets;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use sergittos\bedwars\session\Session;
 
 class ArmorProtection extends Upgrade {
+
+    public function getId(): string {
+        return UpgradeIds::ARMOR_PROTECTION;
+    }
 
     public function getName(): string {
         return "Armor Protection";
@@ -25,6 +30,10 @@ class ArmorProtection extends Upgrade {
 
     public function getLevels(): int {
         return 4;
+    }
+
+    public function getPrice(): int {
+        return 2 ** ($this->level + 1);
     }
 
     public function internalApplySession(Session $session): void {

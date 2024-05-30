@@ -21,21 +21,19 @@ use sergittos\bedwars\utils\GameUtils;
 
 class UpgradeProduct extends UpgradesProduct {
 
+    private Upgrade $upgrade;
+
+    public function __construct(Upgrade $upgrade) {
+        $this->upgrade = $upgrade;
+        parent::__construct($upgrade->getName(), $upgrade->getPrice());
+    }
+
     public function canBePurchased(Session $session): bool {
         return $this->getUpgrade($session->getTeam())->canLevelUp();
     }
 
     protected function purchase(Team $team): void {
         $this->getUpgrade($team)->levelUp($team);
-    }
-
-    protected function canPurchase(Team $team): bool {
-        $upgrade = $this->getUpgrade($team);
-        if($upgrade->canLevelUp()) {
-            $upgrade->levelUp($team);
-            return true;
-        }
-        return false;
     }
 
     public function getDisplayName(Session $session): string {
@@ -58,7 +56,7 @@ class UpgradeProduct extends UpgradesProduct {
     }
 
     private function getUpgrade(Team $team): Upgrade {
-        return $team->getUpgrades()->getUpgrade($this->name);
+        return $team->getUpgrades()->get($this->upgrade->getId());
     }
 
 }

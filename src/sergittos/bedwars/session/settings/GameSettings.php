@@ -19,6 +19,7 @@ use pocketmine\item\Item;
 use pocketmine\item\StringToItemParser;
 use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\session\Session;
 use function strtolower;
@@ -168,9 +169,9 @@ class GameSettings {
     }
 
     private function addComponents(Item $item): Armor|Item {
-        $protection_level = $this->session->getTeam()?->getUpgrades()->getArmorProtection()->getLevel();
-        if($protection_level >= 1) {
-            $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), $protection_level));
+        $protectionLevel = $this->session->getTeam()?->getUpgrades()->get(UpgradeIds::ARMOR_PROTECTION)->getLevel();
+        if($protectionLevel >= 1) {
+            $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), $protectionLevel));
         }
         $item->getNamedTag()->setByte("bedwars_item", 1);
 

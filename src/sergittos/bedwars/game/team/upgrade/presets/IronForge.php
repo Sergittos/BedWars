@@ -15,9 +15,14 @@ namespace sergittos\bedwars\game\team\upgrade\presets;
 use sergittos\bedwars\game\generator\presets\TeamEmeraldGenerator;
 use sergittos\bedwars\game\team\Team;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use function array_rand;
 
 class IronForge extends Upgrade {
+
+    public function getId(): string {
+        return UpgradeIds::IRON_FORGE;
+    }
 
     public function getName(): string {
         return "Iron Forge";
@@ -25,6 +30,10 @@ class IronForge extends Upgrade {
 
     public function getLevels(): int {
         return 4;
+    }
+
+    public function getPrice(): int {
+        return 2 ** ($this->level + 1);
     }
 
     protected function internalLevelUp(Team $team): void {

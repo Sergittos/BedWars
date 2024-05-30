@@ -15,7 +15,9 @@ namespace sergittos\bedwars\game\shop\upgrades\category;
 use sergittos\bedwars\game\shop\Category;
 use sergittos\bedwars\game\shop\upgrades\product\UpgradeProduct;
 use sergittos\bedwars\game\shop\upgrades\UpgradesProduct;
+use sergittos\bedwars\game\team\upgrade\Upgrade;
 use sergittos\bedwars\session\Session;
+use function array_map;
 
 class UpgradesCategory extends Category {
 
@@ -27,14 +29,9 @@ class UpgradesCategory extends Category {
      * @return UpgradesProduct[]
      */
     public function getProducts(Session $session): array {
-        $upgrades = $session->getTeam()->getUpgrades();
-        return [
-            new UpgradeProduct("Sharpened Swords", 4),
-            new UpgradeProduct("Armor Protection", 2 ** ($upgrades->getArmorProtection()->getLevel() + 1)),
-            new UpgradeProduct("Maniac Miner", 2 ** ($upgrades->getManiacMiner()->getLevel() + 1)),
-            new UpgradeProduct("Iron Forge", 2 * ($upgrades->getIronForge()->getLevel() + 1)),
-            new UpgradeProduct("Heal Pool", 1)
-        ];
+        return array_map(function(Upgrade $upgrade) {
+            return new UpgradeProduct($upgrade);
+        }, $session->getTeam()->getUpgrades()->getAll());
     }
 
 }

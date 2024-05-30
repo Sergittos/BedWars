@@ -89,12 +89,12 @@ class CategoryForm extends SimpleForm {
         }
         $traps = $this->session->getTeam()->getUpgrades()->getTraps();
 
-        $header_text = "";
+        $headerText = "";
         for($i = 1; $i <= 3; $i++) {
             $trap = array_shift($traps);
-            $header_text .= "Trap #" . $i . " - " . ($trap !== null ? $trap->getName() : "Empty") . "\n";
+            $headerText .= "Trap #" . $i . " - " . ($trap !== null ? $trap->getName() : "Empty") . "\n";
         }
-        return $header_text;
+        return $headerText;
     }
 
 }

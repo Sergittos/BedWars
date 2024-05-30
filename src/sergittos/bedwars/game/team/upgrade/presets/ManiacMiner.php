@@ -16,9 +16,14 @@ use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\utils\Limits;
 use sergittos\bedwars\game\team\upgrade\Upgrade;
+use sergittos\bedwars\game\team\upgrade\UpgradeIds;
 use sergittos\bedwars\session\Session;
 
 class ManiacMiner extends Upgrade {
+
+    public function getId(): string {
+        return UpgradeIds::MANIAC_MINER;
+    }
 
     public function getName(): string {
         return "Maniac Miner";
@@ -26,6 +31,10 @@ class ManiacMiner extends Upgrade {
 
     public function getLevels(): int {
         return 2;
+    }
+
+    public function getPrice(): int {
+        return 2 ** ($this->level + 1);
     }
 
     public function internalApplySession(Session $session): void {
