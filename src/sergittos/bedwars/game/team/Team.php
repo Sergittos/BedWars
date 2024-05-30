@@ -22,8 +22,7 @@ use pocketmine\world\format\Chunk;
 use pocketmine\world\Position;
 use sergittos\bedwars\game\Game;
 use sergittos\bedwars\game\generator\Generator;
-use sergittos\bedwars\game\generator\GeneratorType;
-use sergittos\bedwars\game\team\upgrade\trap\AlarmTrap;
+use sergittos\bedwars\game\team\upgrade\trap\presets\Alarm;
 use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\utils\ColorUtils;
@@ -189,7 +188,7 @@ class Team implements JsonSerializable {
 
     public function notifyTrap(Trap $trap, Team $team): void {
         $name = $trap->getName();
-        if($trap instanceof AlarmTrap) {
+        if($trap instanceof Alarm) {
             $title = "{BOLD}{RED}ALARM!!!";
             $subtitle = "{WHITE}" . $name . " set off by " . $team->getColoredName() . "{WHITE} team!";
             $message = "{BOLD}{RED}" . $name . " set off by " . $team->getColoredName() . "{RED} team!";

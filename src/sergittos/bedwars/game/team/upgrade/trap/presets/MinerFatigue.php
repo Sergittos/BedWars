@@ -9,18 +9,19 @@
 declare(strict_types=1);
 
 
-namespace sergittos\bedwars\game\team\upgrade\trap;
+namespace sergittos\bedwars\game\team\upgrade\trap\presets;
 
 
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use sergittos\bedwars\game\team\Team;
+use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\session\Session;
 
-class MinerFatigueTrap extends Trap {
+class MinerFatigue implements Trap {
 
-    public function __construct() {
-        parent::__construct("Miner Fatigue Trap");
+    public function getName(): string {
+        return "Miner Fatigue Trap";
     }
 
     public function trigger(Session $session, Team $team): void {

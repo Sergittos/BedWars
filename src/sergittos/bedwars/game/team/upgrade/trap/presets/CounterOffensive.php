@@ -9,18 +9,19 @@
 declare(strict_types=1);
 
 
-namespace sergittos\bedwars\game\team\upgrade\trap;
+namespace sergittos\bedwars\game\team\upgrade\trap\presets;
 
 
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use sergittos\bedwars\game\team\Team;
+use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\session\Session;
 
-class CounterOffensiveTrap extends Trap {
+class CounterOffensive implements Trap {
 
-    public function __construct() {
-        parent::__construct("Counter-Offensive Trap");
+    public function getName(): string {
+        return "Counter-Offensive Trap";
     }
 
     public function trigger(Session $session, Team $team): void {

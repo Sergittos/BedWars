@@ -15,10 +15,17 @@ namespace sergittos\bedwars\game\shop\upgrades\product;
 use pocketmine\utils\TextFormat;
 use sergittos\bedwars\game\shop\upgrades\UpgradesProduct;
 use sergittos\bedwars\game\team\Team;
+use sergittos\bedwars\game\team\upgrade\trap\Trap;
 use sergittos\bedwars\session\Session;
-use sergittos\bedwars\utils\GameUtils;
 
 class TrapProduct extends UpgradesProduct {
+
+    private Trap $trap;
+
+    public function __construct(Trap $trap, int $price) {
+        $this->trap = $trap;
+        parent::__construct($trap->getName(), $price);
+    }
 
     public function canBePurchased(Session $session): bool {
         $upgrades = $session->getTeam()->getUpgrades();
@@ -26,7 +33,7 @@ class TrapProduct extends UpgradesProduct {
     }
 
     protected function purchase(Team $team): void {
-        $team->getUpgrades()->addTrap(GameUtils::getTrapByName($this->name));
+        $team->getUpgrades()->addTrap($this->trap);
     }
 
     public function getDescription(Session $session): string {
