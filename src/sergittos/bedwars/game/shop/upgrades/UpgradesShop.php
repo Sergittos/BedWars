@@ -19,8 +19,8 @@ use sergittos\bedwars\game\shop\upgrades\category\UpgradesCategory;
 
 class UpgradesShop extends Shop {
 
-    public function getId(): string {
-        return Shop::UPGRADES;
+    public function getName(): string {
+        return "Upgrades";
     }
 
     /**

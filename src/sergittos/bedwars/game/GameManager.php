@@ -16,7 +16,6 @@ use pocketmine\Server;
 use pocketmine\world\World;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\game\map\Map;
-use sergittos\bedwars\game\shop\ShopFactory;
 use sergittos\bedwars\game\stage\StartingStage;
 use sergittos\bedwars\game\stage\WaitingStage;
 use sergittos\bedwars\game\task\DirectoryCopyTask;
@@ -30,10 +29,6 @@ class GameManager {
 
     /** @var Game[] */
     private array $games = [];
-
-    public function __construct() {
-        ShopFactory::init();
-    }
 
     public function getNextGameId(): int {
         return $this->nextGameId++;

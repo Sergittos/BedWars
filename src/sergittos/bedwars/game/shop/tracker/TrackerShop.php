@@ -17,8 +17,8 @@ use sergittos\bedwars\game\shop\Shop;
 
 class TrackerShop extends Shop {
 
-    public function getId(): string {
-        return Shop::TRACKER;
+    public function getName(): string {
+        return "Tracker";
     }
 
     /**

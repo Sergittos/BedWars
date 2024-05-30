@@ -14,11 +14,7 @@ namespace sergittos\bedwars\game\shop;
 
 abstract class Shop {
 
-    public const ITEM = "item";
-    public const UPGRADES = "upgrades";
-    public const TRACKER = "tracker";
-
-    abstract public function getId(): string;
+    abstract public function getName(): string;
 
     /**
      * @return Category[]

@@ -15,7 +15,7 @@ namespace sergittos\bedwars\item;
 use pocketmine\item\Item;
 use pocketmine\utils\CloningRegistryTrait;
 use sergittos\bedwars\game\generator\GeneratorType;
-use sergittos\bedwars\game\shop\Shop;
+use sergittos\bedwars\game\shop\ShopRegistry;
 use sergittos\bedwars\item\game\LeaveGameItem;
 use sergittos\bedwars\item\game\TrackerShopItem;
 use sergittos\bedwars\item\setup\AddGeneratorItem;
@@ -74,8 +74,8 @@ class BedwarsItemRegistry {
 
         self::register("diamond_generator", new AddGeneratorItem(GeneratorType::DIAMOND));
         self::register("emerald_generator", new AddGeneratorItem(GeneratorType::EMERALD));
-        self::register("item_villager", new AddVillagerItem(Shop::ITEM));
-        self::register("upgrades_villager", new AddVillagerItem(Shop::UPGRADES));
+        self::register("item_villager", new AddVillagerItem(ShopRegistry::ITEM()));
+        self::register("upgrades_villager", new AddVillagerItem(ShopRegistry::UPGRADES()));
         self::register("configuration", new ConfigurationItem());
         self::register("create_map", new CreateMapItem());
         self::register("exit_setup", new ExitSetupItem());

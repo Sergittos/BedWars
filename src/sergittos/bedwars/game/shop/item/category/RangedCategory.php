@@ -42,7 +42,6 @@ class RangedCategory extends Category {
                     ->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PUNCH())),
                 VanillaItems::EMERALD()
             ),
-
         ];
     }
 

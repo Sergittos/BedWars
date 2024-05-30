@@ -14,19 +14,20 @@ namespace sergittos\bedwars\item\setup;
 
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
+use sergittos\bedwars\game\shop\Shop;
 use sergittos\bedwars\session\Session;
 
 class AddVillagerItem extends SetupItem {
 
-    private string $name;
+    private Shop $shop;
 
-    public function __construct(string $name) {
-        $this->name = $name;
-        parent::__construct($name . " villager");
+    public function __construct(Shop $shop) {
+        $this->shop = $shop;
+        parent::__construct($shop->getName() . " villager");
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getShop(): Shop {
+        return $this->shop;
     }
 
     public function onInteract(Session $session): void {}

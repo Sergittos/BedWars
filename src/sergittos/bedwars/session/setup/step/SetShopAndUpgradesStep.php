@@ -16,7 +16,8 @@ use pocketmine\event\Cancellable;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
-use sergittos\bedwars\game\shop\Shop;
+use sergittos\bedwars\game\shop\item\ItemShop;
+use sergittos\bedwars\game\shop\upgrades\UpgradesShop;
 use sergittos\bedwars\item\BedwarsItem;
 use sergittos\bedwars\item\BedwarsItemRegistry;
 use sergittos\bedwars\item\setup\AddVillagerItem;
@@ -40,13 +41,13 @@ class SetShopAndUpgradesStep extends Step {
 
         $map = $this->session->getMapSetup()->getMapBuilder();
 
-        $name = $item->getName();
-        match($name) {
-            Shop::ITEM => $map->addShopPosition($touchVector),
-            Shop::UPGRADES => $map->addUpgradesPosition($touchVector)
+        $shop = $item->getShop();
+        match(true) {
+            $shop instanceof ItemShop => $map->addShopPosition($touchVector),
+            $shop instanceof UpgradesShop => $map->addUpgradesPosition($touchVector)
         };
 
-        $this->session->message("{GREEN}You have successfully set the $name position.");
+        $this->session->message("{GREEN}You have successfully set the " . $shop->getName() . " position.");
     }
 
 }

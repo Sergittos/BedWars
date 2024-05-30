@@ -24,8 +24,8 @@ use sergittos\bedwars\game\shop\Shop;
 
 class ItemShop extends Shop {
 
-    public function getId(): string {
-        return Shop::ITEM;
+    public function getName(): string {
+        return "Item";
     }
 
     /**

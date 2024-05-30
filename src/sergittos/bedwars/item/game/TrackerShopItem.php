@@ -15,8 +15,7 @@ namespace sergittos\bedwars\item\game;
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
 use sergittos\bedwars\form\shop\ShopForm;
-use sergittos\bedwars\game\shop\Shop;
-use sergittos\bedwars\game\shop\ShopFactory;
+use sergittos\bedwars\game\shop\ShopRegistry;
 use sergittos\bedwars\item\BedwarsItem;
 use sergittos\bedwars\session\Session;
 
@@ -27,7 +26,7 @@ class TrackerShopItem extends BedwarsItem {
     }
 
     public function onInteract(Session $session): void {
-        $session->getPlayer()->sendForm(new ShopForm($session, "Tracker & Communication", ShopFactory::getShop(Shop::TRACKER), false));
+        $session->getPlayer()->sendForm(new ShopForm($session, "Tracker & Communication", ShopRegistry::TRACKER()));
     }
 
     protected function getMaterial(): Item {
