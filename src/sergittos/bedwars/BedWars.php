@@ -62,7 +62,7 @@ class BedWars extends PluginBase {
         MapFactory::init();
 
         $this->provider = $this->obtainProvider();
-	$this->metrics = new Metrics($this, 29605);
+        $this->metrics = new Metrics($this, 29605);
         $this->game_manager = new GameManager();
 
         $this->registerEntity(PlayBedwarsEntity::class);
@@ -126,7 +126,7 @@ class BedWars extends PluginBase {
     }
 
     public function getMetrics(): Metrics {
-	return $this->metrics;
+        return $this->metrics;
     }
 
     public function getGameManager(): GameManager {
