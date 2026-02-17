@@ -5,7 +5,8 @@
   "license": "LGPL-3.0",
   "require": {
     "bstats/pocketmine-mp": "^1.0",
-    "pocketmine/pocketmine-mp": "^5.0.0"
+    "pocketmine/pocketmine-mp": "^5.0.0",
+    "dresnite/easyui": "^1.0.5"
   },
   "require-dev": {
     "sof3/pharynx": "^0.3.0"

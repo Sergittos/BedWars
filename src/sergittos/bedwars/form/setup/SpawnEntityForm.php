@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\setup;
 
 
-use EasyUI\utils\FormResponse;
+use dresnite\EasyUI\utils\FormResponse;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;

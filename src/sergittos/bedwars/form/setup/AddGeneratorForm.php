@@ -6,9 +6,9 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\setup;
 
 
-use EasyUI\element\Dropdown;
-use EasyUI\element\Option;
-use EasyUI\utils\FormResponse;
+use dresnite\EasyUI\element\Dropdown;
+use dresnite\EasyUI\element\Option;
+use dresnite\EasyUI\utils\FormResponse;
 use pocketmine\player\Player;
 use sergittos\bedwars\form\CustomForm;
 use sergittos\bedwars\game\generator\GeneratorType;

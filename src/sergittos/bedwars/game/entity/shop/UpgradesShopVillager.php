@@ -6,9 +6,8 @@ declare(strict_types=1);
 namespace sergittos\bedwars\game\entity\shop;
 
 
-use EasyUI\Form;
+use dresnite\EasyUI\Form;
 use sergittos\bedwars\form\shop\CategoryForm;
-use sergittos\bedwars\form\shop\ShopForm;
 use sergittos\bedwars\game\shop\Shop;
 use sergittos\bedwars\game\shop\ShopFactory;
 use sergittos\bedwars\game\shop\upgrades\UpgradesShop;

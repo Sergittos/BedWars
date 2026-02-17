@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\queue;
 
 
-use EasyUI\variant\SimpleForm;
+use dresnite\EasyUI\variant\SimpleForm;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\form\queue\element\PlayGameButton;
 use sergittos\bedwars\game\map\MapFactory;
