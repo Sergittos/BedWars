@@ -1,4 +1,4 @@
---- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Sergittos/BedWars
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Sergittos/BedWars/BedwarsPM
 build-by-default: true
 branches:
 - master
@@ -9,8 +9,4 @@ projects:
       phpstan: false
       syntaxError: false
     icon: icon.png
-    libs:
-      - src: dresnite/easyui/libEasyUI
-        version: 1.0.3
-        branch: pm5
 ...

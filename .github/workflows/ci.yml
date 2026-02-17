@@ -1,0 +1,29 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+jobs:
+  pharynx:
+    name: build phar
+    permissions:
+      contents: write
+    runs-on: ubuntu-20.04
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    strategy:
+      matrix:
+        php:
+          - "8.2"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pmmp/setup-php-action@main
+        with:
+          php-version: ${{ matrix.php }}
+          install-path: "../bin"
+          pm-version-major: "5"
+      - uses: SOF3/pharynx@v0.2
+        id: pharynx
+      - uses: actions/upload-artifact@v3
+        with:
+          name: BedwarsPM.phar
+          path: ${{steps.pharynx.outputs.output-phar}}

@@ -1,18 +1,22 @@
 {
   "name": "sergittos/bedwars",
   "description": "BedWars for PocketMine-MP",
-  "type": "project",
+  "type": "pocketmine-plugin",
   "license": "LGPL-3.0",
   "require": {
-    "bstats/pocketmine-mp": "^1.0"
+    "bstats/pocketmine-mp": "^1.0",
+    "pocketmine/pocketmine-mp": "^5.0.0"
   },
   "require-dev": {
-    "pocketmine/pocketmine-mp": "^5.12"
+    "sof3/pharynx": "^0.3.0"
   },
   "autoload": {
     "psr-4": {
       "": "src/"
     }
+  },
+  "scripts": {
+    "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=BedwarsPM.phar"
   },
   "config": {
     "platform": {
