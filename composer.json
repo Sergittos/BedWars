@@ -6,7 +6,7 @@
   "require": {
     "bstats/pocketmine-mp": "^1.0",
     "pocketmine/pocketmine-mp": "^5.0.0",
-    "dresnite/easyui": "^1.0.5"
+    "dresnite/easyui": "^1.0.6"
   },
   "require-dev": {
     "sof3/pharynx": "^0.3.0"

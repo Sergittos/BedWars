@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e81d88156c65e9b98b682e1b4be0b87b",
+    "content-hash": "16ff79de72431a4293067ef81f0369f8",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -183,16 +183,16 @@
         },
         {
             "name": "dresnite/easyui",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dresnite/easyui.git",
-                "reference": "97a8278b90b58db738f258078aa241cb5fbb70b4"
+                "reference": "415fb4a6f3549a28acac803bfad5d241dd9d7e7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dresnite/easyui/zipball/97a8278b90b58db738f258078aa241cb5fbb70b4",
-                "reference": "97a8278b90b58db738f258078aa241cb5fbb70b4",
+                "url": "https://api.github.com/repos/dresnite/easyui/zipball/415fb4a6f3549a28acac803bfad5d241dd9d7e7c",
+                "reference": "415fb4a6f3549a28acac803bfad5d241dd9d7e7c",
                 "shasum": ""
             },
             "require": {
@@ -218,9 +218,9 @@
             "description": "EasyUI is an intuitive and easy-to-use form library for PocketMine-MP. Designed to let you focus on your project and not on how the library works.",
             "support": {
                 "issues": "https://github.com/dresnite/easyui/issues",
-                "source": "https://github.com/dresnite/easyui/tree/1.0.5"
+                "source": "https://github.com/dresnite/easyui/tree/1.0.6"
             },
-            "time": "2026-02-17T23:31:27+00:00"
+            "time": "2026-02-17T23:54:58+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
