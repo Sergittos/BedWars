@@ -1,0 +1,5 @@
+{
+    "require": {
+        "bstats/pocketmine-mp": "^1.0"
+    }
+}

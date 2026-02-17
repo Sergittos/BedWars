@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars;
 
 
+use bStats\PocketmineMp\Metrics;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
@@ -43,6 +44,7 @@ class BedWars extends PluginBase {
     use SingletonTrait;
 
     private Provider $provider;
+    private Metrics $metrics;
     private GameManager $game_manager;
 
     protected function onLoad(): void {
@@ -60,6 +62,7 @@ class BedWars extends PluginBase {
         MapFactory::init();
 
         $this->provider = $this->obtainProvider();
+	$this->metrics = new Metrics($this, 29605);
         $this->game_manager = new GameManager();
 
         $this->registerEntity(PlayBedwarsEntity::class);
@@ -120,6 +123,10 @@ class BedWars extends PluginBase {
 
     public function getProvider(): Provider {
         return $this->provider;
+    }
+
+    public function getMetrics(): Metrics {
+	return $this->metrics;
     }
 
     public function getGameManager(): GameManager {
