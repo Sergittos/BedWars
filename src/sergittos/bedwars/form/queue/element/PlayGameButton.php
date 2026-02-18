@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\queue\element;
 
 
-use dresnite\EasyUI\element\Button;
+use sergittos\bedwars\libs\_8164d5e56d495a6e\dresnite\EasyUI\element\Button;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use sergittos\bedwars\game\Game;

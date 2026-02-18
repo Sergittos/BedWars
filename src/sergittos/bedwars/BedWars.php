@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars;
 
 
-use bStats\PocketmineMp\Metrics;
+use sergittos\bedwars\libs\_8164d5e56d495a6e\bStats\PocketmineMp\Metrics;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;

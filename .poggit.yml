@@ -1,12 +1,1 @@
---- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Sergittos/BedWars/BedwarsPM
-build-by-default: true
-branches:
-- master
-projects:
-  BedwarsPM:
-    path: ""
-    lint:
-      phpstan: false
-      syntaxError: false
-    icon: "assets/icon.png"
-...
+{"projects":{"BedwarsPM":{"path":".","lint":false}}}

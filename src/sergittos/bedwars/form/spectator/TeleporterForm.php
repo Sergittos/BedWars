@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\spectator;
 
 
-use dresnite\EasyUI\element\Button;
-use dresnite\EasyUI\variant\SimpleForm;
+use sergittos\bedwars\libs\_8164d5e56d495a6e\dresnite\EasyUI\element\Button;
+use sergittos\bedwars\libs\_8164d5e56d495a6e\dresnite\EasyUI\variant\SimpleForm;
 use pocketmine\player\Player;
 use sergittos\bedwars\session\Session;
 use sergittos\bedwars\session\SessionFactory;
