@@ -1,6 +1,6 @@
 <div align="center">
   <h1> BedWars 🛏️ </h1>
-	<img src="icon.png" loading="eager" width="128" height="128" alt="icon"/>
+	<img src="assets/icon.png" loading="eager" width="128" height="128" alt="icon"/>
 	<p>A BedWars plugin for PocketMine-MP servers</p>
 </div>
 
@@ -34,7 +34,7 @@ Currently, the plugin is being reviewed by Poggit. You can download the latest v
 
 - You can see an example of how to create maps in the following video or [here](https://youtu.be/BdP5b9C4yqA).
 
-[![Video](youtube.png)](https://youtu.be/BdP5b9C4yqA)
+[![Video](assets/youtube.png)](https://youtu.be/BdP5b9C4yqA)
 
 ## Donating
 If you've found value in my open-source work, please consider contributing. Your donation empowers me to enhance existing projects and develop new ones for the community's benefit.
