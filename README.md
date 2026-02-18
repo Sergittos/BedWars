@@ -42,8 +42,9 @@ If you've found value in my open-source work, please consider contributing. Your
 - [Ko-fi](https://ko-fi.com/sergittos)
 - [PayPal](https://paypal.me/sergittos)
 
-## Virions Used
+## Libraries Used
 - [EasyUI](https://github.com/dresnite/easyui) by **dresnite**
+- [bStats](https://github.com/Bastian/bstats-pmmp) by **Bastian**
 
 ## License
 This project is licensed under the GNU LESSER GENERAL PUBLIC [LICENSE](LICENSE) - see the LICENSE file for details
