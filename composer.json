@@ -12,9 +12,7 @@
     "sof3/pharynx": "^0.3.0"
   },
   "autoload": {
-    "psr-4": {
-      "": "src/"
-    }
+    "classmap": ["src"]
   },
   "scripts": {
     "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=BedwarsPM.phar"
