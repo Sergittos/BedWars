@@ -19,7 +19,7 @@ jobs:
         id: pharynx
         with:
           additional-assets: |
-            assets/icon.png
+            icon.png
       - uses: actions/upload-artifact@v4
         with:
           name: BedwarsPM.phar
