@@ -8,5 +8,5 @@ projects:
     lint:
       phpstan: false
       syntaxError: false
-    icon: icon.png
+    icon: "assets/icon.png"
 ...
