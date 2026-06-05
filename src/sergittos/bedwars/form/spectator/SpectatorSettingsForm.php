@@ -1,9 +1,4 @@
 <?php
-/*
-* Copyright (C) Sergittos - All Rights Reserved
-* Unauthorized copying of this file, via any medium is strictly prohibited
-* Proprietary and confidential
-*/
 
 declare(strict_types=1);
 
@@ -11,11 +6,11 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\spectator;
 
 
-use EasyUI\element\Label;
-use EasyUI\element\Slider;
-use EasyUI\element\Toggle;
-use EasyUI\utils\FormResponse;
-use EasyUI\variant\CustomForm;
+use dresnite\EasyUI\element\Label;
+use dresnite\EasyUI\element\Slider;
+use dresnite\EasyUI\element\Toggle;
+use dresnite\EasyUI\utils\FormResponse;
+use dresnite\EasyUI\variant\CustomForm;
 use pocketmine\player\Player;
 use sergittos\bedwars\session\Session;
 

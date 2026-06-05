@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\queue;
 
 
-use EasyUI\element\Button;
-use EasyUI\variant\SimpleForm;
+use dresnite\EasyUI\element\Button;
+use dresnite\EasyUI\variant\SimpleForm;
 use pocketmine\player\Player;
 use sergittos\bedwars\BedWars;
 use sergittos\bedwars\form\queue\element\PlayGameButton;

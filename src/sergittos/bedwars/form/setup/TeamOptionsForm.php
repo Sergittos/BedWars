@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form\setup;
 
 
-use EasyUI\element\Button;
+use dresnite\EasyUI\element\Button;
 use pocketmine\player\Player;
 use sergittos\bedwars\form\SimpleForm;
 use sergittos\bedwars\session\Session;
@@ -14,7 +14,6 @@ use sergittos\bedwars\session\setup\builder\TeamBuilder;
 use sergittos\bedwars\session\setup\step\area\SetClaimStep;
 use sergittos\bedwars\session\setup\step\area\SetZoneStep;
 use sergittos\bedwars\session\setup\step\SetBedPositionStep;
-use sergittos\bedwars\session\setup\step\SetShopAndUpgradesStep;
 use sergittos\bedwars\session\setup\step\SetTeamGeneratorStep;
 use sergittos\bedwars\session\setup\step\Step;
 

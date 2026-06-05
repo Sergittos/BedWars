@@ -6,13 +6,10 @@ declare(strict_types=1);
 namespace sergittos\bedwars\form;
 
 
-use EasyUI\element\Dropdown;
-use EasyUI\element\Option;
-use EasyUI\variant\CustomForm as EasyUICustomForm;
-use pocketmine\player\Player;
-use pocketmine\utils\TextFormat;
+use dresnite\EasyUI\element\Dropdown;
+use dresnite\EasyUI\element\Option;
+use dresnite\EasyUI\variant\CustomForm as EasyUICustomForm;
 use sergittos\bedwars\utils\GameUtils;
-use function is_numeric;
 
 class CustomForm extends EasyUICustomForm {
 
